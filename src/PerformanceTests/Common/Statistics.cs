@@ -91,7 +91,7 @@ public class Statistics
     {
         Meter = Metric.Meter("", Unit.Commands, TimeUnit.Seconds);
 
-        var folder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "reports", DateTime.UtcNow.ToString("s"));
+        var folder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "reports", DateTime.UtcNow.ToString("s").Replace(':', '_'));
 
         Metric
             .Config.WithAllCounters()
