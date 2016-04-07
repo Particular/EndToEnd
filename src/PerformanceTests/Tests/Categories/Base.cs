@@ -6,6 +6,7 @@ namespace Categories
     using NUnit.Framework;
     using Tests.Permutations;
     using Tests.Tools;
+    using VisualStudioDebugHelper;
 
     public class Base
     {
@@ -29,8 +30,11 @@ namespace Categories
 
         static void Invoke(Permutation permutation)
         {
+            var processId = DebugAttacher.GetCurrentVisualStudioProcessId();
+            var processIdArgument = processId >= 0 ? string.Format(" --processId={0}", processId) : string.Empty;
+
             var fi = new FileInfo(permutation.Exe);
-            var pi = new ProcessStartInfo(permutation.Exe, PermutationParser.ToArgs(permutation))
+            var pi = new ProcessStartInfo(permutation.Exe, PermutationParser.ToArgs(permutation) + processIdArgument)
             {
                 UseShellExecute = false,
                 WorkingDirectory = fi.DirectoryName,

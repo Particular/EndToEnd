@@ -7,6 +7,7 @@ namespace NServiceBus6
     using NServiceBus;
     using Tests.Permutations;
     using Utils;
+    using VisualStudioDebugHelper;
 
     class Program
     {
@@ -14,6 +15,9 @@ namespace NServiceBus6
         static string endpointName = "PerformanceTests_" + AppDomain.CurrentDomain.FriendlyName.Replace(' ', '_');
         static void Main(string[] args)
         {
+            var processId = args.Where(arg => arg.StartsWith("--processId")).Select(arg => Convert.ToInt32(arg.Substring("--processId".Length + 1))).FirstOrDefault();
+            DebugAttacher.AttachDebugger(processId);
+
             try
             {
                 Statistics.Initialize();

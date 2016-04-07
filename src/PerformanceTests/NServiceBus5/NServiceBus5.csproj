@@ -62,6 +62,10 @@
       <Name>Utils</Name>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj">
+      <Project>{4ffa67b5-3cd7-4e37-918d-26dbd9947fb3}</Project>
+      <Name>VisualStudioDebugHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tests\Tests.csproj">
       <Project>{feaae402-8ed0-47fb-8e54-42b1d7f654cc}</Project>
       <Name>Tests</Name>
