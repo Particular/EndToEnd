@@ -6,7 +6,7 @@
     {
         public static void AttachDebugger(int processId)
         {
-            if (!Debugger.IsAttached)
+            if (!Debugger.IsAttached && processId > 0)
             {
                 var vsProcess = VisualStudioAttacher.GetVisualStudioByProcessId(processId);
 
@@ -23,6 +23,11 @@
 
         public static int GetCurrentVisualStudioProcessId()
         {
+            if (!Debugger.IsAttached)
+            {
+                return -1;
+            }
+
             var currentProcess = Process.GetCurrentProcess();
             return VisualStudioAttacher.GetParentProcessId(currentProcess.Id);
         }
