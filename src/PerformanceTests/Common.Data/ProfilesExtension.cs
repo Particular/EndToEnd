@@ -21,18 +21,6 @@ static class ProfilesExtension
                 injectPermutation.Permutation = permutation;
             }
             profile.Configure(configuration);
-            
-            var createTestData = profile as ICreateTestData;
-            createTestData?.CreateTestData(configuration);
-        }
-    }
-
-    public static void CleanUp(this Configuration configuration)
-    {
-        foreach (var profile in GetProfiles())
-        {
-            var createTestData = profile as ICreateTestData;
-            createTestData?.CleanUpTestData(configuration);
         }
     }
 

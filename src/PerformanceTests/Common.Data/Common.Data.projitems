@@ -13,11 +13,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)AuditProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckPlatform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConcurrencyLevelConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ICreateTestData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPermutation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentStats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PerformanceCounters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Program.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Log.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\BaseRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\ReceiveRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\ReceiveRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\ReceiveRunner.V6.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOneRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOneRunner.V5.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOneRunner.V6.cs" />

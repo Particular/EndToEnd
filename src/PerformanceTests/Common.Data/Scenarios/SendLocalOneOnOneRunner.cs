@@ -32,12 +32,12 @@ partial class SendLocalOneOnOneRunner : IStartAndStop
     {
         Handler.Shutdown = true;
 
-        // Wait until no new messages are processed so queues will be empty.
-        long current = 0;
-        while (current < (current = System.Threading.Interlocked.Read(ref Handler.Count)))
-        {
-            System.Threading.Thread.Sleep(250);
-        }
+        //// Wait until no new messages are processed so queues will be empty.
+        //long current = 0;
+        //while (current < (current = System.Threading.Interlocked.Read(ref Handler.Count)))
+        //{
+        //    System.Threading.Thread.Sleep(250);
+        //}
     }
 
     public class Command : ICommand

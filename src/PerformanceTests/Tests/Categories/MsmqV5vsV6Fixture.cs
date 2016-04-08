@@ -9,6 +9,12 @@ namespace Categories
     public class MsmqV5vsV6Fixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
+        public override void ReceiveRunner(Permutation permutation)
+        {
+            base.ReceiveRunner(permutation);
+        }
+
+        [TestCaseSource(nameof(CreatePermutations))]
         public override void GatedSendLocalRunner(Permutation permutation)
         {
             base.GatedSendLocalRunner(permutation);
