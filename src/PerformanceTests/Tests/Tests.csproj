@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Categories\PlatformFixture.cs" />
     <Compile Include="Categories\MsmqV5vsV6Fixture.cs" />
     <Compile Include="Categories\AuditOnVsOffFixture.cs" />
     <Compile Include="Categories\Base.cs" />

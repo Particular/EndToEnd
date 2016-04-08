@@ -1,9 +1,10 @@
 ﻿#if Version5
+using System.Threading.Tasks;
 using NServiceBus;
 
 partial class GatedSendLocalRunner : IProfile
 {
-    void SendLocal(Command msg)
+    async Task SendLocal(Command msg)
     {
         NServiceBus5.Program.Instance.SendLocal(msg);
     }

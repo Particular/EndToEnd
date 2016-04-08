@@ -5,15 +5,9 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "Publish vs Send", Category = "Performance"), Explicit]
-    public class PublishVsSendFixture : Base
+    [TestFixture(Description = "Platform x86/x64, gc client/server", Category = "Performance"), Explicit]
+    public class PlatformFixture : Base
     {
-        [TestCaseSource(nameof(CreatePermutations))]
-        public override void GatedSendLocalRunner(Permutation permutation)
-        {
-            base.GatedSendLocalRunner(permutation);
-        }
-
         [TestCaseSource(nameof(CreatePermutations))]
         public override void SendLocalOneOnOneRunner(Permutation permutation)
         {
@@ -26,17 +20,17 @@ namespace Categories
             {
                 Versions = new[] { NServiceBusVersion.V5, NServiceBusVersion.V6, },
                 IOPS = new[] { IOPS.Default },
-                Platforms = new[] { Platform.x86, },
-                GarbageCollectors = new[] { GarbageCollector.Client, },
-                Transports = new[] { Transport.MSMQ, Transport.AzureServiceBus, Transport.AzureStorageQueues, Transport.MSMQ, Transport.RabbitMQ, Transport.SQLServer, },
+                Platforms = new[] { Platform.x86, Platform.x64, },
+                GarbageCollectors = new[] { GarbageCollector.Client, GarbageCollector.Server, },
+                Transports = new[] { Transport.MSMQ },
                 Persisters = new[] { Persistence.InMemory },
                 Serializers = new[] { Serialization.Json, },
                 MessageSizes = new[] { MessageSize.Tiny, },
                 OutboxModes = new[] { Outbox.Off, },
                 DTCModes = new[] { DTC.On, },
                 TransactionMode = new[] { TransactionMode.Default, },
-                AuditModes = new[] { Audit.Off },
-                ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores4x }
+                AuditModes = new[] { Audit.Off, },
+                ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores }
             });
         }
     }

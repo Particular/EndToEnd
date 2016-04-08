@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyScanner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AuditProfile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CheckPlatform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConcurrentyLevelConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICreateTestData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPermutation.cs" />
@@ -27,6 +28,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\LoopRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SerializerProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StatisticsUoW.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Statistics\SimpleStatisticsFeature.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Statistics\SimpleStatisticsFeature.V6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Statistics\StatisticsBehavior.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Statistics\StatisticsBehavior.V6.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TransportConfigOverride.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TwoPhaseCommitEnlistment.cs" />
   </ItemGroup>

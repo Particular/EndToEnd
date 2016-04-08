@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ using NServiceBus.Logging;
 /// </summary>
 partial class GatedSendLocalRunner : LoopRunner
 {
-    const int batchSize = 4096;
+    int batchSize = 16;
     ILog Log = LogManager.GetLogger(typeof(GatedSendLocalRunner));
     static CountdownEvent X;
 
@@ -36,12 +37,21 @@ partial class GatedSendLocalRunner : LoopRunner
             try
             {
                 Console.Write("1");
-                X.Reset();
+                X.Reset(batchSize);
 
-                Parallel.For(0, X.InitialCount, po, i =>
+                var d = Stopwatch.StartNew();
+                Parallel.For(0, X.InitialCount, po, async i =>
                 {
-                    SendLocal(CommandGenerator.Create());
+                    await SendLocal(CommandGenerator.Create());
                 });
+
+                if (d.Elapsed < TimeSpan.FromSeconds(2.5))
+                {
+                    batchSize *= 2;
+                    Log.InfoFormat("Batch size increased to {0}", batchSize);
+                }
+
+
                 Console.Write("2");
 
                 X.Wait(stopLoop.Token);

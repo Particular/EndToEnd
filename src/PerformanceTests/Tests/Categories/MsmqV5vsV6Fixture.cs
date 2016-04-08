@@ -14,6 +14,12 @@ namespace Categories
             base.GatedSendLocalRunner(permutation);
         }
 
+        [TestCaseSource(nameof(CreatePermutations))]
+        public override void SendLocalOneOnOneRunner(Permutation permutation)
+        {
+            base.SendLocalOneOnOneRunner(permutation);
+        }
+
         static IEnumerable<Permutation> CreatePermutations()
         {
             return PermutationGenerator.Generate(new Permutations
@@ -29,7 +35,7 @@ namespace Categories
                 OutboxModes = new[] { Outbox.Off, },
                 DTCModes = new[] { DTC.On, },
                 TransactionMode = new[] { TransactionMode.Default, },
-                AuditModes = new[] { Audit.Off, Audit.On, },
+                AuditModes = new[] { Audit.Off, },
                 ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores }
             });
         }

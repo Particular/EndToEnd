@@ -22,9 +22,9 @@ partial class SendLocalOneOnOneRunner : IStartAndStop
             MaxDegreeOfParallelism = Environment.ProcessorCount - 1 // Leave one core for transport and persistence
         };
 
-        Parallel.For(0, seedSize, po, i =>
+        Parallel.For(0, seedSize, po, async i =>
         {
-            SendLocal(new Command());
+            await SendLocal(new Command());
         });
     }
 

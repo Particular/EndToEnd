@@ -1,14 +1,22 @@
 ﻿namespace VisualStudioDebugHelper
 {
+    using System;
+    using System.Linq;
     using System.Diagnostics;
 
     public static class DebugAttacher
     {
-        public static void AttachDebugger(int processId)
+        public static void AttachDebuggerToVisualStudioProcessFromCommandLineParameter()
         {
-            if (!Debugger.IsAttached && processId > 0)
+            var processId = Environment.GetCommandLineArgs().Where(arg => arg.StartsWith("--processId")).Select(arg => Convert.ToInt32(arg.Substring("--processId".Length + 1))).FirstOrDefault();
+            AttachDebuggerToVisualStudioInstance(processId);
+        }
+
+        public static void AttachDebuggerToVisualStudioInstance(int visualStudioProcessId)
+        {
+            if (!Debugger.IsAttached && visualStudioProcessId > 0)
             {
-                var vsProcess = VisualStudioAttacher.GetVisualStudioByProcessId(processId);
+                var vsProcess = VisualStudioAttacher.GetVisualStudioByProcessId(visualStudioProcessId);
 
                 if (vsProcess != null)
                 {

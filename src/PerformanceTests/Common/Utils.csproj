@@ -39,8 +39,20 @@
       <HintPath>..\..\..\packages\Metrics.NET.0.3.4-pre\lib\net45\Metrics.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Splunk.Logging.Common, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Splunk.Logging.Common.1.5.0\lib\net45\Splunk.Logging.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Splunk.Logging.TraceListener, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Splunk.Logging.TraceListener.1.5.0\lib\net45\Splunk.Logging.TraceListener.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -58,6 +70,7 @@
     <Compile Include="DeterministicUuid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statistics.cs" />
+    <Compile Include="TraceLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

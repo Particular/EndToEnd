@@ -14,17 +14,20 @@ namespace NServiceBus5
         static string endpointName = "PerformanceTests_" + AppDomain.CurrentDomain.FriendlyName.Replace(' ', '_');
         static void Main(string[] args)
         {
-            var processId = args.Where(arg => arg.StartsWith("--processId")).Select(arg => Convert.ToInt32(arg.Substring("--processId".Length + 1))).FirstOrDefault();
-            DebugAttacher.AttachDebugger(processId);
+            DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
 
             try
             {
+                TraceLogger.Initialize();
+
                 Statistics.Initialize();
 
                 Log.Env();
 
                 var permutation = PermutationParser.FromCommandlineArgs();
                 var options = BusCreationOptions.Parse(args);
+
+                if (Environment.UserInteractive) Console.Title = permutation.ToString();
 
                 var assembly = System.Reflection.Assembly.GetExecutingAssembly();
                 var tasks = permutation.Tests.Select(x => (IStartAndStop) assembly.CreateInstance(x)).ToArray();
@@ -62,7 +65,7 @@ namespace NServiceBus5
             configuration.EnableInstallers();
             configuration.DiscardFailedMessagesInsteadOfSendingToErrorQueue();
             configuration.ApplyProfiles(permutation);
-
+            configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
             var startableBus = Bus.Create(configuration);
 
 

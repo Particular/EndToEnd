@@ -91,10 +91,16 @@ public class Statistics
     {
         Meter = Metric.Meter("", Unit.Commands, TimeUnit.Seconds);
 
-        var folder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "reports", DateTime.UtcNow.ToString("s").Replace(':', '_'));
+        var assemblyLocation = Assembly.GetEntryAssembly().Location;
+        var assemblyFolder = Path.GetDirectoryName(assemblyLocation);
+        var reportFolder = Path.Combine(assemblyFolder, "reports", DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm-ss"));
+
+        Trace.WriteLine($"Assembly Location: {assemblyLocation}");
+        Trace.WriteLine($"Assembly folder: {assemblyFolder}");
+        Trace.WriteLine($"Test run report folder: {reportFolder}");
 
         Metric
             .Config.WithAllCounters()
-            .WithReporting(report => report.WithCSVReports(folder, TimeSpan.FromSeconds(1)));
+            .WithReporting(report => report.WithCSVReports(reportFolder, TimeSpan.FromSeconds(1)));
     }
 }
