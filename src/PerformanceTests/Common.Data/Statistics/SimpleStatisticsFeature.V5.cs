@@ -13,13 +13,12 @@ namespace NServiceBus.Performance
 
     public class SimpleStatisticsFeature : Feature
     {
-        private static readonly string SettingKey = "NServiceBus/SimpleStatistics";
+        static readonly string SettingKey = "NServiceBus/SimpleStatistics";
 
         protected override void Setup(FeatureConfigurationContext context)
         {
             var settings = ConfigurationManager.AppSettings;
-            bool enable = true;
-
+            bool enable;
             if (settings.AllKeys.Contains(SettingKey) && bool.TryParse(settings[SettingKey], out enable) && !enable) return;
 
             EnableByDefault();
@@ -48,23 +47,23 @@ namespace NServiceBus.Performance
 
         public class Collector : StatisticsBehavior.Implementation
         {
-            private static readonly ILog Log = LogManager.GetLogger("NServiceBus.SimpleStatistics");
-            private static readonly long TimeUnit = Stopwatch.Frequency;
+            static readonly ILog Log = LogManager.GetLogger("NServiceBus.SimpleStatistics");
+            static readonly long TimeUnit = Stopwatch.Frequency;
 
-            private readonly string _titleFormat;
-            private readonly bool _outputTitle;
-            private readonly bool _outputLog;
-            private readonly int _updateInMilliSeconds = 2000;
+            readonly string _titleFormat;
+            readonly bool _outputTitle;
+            readonly bool _outputLog;
+            readonly int _updateInMilliSeconds = 2000;
 
-            private Timer _reportTimer;
-            private long _duration;
-            private long _failure;
-            private long _total;
-            private int _concurrency;
+            Timer _reportTimer;
+            long _duration;
+            long _failure;
+            long _total;
+            int _concurrency;
 
-            private Data _start;
-            private Data _last;
-            private Data _maxPerSecond;
+            Data _start;
+            Data _last;
+            Data _maxPerSecond;
 
 
             public Collector()

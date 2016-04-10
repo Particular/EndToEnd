@@ -1,6 +1,5 @@
 #if Version5
 using System;
-using System.Diagnostics;
 using NServiceBus.Pipeline;
 using NServiceBus.Pipeline.Contexts;
 
@@ -8,7 +7,7 @@ namespace NServiceBus.Performance
 {
     public class StatisticsBehavior : IBehavior<IncomingContext>
     {
-        private readonly Implementation provider;
+        readonly Implementation provider;
         public StatisticsBehavior(Implementation provider)
         {
             this.provider = provider;

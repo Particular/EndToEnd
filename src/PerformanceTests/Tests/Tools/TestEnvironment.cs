@@ -3,7 +3,6 @@ namespace Tests.Tools
     using System;
     using System.IO;
     using Tests.Permutations;
-    using Variables;
 
     public class TestEnvironment
     {

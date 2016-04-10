@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using Common;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Queue;
 using NServiceBus;
-using NServiceBus.Azure.Transports.WindowsAzureStorageQueues.Config;
-using NServiceBus.Configuration.AdvanceExtensibility;
 
 class AzureStorageQueuesProfile : IProfile
 {

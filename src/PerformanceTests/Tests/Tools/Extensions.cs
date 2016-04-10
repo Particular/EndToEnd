@@ -75,7 +75,7 @@ namespace Tests.Tools
             return DistinctByImpl(source, keySelector, comparer);
         }
 
-        private static IEnumerable<TSource> DistinctByImpl<TSource, TKey>(IEnumerable<TSource> source,
+        static IEnumerable<TSource> DistinctByImpl<TSource, TKey>(IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
 #if !NO_HASHSET

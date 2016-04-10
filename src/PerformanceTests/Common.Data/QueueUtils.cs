@@ -4,7 +4,7 @@ namespace Common
 {
     using System.Messaging;
 
-    internal static class QueueUtils
+    static class QueueUtils
     {
         public static void DeleteQueuesForEndpoint(string queueName)
         {
@@ -21,7 +21,7 @@ namespace Common
             DeleteQueue(queueName + ".timeoutsdispatcher");
         }
 
-        private static void DeleteQueue(string queueName)
+        static void DeleteQueue(string queueName)
         {
             var path = $@"{Environment.MachineName}\private$\{queueName}";
             if (MessageQueue.Exists(path))

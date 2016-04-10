@@ -1,9 +1,4 @@
-﻿
-using System.Messaging;
-using Common;
-using NServiceBus;
-using NServiceBus.Configuration.AdvanceExtensibility;
-using NServiceBus.Unicast.Queuing;
+﻿using NServiceBus;
 
 class MsmqProfile : IProfile
 {
