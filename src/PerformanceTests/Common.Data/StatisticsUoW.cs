@@ -4,7 +4,7 @@ using System.Threading;
 using System.Transactions;
 using NServiceBus;
 using NServiceBus.UnitOfWork;
-using System.Diagnostics;
+
 #if Version3
 using NServiceBus.Config;
 #endif
@@ -67,7 +67,7 @@ public class StatisticsUoW : IManageUnitsOfWork, INeedInitialization
     }
 #endif
 
-    private void DoEnd(Exception ex)
+    void DoEnd(Exception ex)
     {
         if (ex != null)
         {

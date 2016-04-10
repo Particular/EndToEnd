@@ -21,7 +21,7 @@ public class Statistics
     [NonSerialized]
     public Meter Meter;
 
-    private static Statistics instance;
+    static Statistics instance;
     public static Statistics Instance
     {
         get
@@ -38,7 +38,7 @@ public class Statistics
         instance.StartTime = DateTime.UtcNow;
     }
 
-    private Statistics()
+    Statistics()
     {
         ConfigureMetrics();
     }

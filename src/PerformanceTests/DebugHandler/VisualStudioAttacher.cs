@@ -15,7 +15,7 @@
     using System.ComponentModel;
     using System.Threading.Tasks;
 
-    internal static class VisualStudioAttacher
+    static class VisualStudioAttacher
     {
         [DllImport("ole32.dll")]
         public static extern int CreateBindCtx(int reserved, out IBindCtx ppbc);
@@ -24,16 +24,16 @@
         public static extern int GetRunningObjectTable(int reserved, out IRunningObjectTable prot);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern SafeSnapshotHandle CreateToolhelp32Snapshot(SnapshotFlags flags, uint id);
+        static extern SafeSnapshotHandle CreateToolhelp32Snapshot(SnapshotFlags flags, uint id);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool Process32First(SafeSnapshotHandle hSnapshot, ref PROCESSENTRY32 lppe);
+        static extern bool Process32First(SafeSnapshotHandle hSnapshot, ref PROCESSENTRY32 lppe);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool Process32Next(SafeSnapshotHandle hSnapshot, ref PROCESSENTRY32 lppe);
+        static extern bool Process32Next(SafeSnapshotHandle hSnapshot, ref PROCESSENTRY32 lppe);
 
         [DllImport("User32")]
-        private static extern int ShowWindow(int hwnd, int nCmdShow);
+        static extern int ShowWindow(int hwnd, int nCmdShow);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -42,7 +42,7 @@
         public static extern IntPtr SetFocus(IntPtr hWnd);
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct PROCESSENTRY32
+        struct PROCESSENTRY32
         {
             public uint dwSize;
             public uint cntUsage;
@@ -58,7 +58,7 @@
         };
 
         [Flags]
-        private enum SnapshotFlags : uint
+        enum SnapshotFlags : uint
         {
             HeapList = 0x00000001,
             Process = 0x00000002,
@@ -70,11 +70,11 @@
             NoHeaps = 0x40000000
         }
 
-        private const int ERROR_NO_MORE_FILES = 0x12;
+        const int ERROR_NO_MORE_FILES = 0x12;
 
         internal static int GetParentProcessId(int Id)
         {
-            PROCESSENTRY32 pe32 = new PROCESSENTRY32 { };
+            var pe32 = new PROCESSENTRY32();
             pe32.dwSize = (uint)Marshal.SizeOf(typeof(PROCESSENTRY32));
             using (var hSnapshot = CreateToolhelp32Snapshot(SnapshotFlags.Process, (uint)Id))
             {
@@ -83,7 +83,7 @@
 
                 if (!Process32First(hSnapshot, ref pe32))
                 {
-                    int errno = Marshal.GetLastWin32Error();
+                    var errno = Marshal.GetLastWin32Error();
                     if (errno == ERROR_NO_MORE_FILES)
                         return -1;
                     throw new Win32Exception(errno);
@@ -123,13 +123,16 @@
         static DTEProcess FindVisualStudioProcessToAttachTo(_DTE visualStudioInstance, int processId)
         {
             // Retry 3 times in case the COM object reports busy
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 try
                 {
                     return visualStudioInstance.Debugger.LocalProcesses.Cast<DTEProcess>().FirstOrDefault(process => process.ProcessID == processId);
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
 
                 // Wait 100ms before trying again
                 Task.Delay(100).Wait();
@@ -145,16 +148,16 @@
 
         static IEnumerable<Process> GetVisualStudioProcesses()
         {
-            Process[] processes = Process.GetProcesses();
+            var processes = Process.GetProcesses();
             return processes.Where(o => o.ProcessName.Contains("devenv"));
         }
 
         static bool TryGetVsInstance(int processId, out _DTE instance)
         {
-            IntPtr numFetched = IntPtr.Zero;
+            var numFetched = IntPtr.Zero;
             IRunningObjectTable runningObjectTable;
             IEnumMoniker monikerEnumerator;
-            IMoniker[] monikers = new IMoniker[1];
+            var monikers = new IMoniker[1];
 
             GetRunningObjectTable(0, out runningObjectTable);
             runningObjectTable.EnumRunning(out monikerEnumerator);
@@ -173,7 +176,7 @@
 
                 if (runningObjectVal is _DTE && runningObjectName.StartsWith("!VisualStudio"))
                 {
-                    int currentProcessId = int.Parse(runningObjectName.Split(':')[1]);
+                    var currentProcessId = int.Parse(runningObjectName.Split(':')[1]);
 
                     if (currentProcessId == processId)
                     {
@@ -197,16 +200,16 @@
             [SecurityPermission(SecurityAction.LinkDemand, UnmanagedCode = true)]
             internal SafeSnapshotHandle(IntPtr handle) : base(true)
             {
-                base.SetHandle(handle);
+                SetHandle(handle);
             }
 
             protected override bool ReleaseHandle()
             {
-                return CloseHandle(base.handle);
+                return CloseHandle(handle);
             }
 
             [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success), DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-            private static extern bool CloseHandle(IntPtr handle);
+            static extern bool CloseHandle(IntPtr handle);
         }
     }
 }
