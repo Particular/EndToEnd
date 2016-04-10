@@ -3,7 +3,7 @@
     using System;
     using System.Configuration;
     using System.Diagnostics;
-    using Splunk.Logging;
+    using NLog;
 
     public class TraceLogger
     {
@@ -12,13 +12,7 @@
             var url = ConfigurationManager.AppSettings["SplunkURL"];
             var port = int.Parse(ConfigurationManager.AppSettings["SplunkPort"]);
 
-            var listener = new TcpTraceListener(url, port, new ExponentialBackoffTcpReconnectionPolicy());
-            Trace.Listeners.Add(listener);
-
-            listener.AddLoggingFailureHandler(ex => 
-            {
-                Console.Error.WriteLine("Splunk logger failed: {0}", ex);
-            });
+            Trace.Listeners.Add(new NLogTraceListener());
 
             Trace.WriteLine($"Splunk Tracelogger configured at {url}:{port}");
         }

@@ -1,8 +1,6 @@
 ﻿using Metrics;
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using System.Threading;
 
 [Serializable]
@@ -89,18 +87,10 @@ public class Statistics
 
     void ConfigureMetrics()
     {
-        Meter = Metric.Meter("", Unit.Commands, TimeUnit.Seconds);
-
-        var assemblyLocation = Assembly.GetEntryAssembly().Location;
-        var assemblyFolder = Path.GetDirectoryName(assemblyLocation);
-        var reportFolder = Path.Combine(assemblyFolder, "reports", DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm-ss"));
-
-        Trace.WriteLine($"Assembly Location: {assemblyLocation}");
-        Trace.WriteLine($"Assembly folder: {assemblyFolder}");
-        Trace.WriteLine($"Test run report folder: {reportFolder}");
+        Meter = Metric.Meter("", Unit.Commands);
 
         Metric
             .Config.WithAllCounters()
-            .WithReporting(report => report.WithCSVReports(reportFolder, TimeSpan.FromSeconds(1)));
+            .WithReporting(report => report.WithNLogCSVReports(TimeSpan.FromSeconds(1)));
     }
 }
