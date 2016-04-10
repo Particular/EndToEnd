@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<connectionStrings>
+  <add name="NServiceBus/Transport/SqlServer" connectionString="Data Source=.\SQLEXPRESS;Integrated Security=True;Database=PerformanceTests" providerName="System.Data.SqlClient"/>
+  <add name="RabbitMQ" connectionString="host=localhost;RequestedHeartbeat=600;UsePublisherConfirms=True" />
+  <add name="AzureServiceBus" connectionString="Endpoint=sb://ramon-test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=yTy3ASKfxVc44RCeuY7mpELR3n10TZOhA3yDnVTU5W0=" />
+  <add name="AzureStorageQueue" connectionString="UseDevelopmentStorage=true" />
+</connectionStrings>
