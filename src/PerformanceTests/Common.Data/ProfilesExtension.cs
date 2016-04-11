@@ -6,6 +6,7 @@ using Configuration = NServiceBus.BusConfiguration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Tests.Permutations;
 
 static class ProfilesExtension
@@ -29,10 +30,23 @@ static class ProfilesExtension
 
         var type = typeof(IProfile);
         var types = assemblies
-            .SelectMany(s => s.GetTypes())
+            .SelectMany(GetTypes)
             .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract && !p.IsInterface);
 
 
         return types.Select(t => (IProfile)Activator.CreateInstance(t));
     }
+
+    static Type[] GetTypes(Assembly a)
+    {
+        try
+        {
+            return a.GetTypes();
+        }
+        catch (ReflectionTypeLoadException ex)
+        {
+            return ex.Types;
+        }
+    }
+
 }
