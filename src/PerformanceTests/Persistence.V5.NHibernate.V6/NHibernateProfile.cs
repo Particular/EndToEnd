@@ -5,13 +5,15 @@ using NServiceBus.Persistence;
 
 class NHibernateProfile : IProfile
 {
-    public void Configure(BusConfiguration busConfiguration)
+    public void Configure(BusConfiguration cfg)
     {
         var value = ConfigurationManager.ConnectionStrings["NHibernate"];
-        if (ConfigurationManager.ConnectionStrings == null) throw new InvalidOperationException("Connection string 'NHibernate' not configured.");
+        if (value == null) throw new InvalidOperationException("Connection string 'NHibernate' not configured.");
 
-        busConfiguration
+        cfg
             .UsePersistence<NHibernatePersistence>()
-            .ConnectionString(value.ConnectionString);
+            .ConnectionString(value.ConnectionString)
+            //.EnableCachingForSubscriptionStorage(TimeSpan.FromSeconds(5))
+            ;
     }
 }
