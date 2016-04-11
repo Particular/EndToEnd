@@ -6,8 +6,8 @@ public class SendReplyVerifier
     {
         foreach (var endpointName in EndpointNames.All)
         {
-            FirstMessageReceivedFrom.VerifyContains(endpointName, TestRunner.EndpointName + " expected a FirstMessage to be Received From " + endpointName);
-            SecondMessageReceivedFrom.VerifyContains(endpointName, TestRunner.EndpointName + " expected a SecondMessage to be Received From " + endpointName);
+            FirstMessageReceivedFrom.VerifyContains(endpointName, $"{TestRunner.EndpointName} expected a FirstMessage to be Received From {endpointName}");
+            SecondMessageReceivedFrom.VerifyContains(endpointName, $"{TestRunner.EndpointName} expected a SecondMessage to be Received From {endpointName}");
         }
     }
 

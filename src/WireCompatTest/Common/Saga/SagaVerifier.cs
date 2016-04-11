@@ -8,7 +8,7 @@ public class SagaVerifier
     {
         foreach (var endpointName in EndpointNames.All)
         {
-            RequestingSagaGotTheResponse.VerifyContains(endpointName, TestRunner.EndpointName + " expected Requesting Saga Got The Response From " + endpointName);
+            RequestingSagaGotTheResponse.VerifyContains(endpointName, $"{TestRunner.EndpointName} expected Requesting Saga Got The Response From {endpointName}");
         }
     }
 

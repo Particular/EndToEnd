@@ -20,17 +20,17 @@ class Program
 
     static Task<IEndpointInstance> CreateBus()
     {
-        var busConfiguration = new EndpointConfiguration(endpointName);
-        busConfiguration.Conventions().ApplyMessageConventions();
-        busConfiguration.UseSerialization<JsonSerializer>();
-        busConfiguration.UseTransport<MsmqTransport>();
-        busConfiguration.UsePersistence<InMemoryPersistence>();
-        busConfiguration.RijndaelEncryptionService();
-        busConfiguration.UseDataBus<FileShareDataBus>().BasePath("..\\..\\..\\tempstorage");
-        busConfiguration.ScaleOut().InstanceDiscriminator("1");
-        busConfiguration.RegisterComponents(c => c.ConfigureComponent<EncryptionVerifier>(DependencyLifecycle.SingleInstance));
-        busConfiguration.EnableInstallers();
+        var endpointConfiguration = new EndpointConfiguration(endpointName);
+        endpointConfiguration.Conventions().ApplyMessageConventions();
+        endpointConfiguration.UseSerialization<JsonSerializer>();
+        endpointConfiguration.UseTransport<MsmqTransport>();
+        endpointConfiguration.UsePersistence<InMemoryPersistence>();
+        endpointConfiguration.RijndaelEncryptionService();
+        endpointConfiguration.UseDataBus<FileShareDataBus>().BasePath("..\\..\\..\\tempstorage");
+        endpointConfiguration.ScaleOut().InstanceDiscriminator("1");
+        endpointConfiguration.RegisterComponents(c => c.ConfigureComponent<EncryptionVerifier>(DependencyLifecycle.SingleInstance));
+        endpointConfiguration.EnableInstallers();
 
-        return Endpoint.Start(busConfiguration);
+        return Endpoint.Start(endpointConfiguration);
     }
 }

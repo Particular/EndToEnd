@@ -6,8 +6,8 @@ public class DataBusVerifier
     {
         foreach (var endpointName in EndpointNames.All)
         {
-            ResponseReceivedFromSites.VerifyContains(endpointName, TestRunner.EndpointName + " expected to receive a send from site " + endpointName);
-            SendReceivedFromSites.VerifyContains(endpointName, TestRunner.EndpointName + " expected to receive a response from site " + endpointName);
+            ResponseReceivedFromSites.VerifyContains(endpointName, $"{TestRunner.EndpointName} expected to receive a send from site {endpointName}");
+            SendReceivedFromSites.VerifyContains(endpointName, $"{TestRunner.EndpointName} expected to receive a response from site {endpointName}");
         }
     }
 

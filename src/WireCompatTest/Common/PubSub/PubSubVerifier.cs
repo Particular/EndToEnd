@@ -7,7 +7,7 @@ public class PubSubVerifier
     {
         foreach (var endpointName in EndpointNames.All)
         {
-            Asserter.IsTrue(EventReceivedFrom.Contains(endpointName), TestRunner.EndpointName + " expected a event to be Received From " + endpointName);
+            Asserter.IsTrue(EventReceivedFrom.Contains(endpointName), $"{TestRunner.EndpointName} expected a event to be Received From {endpointName}");
         }
     }
 

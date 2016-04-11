@@ -7,7 +7,7 @@ public class SendReturnVerifier
     {
         foreach (var endpointName in EndpointNames.All)
         {
-            ReplyReceivedFrom.VerifyContains(endpointName, TestRunner.EndpointName + " expected a reply to be Received From " + endpointName);
+            ReplyReceivedFrom.VerifyContains(endpointName, $"{TestRunner.EndpointName} expected a reply to be Received From {endpointName}");
         }
     }
 
