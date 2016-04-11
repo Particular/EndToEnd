@@ -16,6 +16,9 @@ namespace Host
         {
             DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
 
+            AppDomain.CurrentDomain.FirstChanceException += (o, ea) => { Log.Debug("FirstChanceException", ea.Exception); };
+            AppDomain.CurrentDomain.UnhandledException += (o, ea) => { Log.Error("UnhandledException", ea.ExceptionObject as Exception); };
+
             try
             {
                 TraceLogger.Initialize();
