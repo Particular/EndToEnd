@@ -29,6 +29,11 @@ namespace Categories
             Tasks(permutation);
         }
 
+        public virtual void GatedPublishRunner(Permutation permutation)
+        {
+            Tasks(permutation);
+        }
+
         void Tasks(Permutation permutation, [CallerMemberName] string memberName = "")
         {
             permutation.Category = GetType().Name;

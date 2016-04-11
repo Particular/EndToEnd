@@ -12,12 +12,14 @@ namespace Host
     {
         static readonly ILog Log = LogManager.GetLogger(typeof(Program));
         static string endpointName = "PerformanceTests_" + AppDomain.CurrentDomain.FriendlyName.Replace(' ', '_');
-        static void Main(string[] args) // GatedSendLocalRunner, 
+        static void Main()
         {
             DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
 
             AppDomain.CurrentDomain.FirstChanceException += (o, ea) => { Log.Debug("FirstChanceException", ea.Exception); };
             AppDomain.CurrentDomain.UnhandledException += (o, ea) => { Log.Error("UnhandledException", ea.ExceptionObject as Exception); };
+
+            ConfigureUnicastBus.EndpointName = endpointName;
 
             try
             {
