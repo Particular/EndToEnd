@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
@@ -18,19 +19,13 @@ partial class GatedSendLocalRunner : LoopRunner
     ILog Log = LogManager.GetLogger(typeof(GatedSendLocalRunner));
     static CountdownEvent X;
 
-    protected override void Loop(object o)
+    protected override async Task Loop(object o)
     {
         Log.Warn("Sleeping for the bus to purge the queue. Loop requires the queue to be empty.");
         Thread.Sleep(5000);
         Log.Info("Starting");
 
         X = new CountdownEvent(batchSize);
-
-        var po = new ParallelOptions
-        {
-            MaxDegreeOfParallelism = Environment.ProcessorCount - 1, // Leave one core for transport and persistence,
-            CancellationToken = stopLoop.Token
-        };
 
         while (!Shutdown)
         {
@@ -40,17 +35,18 @@ partial class GatedSendLocalRunner : LoopRunner
                 X.Reset(batchSize);
 
                 var d = Stopwatch.StartNew();
-                Parallel.For(0, X.InitialCount, po, async i =>
-                {
-                    await SendLocal(CommandGenerator.Create());
-                });
 
-                if (d.Elapsed < TimeSpan.FromSeconds(2.5))
+                var sends = new List<Task>(X.InitialCount);
+                for (var i = 0; i < X.InitialCount; i++) sends.Add(SendLocal(CommandGenerator.Create()));
+                await Task.WhenAll(sends);
+
+                var elapsed = d.Elapsed;
+
+                if (elapsed < TimeSpan.FromSeconds(2.5))
                 {
                     batchSize *= 2;
                     Log.InfoFormat("Batch size increased to {0}", batchSize);
                 }
-
 
                 Console.Write("2");
 

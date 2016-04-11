@@ -26,5 +26,5 @@ abstract class LoopRunner : BaseRunner
         }
     }
 
-    protected abstract void Loop(object o);
+    protected abstract Task Loop(object o);
 }
