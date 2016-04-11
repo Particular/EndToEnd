@@ -8,6 +8,7 @@ class RavenDBProfile : IProfile
     public void Configure(BusConfiguration cfg)
     {
         cfg.UsePersistence<RavenDBPersistence>()
+           .DoNotSetupDatabasePermissions()
            .SetConnectionStringName("RavenDB");
     }
 }
