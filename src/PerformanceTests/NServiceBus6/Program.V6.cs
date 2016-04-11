@@ -35,6 +35,7 @@ namespace Host
             configuration.LimitMessageProcessingConcurrencyTo(options.NumberOfThreads);
             configuration.ApplyProfiles(permutation);
             configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
+            configuration.PurgeOnStartup(false);
 
             var endpoint = await Endpoint.Create(configuration);
             return await endpoint.Start();

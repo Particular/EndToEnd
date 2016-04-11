@@ -17,7 +17,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentStats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PerformanceCounters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Program.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Log.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\BaseRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\ReceiveRunner.V5.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\ReceiveRunner.cs" />

@@ -3,13 +3,7 @@ using Configuration = NServiceBus.EndpointConfiguration;
 #else
 using Configuration = NServiceBus.BusConfiguration;
 #endif
-
-using System.Threading.Tasks;
-using Common;
 using NServiceBus;
-using NServiceBus.Logging;
-using Tests.Permutations;
-using System;
 
 /// <summary>
 /// Does a continuous test where a pre-seeded amount of messages will be handled

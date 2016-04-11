@@ -34,6 +34,13 @@ namespace Host
                 var assembly = System.Reflection.Assembly.GetExecutingAssembly();
                 var tasks = permutation.Tests.Select(x => (IStartAndStop)assembly.CreateInstance(x)).ToArray();
 
+                var tests = permutation.Tests.Select(x => assembly.CreateInstance(x)).ToList();
+                tests.ForEach(s =>
+                {
+                    if (s is BaseRunner)
+                        ((BaseRunner)s).Execute(permutation, endpointName);
+                });
+
                 Run(options, permutation, tasks);
             }
             catch (Exception ex)

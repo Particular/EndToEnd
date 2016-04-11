@@ -1,6 +1,5 @@
 namespace Host
 {
-    using Common;
     using NServiceBus;
     using Tests.Permutations;
     using Utils;
@@ -20,17 +19,13 @@ namespace Host
 
         static IBus CreateBus(BusCreationOptions options, Permutation permutation)
         {
-            if (options.Cleanup)
-            {
-                QueueUtils.DeleteQueuesForEndpoint(endpointName);
-            }
-
             var configuration = new BusConfiguration();
             configuration.EndpointName(endpointName);
             configuration.EnableInstallers();
             configuration.DiscardFailedMessagesInsteadOfSendingToErrorQueue();
             configuration.ApplyProfiles(permutation);
             configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
+            configuration.PurgeOnStartup(false);
             var startableBus = Bus.Create(configuration);
 
 
