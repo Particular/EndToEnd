@@ -15,7 +15,7 @@ public static class TestRunner
         await bus.InitiateSendReply();
         bus.InitiateSendReturn();
 
-        await Task.Delay(TimeSpan.FromSeconds(30));
+        await Task.Delay(TimeSpan.FromMinutes(1));
         await bus.Stop();
         DataBusVerifier.AssertExpectations();
         PubSubVerifier.AssertExpectations();

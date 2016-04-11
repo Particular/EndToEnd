@@ -15,7 +15,7 @@ public static class TestRunner
         bus.InitiateSendReply();
         bus.InitiateSendReturn();
 
-        Thread.Sleep(TimeSpan.FromSeconds(30));
+        Thread.Sleep(TimeSpan.FromMinutes(1));
         var disposable = bus as IDisposable;
         disposable?.Dispose();
         DataBusVerifier.AssertExpectations();
