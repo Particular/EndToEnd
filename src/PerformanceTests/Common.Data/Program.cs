@@ -18,8 +18,6 @@ namespace Host
 
             try
             {
-                TraceLogger.Initialize();
-
                 Statistics.Initialize();
 
                 EnvironmentStats.Write();

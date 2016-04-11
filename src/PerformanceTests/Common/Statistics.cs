@@ -1,7 +1,12 @@
 ﻿using Metrics;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Threading;
+using NLog;
+using NLog.Config;
+using NLog.Layouts;
+using NLog.Targets;
 
 [Serializable]
 public class Statistics
@@ -89,8 +94,24 @@ public class Statistics
     {
         Meter = Metric.Meter("", Unit.Commands);
 
+        Trace.Listeners.Add(new NLogTraceListener());
+
         Metric
             .Config.WithAllCounters()
             .WithReporting(report => report.WithNLogCSVReports(TimeSpan.FromSeconds(1)));
+
+        var url = ConfigurationManager.AppSettings["SplunkURL"];
+        var port = int.Parse(ConfigurationManager.AppSettings["SplunkPort"]);
+
+        var config = new LoggingConfiguration();
+        config.LoggingRules.Add(
+            new LoggingRule("*", LogLevel.Debug, new NetworkTarget
+            {
+                Address = $"tcp://{url}:{port}",
+                Layout = Layout.FromString("${message}")
+            }));
+        LogManager.Configuration = config;
+
+        Trace.WriteLine($"Splunk Tracelogger configured at {url}:{port}");
     }
 }
