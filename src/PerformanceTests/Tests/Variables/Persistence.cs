@@ -5,6 +5,7 @@ namespace Variables
         InMemory,
         NHibernate,
         RavenDB,
-        //MSMQ
+        //MSMQ,
+        Azure
     }
 }
