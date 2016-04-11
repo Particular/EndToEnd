@@ -4,4 +4,6 @@
   <add name="RabbitMQ" connectionString="host=localhost;RequestedHeartbeat=600;UsePublisherConfirms=True" />
   <add name="AzureServiceBus" connectionString="Endpoint=sb://ramon-test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=yTy3ASKfxVc44RCeuY7mpELR3n10TZOhA3yDnVTU5W0=" />
   <add name="AzureStorageQueue" connectionString="UseDevelopmentStorage=true" />
+  <add name="NHibernate" connectionString="Data Source=.\SQLEXPRESS;Integrated Security=True;Database=PerformanceTests" />
+  
 </connectionStrings>
