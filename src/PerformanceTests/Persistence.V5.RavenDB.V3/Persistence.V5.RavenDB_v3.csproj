@@ -60,6 +60,7 @@
     <Compile Include="RavenDBProfile.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

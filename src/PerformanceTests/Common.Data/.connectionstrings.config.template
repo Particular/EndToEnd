@@ -5,5 +5,5 @@
   <add name="AzureServiceBus" connectionString="Endpoint=sb://ramon-test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=yTy3ASKfxVc44RCeuY7mpELR3n10TZOhA3yDnVTU5W0=" />
   <add name="AzureStorageQueue" connectionString="UseDevelopmentStorage=true" />
   <add name="NHibernate" connectionString="Data Source=.\SQLEXPRESS;Integrated Security=True;Database=PerformanceTests" />
-  
+  <add name="NServiceBus/Persistence/RavenDB" connectionString="Url = http://localhost:8080"/>
 </connectionStrings>
