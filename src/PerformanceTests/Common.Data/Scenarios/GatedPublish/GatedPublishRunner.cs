@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
@@ -18,7 +19,7 @@ partial class GatedPublishRunner : LoopRunner
     ILog Log = LogManager.GetLogger(typeof(GatedPublishRunner));
     static CountdownEvent X;
 
-    protected override void Loop(object o)
+    protected override async Task Loop(object o)
     {
         try
         {
@@ -28,12 +29,6 @@ partial class GatedPublishRunner : LoopRunner
 
             X = new CountdownEvent(batchSize);
 
-            var po = new ParallelOptions
-            {
-                MaxDegreeOfParallelism = Environment.ProcessorCount - 1, // Leave one core for transport and persistence,
-                CancellationToken = stopLoop.Token
-            };
-
             while (!Shutdown)
             {
                 try
@@ -42,10 +37,10 @@ partial class GatedPublishRunner : LoopRunner
                     X.Reset(batchSize);
 
                     var d = Stopwatch.StartNew();
-                    Parallel.For(0, X.InitialCount, po, async i =>
-                    {
-                        await Publish(new Event());
-                    });
+
+                    var sends = new List<Task>(X.InitialCount);
+                    for (var i = 0; i < X.InitialCount; i++) sends.Add(Publish(new Event()));
+                    await Task.WhenAll(sends);
 
                     if (d.Elapsed < TimeSpan.FromSeconds(2.5))
                     {
