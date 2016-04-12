@@ -18,11 +18,11 @@ namespace Host
 
             try
             {
-                Statistics.Initialize();
+                var permutation = PermutationParser.FromCommandlineArgs();
+
+                Statistics.Initialize(permutation.Id);
 
                 EnvironmentStats.Write();
-
-                var permutation = PermutationParser.FromCommandlineArgs();
 
                 ValidateServicePointManager(permutation);
 

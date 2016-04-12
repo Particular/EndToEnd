@@ -1,5 +1,6 @@
 namespace Categories
 {
+    using System;
     using System.Configuration;
     using System.Diagnostics;
     using System.IO;
@@ -10,8 +11,10 @@ namespace Categories
     using VisualStudioDebugHelper;
     using Variables;
 
-    public class Base
+    [TestFixture]
+    public abstract class Base
     {
+        static string SessionId;
         static readonly bool InvokeEnabled = bool.Parse(ConfigurationManager.AppSettings["InvokeEnabled"]);
 
         public virtual void ReceiveRunner(Permutation permutation)
@@ -50,10 +53,11 @@ namespace Categories
         {
             var processId = DebugAttacher.GetCurrentVisualStudioProcessId();
             var processIdArgument = processId >= 0 ? string.Format(" --processId={0}", processId) : string.Empty;
+            var sessionIdArgument = string.Format(" --sessionId={0}", SessionId);
 
             var exe = new FileInfo(permutation.Exe);
 
-            var pi = new ProcessStartInfo(exe.FullName, PermutationParser.ToArgs(permutation) + processIdArgument)
+            var pi = new ProcessStartInfo(exe.FullName, PermutationParser.ToArgs(permutation) + processIdArgument + sessionIdArgument)
             {
                 UseShellExecute = false,
                 WorkingDirectory = exe.DirectoryName,
@@ -62,7 +66,7 @@ namespace Categories
 
             using (var p = Process.Start(pi))
             {
-                if (!p.WaitForExit(120 * 1000))
+                if (!p.WaitForExit(70000))
                 {
                     p.Kill();
                     Assert.Fail("Killed!");
@@ -85,6 +89,12 @@ namespace Categories
             {
                 x86.Delete();
             }
+        }
+
+        [TestFixtureSetUp]
+        public void RunBeforeAnyTests()
+        {
+            SessionId = Guid.NewGuid().ToString();
         }
     }
 }

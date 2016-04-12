@@ -5,7 +5,7 @@ namespace Tests.Permutations
     public class Permutation
     {
         public string Category { get; set; }
-        public string Id { get; set; }
+        public string Id => ToString();
         public string Exe { get; set; }
 
         public string[] Tests;
@@ -26,7 +26,19 @@ namespace Tests.Permutations
 
         public override string ToString()
         {
-            return Id;
+            return string.Join(";", Version, 
+                                    IOPS,
+                                    Platform,
+                                    GarbageCollector,
+                                    Transport,
+                                    Persister,
+                                    Serializer,
+                                    MessageSize,
+                                    OutboxMode,
+                                    DTCMode,
+                                    TransactionMode,
+                                    AuditMode,
+                                    ConcurrencyLevel);
         }
     }
 }

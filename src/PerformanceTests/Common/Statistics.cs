@@ -3,12 +3,14 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using NLog;
 using NLog.Config;
 using NLog.Layouts;
 using NLog.Targets;
+using LogLevel = NLog.LogLevel;
 
 [Serializable]
 public class Statistics
@@ -29,6 +31,8 @@ public class Statistics
     [NonSerialized]
     public Meter Meter;
 
+    static Logger logger = LogManager.GetLogger("Statistics");
+
     static Statistics instance;
     public static Statistics Instance
     {
@@ -40,15 +44,15 @@ public class Statistics
         }
     }
 
-    public static void Initialize()
+    public static void Initialize(string permutationId)
     {
-        instance = new Statistics();
+        instance = new Statistics(permutationId);
         instance.StartTime = DateTime.UtcNow;
     }
 
-    Statistics()
+    Statistics(string permutationId)
     {
-        ConfigureMetrics();
+        ConfigureMetrics(permutationId);
     }
 
     public void Reset()
@@ -62,45 +66,41 @@ public class Statistics
 
     public void Dump()
     {
-        Trace.WriteLine("");
-        Trace.WriteLine("---------------- Statistics ----------------");
-
         var durationSeconds = (Last - Warmup).TotalSeconds;
 
-        PrintStats("NumberOfMessages", NumberOfMessages, "#");
+        LogStats("NumberOfMessages", NumberOfMessages, "#");
 
         var throughput = NumberOfMessages / durationSeconds;
 
-        PrintStats("Throughput", throughput, "msg/s");
+        LogStats("Throughput", throughput, "msg/s");
 
-        Trace.WriteLine(string.Format("##teamcity[buildStatisticValue key='ReceiveThroughput' value='{0}']", Math.Round(throughput)));
+        Trace.WriteLine(string.Format("##teamcity[buildStatisticValue key='ReceiveThroughput' value='{0}']", Math.Round(throughput))); // [Hadi] Do we need this?
 
-        PrintStats("NumberOfRetries", NumberOfRetries, "#");
-        PrintStats("TimeToFirstMessage", (First - AplicationStart).Value.TotalSeconds, "s");
+        LogStats("NumberOfRetries", NumberOfRetries, "#");
+        LogStats("TimeToFirstMessage", (First - AplicationStart).Value.TotalSeconds, "s");
 
         if (SendTimeNoTx != TimeSpan.Zero)
-            PrintStats("Sending", Convert.ToDouble(NumberOfMessages / 2) / SendTimeNoTx.TotalSeconds, "msg/s");
+            LogStats("Sending", Convert.ToDouble(NumberOfMessages / 2) / SendTimeNoTx.TotalSeconds, "msg/s");
 
         if (SendTimeWithTx != TimeSpan.Zero)
-            PrintStats("SendingInsideTX", Convert.ToDouble(NumberOfMessages / 2) / SendTimeWithTx.TotalSeconds, "msg/s");
+            LogStats("SendingInsideTX", Convert.ToDouble(NumberOfMessages / 2) / SendTimeWithTx.TotalSeconds, "msg/s");
 
-        PrintStats("PrivateBytes", privateBytesCounter.NextValue() / 1024, "kb");
+        LogStats("PrivateBytes", privateBytesCounter.NextValue() / 1024, "kb");
     }
 
-    static void PrintStats(string key, double value, string unit)
+    static void LogStats(string key, double value, string unit)
     {
-        Trace.WriteLine($"{key}: {value:0.0} ({unit})");
+        logger.Debug($"{key}: {value:0.0} ({unit})");
     }
 
     public void Signal()
     {
-        Meter.Mark();
+        Meter.Mark(); //[Hadi] Don't think we need this anymore.
     }
 
-    void ConfigureMetrics()
+    void ConfigureMetrics(string permutationId)
     {
-        Meter = Metric.Meter("NServiceBus.Statistics", Unit.Commands);
-
+        Meter = Metric.Meter("", Unit.Commands);
         Trace.Listeners.Add(new NLogTraceListener());
 
         var assemblyLocation = Assembly.GetEntryAssembly().Location;
@@ -113,16 +113,26 @@ public class Statistics
 
         var url = ConfigurationManager.AppSettings["SplunkURL"];
         var port = int.Parse(ConfigurationManager.AppSettings["SplunkPort"]);
+        var sessionId = GetSessionId();
 
         var config = new LoggingConfiguration();
-        config.LoggingRules.Add(
-            new LoggingRule("*", LogLevel.Debug, new NetworkTarget
-            {
-                Address = $"tcp://{url}:{port}",
-                Layout = Layout.FromString("${message}")
-            }));
+        var target = new NetworkTarget
+        {
+            Address = $"tcp://{url}:{port}",
+            Layout = Layout.FromString("${level}~${gdc:item=sessionid}~${gdc:item=permutationId}~${message}~${newline}"),
+        };
+
+        config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, target));
         LogManager.Configuration = config;
 
-        Trace.WriteLine($"Splunk Tracelogger configured at {url}:{port}");
+        GlobalDiagnosticsContext.Set("sessionid", sessionId);
+        GlobalDiagnosticsContext.Set("permutationId", permutationId);
+
+        logger.Debug($"Splunk Tracelogger configured at {url}:{port}");
+    }
+
+    static string GetSessionId()
+    {
+        return Environment.GetCommandLineArgs().Where(arg => arg.StartsWith("--sessionId")).Select(arg => arg.Substring("--sessionId".Length + 1)).First();
     }
 }
