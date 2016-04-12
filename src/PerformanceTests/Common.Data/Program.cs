@@ -6,6 +6,7 @@ namespace Host
     using NServiceBus.Logging;
     using Tests.Permutations;
     using Utils;
+    using Variables;
     using VisualStudioDebugHelper;
 
     partial class Program
@@ -20,11 +21,16 @@ namespace Host
             {
                 TraceLogger.Initialize();
 
-                Statistics.Initialize();
+                var permutation = PermutationParser.FromCommandlineArgs();
+
+                Statistics.Initialize(
+                    msmq: permutation.Transport == Transport.MSMQ,
+                    dtc: permutation.DTCMode == DTC.On
+                    );
 
                 EnvironmentStats.Write();
 
-                var permutation = PermutationParser.FromCommandlineArgs();
+                permutation = PermutationParser.FromCommandlineArgs();
                 var options = BusCreationOptions.Parse(args);
 
                 ValidateServicePointManager(permutation);

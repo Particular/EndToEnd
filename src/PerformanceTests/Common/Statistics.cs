@@ -20,6 +20,7 @@ public class Statistics
 
     [NonSerialized]
     public Meter Meter;
+    readonly bool dtc, msmq;
 
     static Statistics instance;
     public static Statistics Instance
@@ -32,14 +33,16 @@ public class Statistics
         }
     }
 
-    public static void Initialize()
+    public static void Initialize(bool msmq, bool dtc)
     {
-        instance = new Statistics();
-        instance.StartTime = DateTime.UtcNow;
+        instance = new Statistics(msmq, dtc);
     }
 
-    Statistics()
+    Statistics(bool msmq, bool dtc)
     {
+        this.msmq = msmq;
+        this.dtc = dtc;
+        StartTime = DateTime.UtcNow;
         ConfigureMetrics();
     }
 
@@ -99,8 +102,23 @@ public class Statistics
         Trace.WriteLine($"Assembly folder: {assemblyFolder}");
         Trace.WriteLine($"Test run report folder: {reportFolder}");
 
-        Metric
-            .Config.WithAllCounters()
+        var instance = Metric
+            .Config
+            .WithAllCounters()
+            .WithAllCounters("NServiceBus")
             .WithReporting(report => report.WithCSVReports(reportFolder, TimeSpan.FromSeconds(1)));
+
+        if (msmq)
+        {
+            instance
+                .WithAllCounters("MSMQ Service")
+                .WithAllCounters("MSMQ Session");
+        }
+
+        if (dtc)
+        {
+            instance
+                .WithAllCounters("Distributed Transaction Coordinator");
+        }
     }
 }
