@@ -85,6 +85,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include=".connectionstrings.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>
     </None>
@@ -111,6 +114,9 @@ copy "$(TargetPath).config" "$(TargetDir)NServiceBus5.x86.exe.config"
     <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
   </PropertyGroup>
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
+  <PropertyGroup>
+    <PreBuildEvent>copy /-Y "$(SolutionDir).connectionstrings.config.template" "$(ProjectDir).connectionstrings.config"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -50,7 +50,4 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Saga\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory).connectionstrings.config.template" />
-  </ItemGroup>
 </Project>
