@@ -3,17 +3,22 @@ namespace Host
     using System;
     using System.Linq;
     using System.Net;
+    using NServiceBus;
     using NServiceBus.Logging;
     using Tests.Permutations;
-    using Utils;
     using VisualStudioDebugHelper;
+    using ConfigureUnicastBus = ConfigureUnicastBus;
 
     class Program
     {
-        static readonly ILog Log = LogManager.GetLogger(typeof(Program));
+        static ILog Log;
         static string endpointName = "PerformanceTests_" + AppDomain.CurrentDomain.FriendlyName.Replace(' ', '_');
         static void Main()
         {
+            LogManager.Use<NLogFactory>();
+
+            Log = LogManager.GetLogger(typeof(Program));
+
             DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
 
             AppDomain.CurrentDomain.FirstChanceException += (o, ea) => { Log.Debug("FirstChanceException", ea.Exception); };
