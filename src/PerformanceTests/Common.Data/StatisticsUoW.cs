@@ -50,7 +50,6 @@ public class StatisticsUoW : IManageUnitsOfWork, INeedInitialization
     {
         Statistics.Instance.Last = DateTime.UtcNow;
         Interlocked.Increment(ref Statistics.Instance.NumberOfMessages);
-        Statistics.Instance.Signal();
     }
 
 #if Version6

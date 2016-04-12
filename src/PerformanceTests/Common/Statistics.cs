@@ -1,5 +1,4 @@
-﻿using Metrics;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
@@ -26,9 +25,6 @@ public class Statistics
     static Process process = Process.GetCurrentProcess();
     static PerformanceCounter privateBytesCounter = new PerformanceCounter("Process", "Private Bytes", process.ProcessName);
 
-    [NonSerialized]
-    public Meter Meter;
-
     static Logger logger = LogManager.GetLogger("Statistics");
 
     static Statistics instance;
@@ -50,7 +46,7 @@ public class Statistics
 
     Statistics(string permutationId)
     {
-        ConfigureMetrics(permutationId);
+        ConfigureSplunk(permutationId);
     }
 
     public void Reset()
@@ -91,24 +87,8 @@ public class Statistics
         logger.Debug($"{key}: {value:0.0} ({unit})");
     }
 
-    public void Signal()
+    void ConfigureSplunk(string permutationId)
     {
-        //Meter.Mark(); //[Hadi] Don't think we need this anymore.
-    }
-
-    void ConfigureMetrics(string permutationId)
-    {
-        //Meter = Metric.Meter("", Unit.Commands);
-        //Trace.Listeners.Add(new NLogTraceListener());
-
-//        var assemblyLocation = Assembly.GetEntryAssembly().Location;
-//        var assemblyFolder = Path.GetDirectoryName(assemblyLocation);
-//        var reportFolder = Path.Combine(assemblyFolder, "reports", DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm-ss"));
-
-//        Metric
-//            .Config.WithAllCounters()
-//            .WithReporting(report => report.WithCSVReports(reportFolder, TimeSpan.FromSeconds(1)));
-
         var url = ConfigurationManager.AppSettings["SplunkURL"];
         var port = int.Parse(ConfigurationManager.AppSettings["SplunkPort"]);
         var sessionId = GetSessionId();
