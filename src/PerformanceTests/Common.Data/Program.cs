@@ -23,7 +23,7 @@ namespace Host
 
             try
             {
-                TraceLogger.Initialize();
+                //TraceLogger.Initialize(); // Splunk is currently FUBAR
 
                 Statistics.Initialize();
 
