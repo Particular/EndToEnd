@@ -2,6 +2,8 @@
 using System;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 using NLog;
 using NLog.Config;
@@ -20,6 +22,9 @@ public class Statistics
     public long NumberOfRetries;
     public TimeSpan SendTimeNoTx = TimeSpan.Zero;
     public TimeSpan SendTimeWithTx = TimeSpan.Zero;
+
+    static Process process = Process.GetCurrentProcess();
+    static PerformanceCounter privateBytesCounter = new PerformanceCounter("Process", "Private Bytes", process.ProcessName);
 
     [NonSerialized]
     public Meter Meter;
@@ -78,6 +83,8 @@ public class Statistics
 
         if (SendTimeWithTx != TimeSpan.Zero)
             PrintStats("SendingInsideTX", Convert.ToDouble(NumberOfMessages / 2) / SendTimeWithTx.TotalSeconds, "msg/s");
+
+        PrintStats("PrivateBytes", privateBytesCounter.NextValue() / 1024, "kb");
     }
 
     static void PrintStats(string key, double value, string unit)
@@ -92,13 +99,17 @@ public class Statistics
 
     void ConfigureMetrics()
     {
-        Meter = Metric.Meter("", Unit.Commands);
+        Meter = Metric.Meter("NServiceBus.Statistics", Unit.Commands);
 
         Trace.Listeners.Add(new NLogTraceListener());
 
+        var assemblyLocation = Assembly.GetEntryAssembly().Location;
+        var assemblyFolder = Path.GetDirectoryName(assemblyLocation);
+        var reportFolder = Path.Combine(assemblyFolder, "reports", DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm-ss"));
+
         Metric
             .Config.WithAllCounters()
-            .WithReporting(report => report.WithNLogCSVReports(TimeSpan.FromSeconds(1)));
+            .WithReporting(report => report.WithCSVReports(reportFolder, TimeSpan.FromSeconds(1)));
 
         var url = ConfigurationManager.AppSettings["SplunkURL"];
         var port = int.Parse(ConfigurationManager.AppSettings["SplunkPort"]);
