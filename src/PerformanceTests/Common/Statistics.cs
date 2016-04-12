@@ -2,9 +2,7 @@
 using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using NLog;
 using NLog.Config;
@@ -95,21 +93,21 @@ public class Statistics
 
     public void Signal()
     {
-        Meter.Mark(); //[Hadi] Don't think we need this anymore.
+        //Meter.Mark(); //[Hadi] Don't think we need this anymore.
     }
 
     void ConfigureMetrics(string permutationId)
     {
-        Meter = Metric.Meter("", Unit.Commands);
-        Trace.Listeners.Add(new NLogTraceListener());
+        //Meter = Metric.Meter("", Unit.Commands);
+        //Trace.Listeners.Add(new NLogTraceListener());
 
-        var assemblyLocation = Assembly.GetEntryAssembly().Location;
-        var assemblyFolder = Path.GetDirectoryName(assemblyLocation);
-        var reportFolder = Path.Combine(assemblyFolder, "reports", DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm-ss"));
+//        var assemblyLocation = Assembly.GetEntryAssembly().Location;
+//        var assemblyFolder = Path.GetDirectoryName(assemblyLocation);
+//        var reportFolder = Path.Combine(assemblyFolder, "reports", DateTime.UtcNow.ToString("yyyy-MM-dd--HH-mm-ss"));
 
-        Metric
-            .Config.WithAllCounters()
-            .WithReporting(report => report.WithCSVReports(reportFolder, TimeSpan.FromSeconds(1)));
+//        Metric
+//            .Config.WithAllCounters()
+//            .WithReporting(report => report.WithCSVReports(reportFolder, TimeSpan.FromSeconds(1)));
 
         var url = ConfigurationManager.AppSettings["SplunkURL"];
         var port = int.Parse(ConfigurationManager.AppSettings["SplunkPort"]);
