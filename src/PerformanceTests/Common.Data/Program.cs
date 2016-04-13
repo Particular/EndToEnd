@@ -7,7 +7,6 @@ namespace Host
     using NServiceBus.Logging;
     using Tests.Permutations;
     using VisualStudioDebugHelper;
-    using ConfigureUnicastBus = ConfigureUnicastBus;
 
     class Program
     {
@@ -23,8 +22,6 @@ namespace Host
 
             AppDomain.CurrentDomain.FirstChanceException += (o, ea) => { Log.Debug("FirstChanceException", ea.Exception); };
             AppDomain.CurrentDomain.UnhandledException += (o, ea) => { Log.Error("UnhandledException", ea.ExceptionObject as Exception); };
-
-            ConfigureUnicastBus.EndpointName = endpointName;
 
             try
             {

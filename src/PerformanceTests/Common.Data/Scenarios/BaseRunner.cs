@@ -21,7 +21,7 @@ public abstract class BaseRunner
 #endif
 
     Permutation permutation;
-    string endpointName;
+    public string endpointName;
 
     public virtual void Execute(Permutation permutation, string endpointName)
     {
@@ -109,6 +109,7 @@ public abstract class BaseRunner
         var configuration = CreateConfiguration();
         configuration.PurgeOnStartup(false);
         configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
+        configuration.CustomConfigurationSource(new ConfigurationSource(endpointName));
         return Bus.Create(configuration).Start();
     }
 
@@ -142,6 +143,7 @@ public abstract class BaseRunner
         var configuration = CreateConfiguration();
         configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
         configuration.PurgeOnStartup(false);
+        configuration.CustomConfigurationSource(new ConfigurationSource(endpointName));
 
         return Endpoint.Start(configuration).GetAwaiter().GetResult();
     }

@@ -12,7 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyScanner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AuditProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckPlatform.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ConfigureUnicastBus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConfigurationSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConcurrencyLevelConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPermutation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentStats.cs" />

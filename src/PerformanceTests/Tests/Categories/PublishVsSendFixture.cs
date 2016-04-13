@@ -15,9 +15,9 @@ namespace Categories
         }
 
         [TestCaseSource(nameof(CreatePermutations))]
-        public override void SendLocalOneOnOneRunner(Permutation permutation)
+        public override void GatedPublishRunner(Permutation permutation)
         {
-            base.SendLocalOneOnOneRunner(permutation);
+            base.GatedPublishRunner(permutation);
         }
 
         static IEnumerable<Permutation> CreatePermutations()
@@ -28,7 +28,7 @@ namespace Categories
                 IOPS = new[] { IOPS.Default },
                 Platforms = new[] { Platform.x86, },
                 GarbageCollectors = new[] { GarbageCollector.Client, },
-                Transports = new[] { Transport.MSMQ, Transport.AzureServiceBus, Transport.AzureStorageQueues, Transport.MSMQ, Transport.RabbitMQ, Transport.SQLServer, },
+                Transports = new[] { Transport.MSMQ, Transport.AzureServiceBus, Transport.AzureStorageQueues, Transport.RabbitMQ, Transport.SQLServer, },
                 Persisters = new[] { Persistence.InMemory },
                 Serializers = new[] { Serialization.Json, },
                 MessageSizes = new[] { MessageSize.Tiny, },
