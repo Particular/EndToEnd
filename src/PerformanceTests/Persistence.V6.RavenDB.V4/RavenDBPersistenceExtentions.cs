@@ -2,7 +2,6 @@ using System;
 using System.Configuration;
 using System.Data.Common;
 using NServiceBus;
-using NServiceBus.Persistence;
 using NServiceBus.RavenDB;
 
 static class RavenDBPersistenceExtentions
