@@ -12,7 +12,7 @@ using NServiceBus.Logging;
 /// received it repeats this. Due to the fact that the sending is not transactional
 /// the handler will already process messages while the batch is still being send.
 /// </summary>
-public partial class GatedPublishRunner : LoopRunner, IConfigureUnicastBus
+partial class GatedPublishRunner : LoopRunner, IConfigureUnicastBus
 {
     int batchSize = 16;
     ILog Log = LogManager.GetLogger(typeof(GatedPublishRunner));
@@ -46,7 +46,6 @@ public partial class GatedPublishRunner : LoopRunner, IConfigureUnicastBus
                         batchSize *= 2;
                         Log.InfoFormat("Batch size increased to {0}", batchSize);
                     }
-
 
                     Console.Write("2");
 

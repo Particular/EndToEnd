@@ -1,8 +1,6 @@
 ﻿using NServiceBus;
 using Common;
 using NServiceBus.AzureServiceBus;
-using NServiceBus.Configuration.AdvanceExtensibility;
-using NServiceBus.Routing;
 
 class AzureServiceBusProfile : IProfile
 {
@@ -10,8 +8,7 @@ class AzureServiceBusProfile : IProfile
     {
         endpointConfiguration
             .UseTransport<AzureServiceBusTransport>()
-            .UseTopology<EndpointOrientedTopology>()
-                .RegisterPublisherForType(endpointConfiguration.GetSettings().Get<EndpointName>().ToString(), typeof(GatedPublishRunner.Event))
+            .UseTopology<ForwardingTopology>()
             .ConnectionString(this.GetConnectionString("AzureServiceBus"));
 
         endpointConfiguration.PurgeOnStartup(false);
