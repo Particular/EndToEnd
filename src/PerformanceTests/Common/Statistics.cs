@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
@@ -24,6 +25,9 @@ public class Statistics
 
     static Process process = Process.GetCurrentProcess();
     static PerformanceCounter privateBytesCounter = new PerformanceCounter("Process", "Private Bytes", process.ProcessName);
+    static Timer perfCountersTimer;
+
+    static ConcurrentBag<double> perfCounterValues = new ConcurrentBag<double>();
 
     static Logger logger = LogManager.GetLogger("Statistics");
 
@@ -42,6 +46,11 @@ public class Statistics
     {
         instance = new Statistics(permutationId);
         instance.StartTime = DateTime.UtcNow;
+        perfCountersTimer = new Timer(state =>
+            perfCounterValues.Add(privateBytesCounter.NextValue()),
+            null,
+            TimeSpan.FromSeconds(1),
+            TimeSpan.FromSeconds(1));
     }
 
     Statistics(string permutationId)
@@ -56,6 +65,7 @@ public class Statistics
         Interlocked.Exchange(ref NumberOfRetries, 0);
         SendTimeNoTx = TimeSpan.Zero;
         SendTimeWithTx = TimeSpan.Zero;
+        perfCountersTimer.Dispose();
     }
 
     public void Dump()
@@ -68,8 +78,6 @@ public class Statistics
 
         LogStats("Throughput", throughput, "msg/s");
 
-        Trace.WriteLine(string.Format("##teamcity[buildStatisticValue key='ReceiveThroughput' value='{0}']", Math.Round(throughput))); // [Hadi] Do we need this?
-
         LogStats("NumberOfRetries", NumberOfRetries, "#");
         LogStats("TimeToFirstMessage", (First - AplicationStart).Value.TotalSeconds, "s");
 
@@ -79,7 +87,10 @@ public class Statistics
         if (SendTimeWithTx != TimeSpan.Zero)
             LogStats("SendingInsideTX", Convert.ToDouble(NumberOfMessages / 2) / SendTimeWithTx.TotalSeconds, "msg/s");
 
-        LogStats("PrivateBytes", privateBytesCounter.NextValue() / 1024, "kb");
+        var counterValues = perfCounterValues.ToList();
+        LogStats("PrivateBytes-Min", counterValues.Min() / 1024, "kb");
+        LogStats("PrivateBytes-Max", counterValues.Max() / 1024, "kb");
+        LogStats("PrivateBytes-Avg", counterValues.Average() / 1024, "kb");
     }
 
     static void LogStats(string key, double value, string unit)

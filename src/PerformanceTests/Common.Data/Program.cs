@@ -5,7 +5,6 @@ namespace Host
     using System.Net;
     using NServiceBus.Logging;
     using Tests.Permutations;
-    using Utils;
     using VisualStudioDebugHelper;
 
     class Program
