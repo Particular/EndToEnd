@@ -11,10 +11,9 @@ namespace Categories
     using VisualStudioDebugHelper;
     using Variables;
 
-    [TestFixture]
     public abstract class Base
     {
-        static string SessionId;
+        public static string SessionId;
         static readonly bool InvokeEnabled = bool.Parse(ConfigurationManager.AppSettings["InvokeEnabled"]);
 
         public virtual void ReceiveRunner(Permutation permutation)
@@ -90,11 +89,15 @@ namespace Categories
                 x86.Delete();
             }
         }
+    }
 
-        [TestFixtureSetUp]
+    [SetUpFixture]
+    public class TestRunSessionFixture
+    {
+        [SetUp]
         public void RunBeforeAnyTests()
         {
-            SessionId = Guid.NewGuid().ToString();
+            Base.SessionId = DateTime.UtcNow.Ticks.ToString();
         }
     }
 }
