@@ -1,10 +1,7 @@
 ﻿using System.Configuration;
-using System.IO;
-using System.Reflection;
 using NServiceBus.Config;
 using NServiceBus.Config.ConfigurationSource;
 using NServiceBus.Logging;
-using Variables;
 
 public class ConfigureUnicastBus : IProvideConfiguration<UnicastBusConfig>
 {
@@ -24,14 +21,6 @@ public class ConfigureUnicastBus : IProvideConfiguration<UnicastBusConfig>
                 MessageEndpointMappings = GenerateMappings()
             };
         }
-
-        ////append mapping to config
-        //config.MessageEndpointMappings.Add(
-        //    new MessageEndpointMapping
-        //    {
-        //        AssemblyName = "NServiceBus5.x86",//new FileInfo(Assembly.GetExecutingAssembly().Location).Name, //.Replace(Platform.x64.ToString(), Platform.x86.ToString()),
-        //        Endpoint = Host.Program.endpointName
-        //    });
         return config;
     }
 
@@ -39,20 +28,17 @@ public class ConfigureUnicastBus : IProvideConfiguration<UnicastBusConfig>
     {
         var mappings = new MessageEndpointMappingCollection();
 
-        //foreach (var templateMapping in configuration.EndpointMappings)
-        //{
-            var messageType = typeof(GatedPublishRunner.Event);
-            var endpoint = EndpointName;
+        var messageType = typeof(GatedPublishRunner.Event);
+        var endpoint = EndpointName;
 
         Log.InfoFormat("Mapping {0} to {1}", messageType, endpoint);
 
         mappings.Add(new MessageEndpointMapping
-            {
-                AssemblyName = messageType.Assembly.FullName,
-                TypeFullName = messageType.FullName,
-                Endpoint = endpoint
-            });
-        //}
+        {
+            AssemblyName = messageType.Assembly.FullName,
+            TypeFullName = messageType.FullName,
+            Endpoint = endpoint
+        });
 
         return mappings;
     }
