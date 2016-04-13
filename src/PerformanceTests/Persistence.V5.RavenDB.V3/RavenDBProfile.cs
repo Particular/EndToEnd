@@ -1,4 +1,5 @@
-﻿using NServiceBus;
+﻿using Common;
+using NServiceBus;
 using NServiceBus.Logging;
 using NServiceBus.Persistence;
 
@@ -8,7 +9,7 @@ class RavenDBProfile : IProfile
     public void Configure(BusConfiguration cfg)
     {
         cfg.UsePersistence<RavenDBPersistence>()
-           .DoNotSetupDatabasePermissions()
-           .SetConnectionStringName("RavenDB");
+            .DoNotSetupDatabasePermissions()
+            .SetConnectionString(this.GetConnectionString("RavenDB"));
     }
 }

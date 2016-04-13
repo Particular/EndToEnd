@@ -13,7 +13,12 @@ static class RavenDBPersistenceExtentions
 
         if (value == null) throw new InvalidOperationException($"Connection string '{name}' not configured.");
 
-        var builder = new DbConnectionStringBuilder { ConnectionString = value.ConnectionString };
+        return SetConnectionString(cfg, value.ConnectionString);
+    }
+
+    public static PersistenceExtentions<RavenDBPersistence> SetConnectionString(this PersistenceExtentions<RavenDBPersistence> cfg, string connectionstring)
+    {
+        var builder = new DbConnectionStringBuilder { ConnectionString = connectionstring };
 
         var cp = new ConnectionParameters();
 
