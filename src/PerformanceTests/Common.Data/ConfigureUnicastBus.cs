@@ -29,15 +29,14 @@ public class ConfigureUnicastBus : IProvideConfiguration<UnicastBusConfig>
         var mappings = new MessageEndpointMappingCollection();
 
         var messageType = typeof(GatedPublishRunner.Event);
-        var endpoint = EndpointName;
 
-        Log.InfoFormat("Mapping {0} to {1}", messageType, endpoint);
+        Log.InfoFormat("Mapping {0} to {1}", messageType, EndpointName);
 
         mappings.Add(new MessageEndpointMapping
         {
             AssemblyName = messageType.Assembly.FullName,
             TypeFullName = messageType.FullName,
-            Endpoint = endpoint
+            Endpoint = EndpointName
         });
 
         return mappings;
