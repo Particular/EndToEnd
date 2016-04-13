@@ -36,8 +36,8 @@ partial class GatedSendLocalRunner : LoopRunner
 
                 var d = Stopwatch.StartNew();
 
-                var sends = new List<Task>(X.InitialCount);
-                for (var i = 0; i < X.InitialCount; i++) sends.Add(SendLocal(CommandGenerator.Create()));
+                var sends = new Task[X.InitialCount];
+                for (var i = 0; i < X.InitialCount; i++) sends[i] = SendLocal(CommandGenerator.Create());
                 await Task.WhenAll(sends);
 
                 var elapsed = d.Elapsed;

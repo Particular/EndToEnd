@@ -38,8 +38,8 @@ public partial class GatedPublishRunner : LoopRunner, IConfigureUnicastBus
 
                     var d = Stopwatch.StartNew();
 
-                    var sends = new List<Task>(X.InitialCount);
-                    for (var i = 0; i < X.InitialCount; i++) sends.Add(Publish(new Event()));
+                    var sends = new Task[X.InitialCount];
+                    for (var i = 0; i < X.InitialCount; i++) sends[i] = Publish(new Event());
                     await Task.WhenAll(sends);
 
                     if (d.Elapsed < TimeSpan.FromSeconds(2.5))
