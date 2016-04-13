@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NServiceBus;
 
 /// <summary>
@@ -17,15 +16,9 @@ partial class SendLocalOneOnOneRunner : BaseRunner
 
     protected override void Start()
     {
-        var po = new ParallelOptions
-        {
-            MaxDegreeOfParallelism = Environment.ProcessorCount - 1 // Leave one core for transport and persistence
-        };
-
-        Parallel.For(0, seedSize, po, async i =>
-        {
-            await SendLocal(new Command());
-        });
+        var sends = new Task[seedSize];
+        for (var i = 0; i < seedSize; i++) sends[i] = SendLocal(new Command());
+        Task.WaitAll(sends);
     }
 
     protected override void Stop()

@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyScanner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AuditProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckPlatform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IConfigureUnicastBus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConcurrencyLevelConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IPermutation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentStats.cs" />
@@ -30,6 +31,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedSendLocalRunner.V6.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedSendLocalRunner.V5.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedSendLocalRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedPublish\GatedPublishRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedPublish\GatedPublishRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedPublish\GatedPublishRunner.V6.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProfilesExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)QueueUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\LoopRunner.cs" />
@@ -45,8 +49,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Saga\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory).connectionstrings.config.template" />
   </ItemGroup>
 </Project>

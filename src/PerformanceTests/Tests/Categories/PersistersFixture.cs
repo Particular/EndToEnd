@@ -9,9 +9,9 @@ namespace Categories
     public class PersistersFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
-        public override void GatedSendLocalRunner(Permutation permutation)
+        public override void GatedPublishRunner(Permutation permutation)
         {
-            base.GatedSendLocalRunner(permutation);
+            base.GatedPublishRunner(permutation);
         }
 
         static IEnumerable<Permutation> CreatePermutations()
@@ -20,17 +20,17 @@ namespace Categories
             {
                 Versions = new[] { NServiceBusVersion.V5, NServiceBusVersion.V6, },
                 IOPS = new[] { IOPS.Default },
-                Platforms = new[] { Platform.x86, },
+                Platforms = new[] { Platform.x64, },
                 GarbageCollectors = new[] { GarbageCollector.Client, },
                 Transports = new[] { Transport.MSMQ },
                 Persisters = new[] { Persistence.InMemory, Persistence.NHibernate, Persistence.RavenDB },
                 Serializers = new[] { Serialization.Json, },
                 MessageSizes = new[] { MessageSize.Tiny, },
-                OutboxModes = new[] { Outbox.Off, Outbox.On, },
-                DTCModes = new[] { DTC.Off, DTC.On, },
+                OutboxModes = new[] { Outbox.On, },
+                DTCModes = new[] { DTC.On, },
                 TransactionMode = new[] { TransactionMode.Default, },
                 AuditModes = new[] { Audit.Off },
-                ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores }
+                ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores4x }
             });
         }
     }

@@ -1,10 +1,15 @@
-﻿using NServiceBus;
+﻿using Common;
+using NServiceBus;
+using NServiceBus.Logging;
 using NServiceBus.Persistence;
 
 class RavenDBProfile : IProfile
 {
-    public void Configure(BusConfiguration busConfiguration)
+    readonly ILog Log = LogManager.GetLogger(typeof(RavenDBProfile));
+    public void Configure(BusConfiguration cfg)
     {
-        busConfiguration.UsePersistence<RavenDBPersistence>();
+        cfg.UsePersistence<RavenDBPersistence>()
+            .DoNotSetupDatabasePermissions()
+            .SetConnectionString(this.GetConnectionString("RavenDB"));
     }
 }

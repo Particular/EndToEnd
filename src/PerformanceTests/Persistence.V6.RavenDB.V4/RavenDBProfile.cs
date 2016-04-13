@@ -1,10 +1,12 @@
-﻿using NServiceBus;
-using NServiceBus.Persistence;
+﻿using Common;
+using NServiceBus;
 
 class RavenDBProfile : IProfile
 {
-    public void Configure(EndpointConfiguration endpointConfiguration)
+    public void Configure(EndpointConfiguration cfg)
     {
-        endpointConfiguration.UsePersistence<RavenDBPersistence>();
+        cfg.UsePersistence<RavenDBPersistence>()
+           .DoNotSetupDatabasePermissions()
+           .SetConnectionString(this.GetConnectionString("RavenDB"));
     }
 }

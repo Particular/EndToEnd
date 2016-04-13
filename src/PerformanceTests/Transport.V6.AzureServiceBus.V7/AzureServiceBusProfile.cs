@@ -1,5 +1,6 @@
 ﻿using NServiceBus;
 using Common;
+using NServiceBus.AzureServiceBus;
 
 class AzureServiceBusProfile : IProfile
 {
@@ -7,6 +8,7 @@ class AzureServiceBusProfile : IProfile
     {
         endpointConfiguration
             .UseTransport<AzureServiceBusTransport>()
+            .UseTopology<ForwardingTopology>()
             .ConnectionString(this.GetConnectionString("AzureServiceBus"));
 
         endpointConfiguration.PurgeOnStartup(false);

@@ -1,9 +1,15 @@
-﻿using NServiceBus;
+﻿using Common;
+using NServiceBus;
+using NServiceBus.Persistence;
 
 class NHibernateProfile : IProfile
 {
-    public void Configure(BusConfiguration busConfiguration)
+    public void Configure(BusConfiguration cfg)
     {
-        busConfiguration.UsePersistence<NHibernatePersistence>();
+        cfg
+            .UsePersistence<NHibernatePersistence>()
+            .ConnectionString(this.GetConnectionString("NHibernate"))
+            //.EnableCachingForSubscriptionStorage(TimeSpan.FromSeconds(5))
+            ;
     }
 }
