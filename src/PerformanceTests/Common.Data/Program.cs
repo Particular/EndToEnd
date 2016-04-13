@@ -47,6 +47,7 @@ namespace Host
             catch (Exception ex)
             {
                 Log.Fatal("Main", ex);
+                NLog.LogManager.Shutdown();
                 throw;
             }
         }
