@@ -13,7 +13,7 @@ using NServiceBus.Logging;
 /// received it repeats this. Due to the fact that the sending is not transactional
 /// the handler will already process messages while the batch is still being send.
 /// </summary>
-partial class GatedPublishRunner : LoopRunner, IConfigureUnicastBus
+public partial class GatedPublishRunner : LoopRunner, IConfigureUnicastBus
 {
     int batchSize = 16;
     ILog Log = LogManager.GetLogger(typeof(GatedPublishRunner));
@@ -88,3 +88,5 @@ partial class GatedPublishRunner : LoopRunner, IConfigureUnicastBus
         return mappings;
     }
 }
+
+
