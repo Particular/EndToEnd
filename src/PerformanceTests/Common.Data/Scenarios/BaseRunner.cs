@@ -4,13 +4,16 @@ using Configuration = NServiceBus.EndpointConfiguration;
 using Configuration = NServiceBus.BusConfiguration;
 #endif
 using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using Common.Scenarios;
 using NServiceBus;
+using NServiceBus.Config;
+using NServiceBus.Config.ConfigurationSource;
 using NServiceBus.Logging;
 using Tests.Permutations;
 
-public abstract class BaseRunner
+public abstract class BaseRunner : IConfigurationSource
 {
     readonly ILog Log = LogManager.GetLogger("BaseRunner");
 
@@ -109,7 +112,7 @@ public abstract class BaseRunner
         var configuration = CreateConfiguration();
         configuration.PurgeOnStartup(false);
         configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
-        configuration.CustomConfigurationSource(new ConfigurationSource(endpointName));
+        configuration.CustomConfigurationSource(this);
         return Bus.Create(configuration).Start();
     }
 
@@ -143,7 +146,7 @@ public abstract class BaseRunner
         var configuration = CreateConfiguration();
         configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
         configuration.PurgeOnStartup(false);
-        configuration.CustomConfigurationSource(new ConfigurationSource(endpointName));
+        configuration.CustomConfigurationSource(this);
 
         return Endpoint.Start(configuration).GetAwaiter().GetResult();
     }
@@ -157,4 +160,24 @@ public abstract class BaseRunner
         return configuration;
     }
 #endif
+
+    public T GetConfiguration<T>() where T : class, new()
+    {
+        IConfigureUnicastBus configureUnicastBus;
+
+        if (typeof(T) == typeof(UnicastBusConfig) && null != (configureUnicastBus = this as IConfigureUnicastBus))
+        {
+            //read from existing config 
+            var config = (UnicastBusConfig)ConfigurationManager.GetSection(typeof(UnicastBusConfig).Name);
+            if (config != null) throw new InvalidOperationException("UnicastBUs Configuration should be in code.");
+
+            return new UnicastBusConfig
+            {
+                MessageEndpointMappings = configureUnicastBus.GenerateMappings()
+            } as T;
+        }
+
+        return ConfigurationManager.GetSection(typeof(T).Name) as T;
+    }
+
 }

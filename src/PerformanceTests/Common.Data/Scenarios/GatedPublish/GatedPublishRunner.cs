@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using NServiceBus;
+using NServiceBus.Config;
 using NServiceBus.Logging;
 
 /// <summary>
@@ -12,7 +13,7 @@ using NServiceBus.Logging;
 /// received it repeats this. Due to the fact that the sending is not transactional
 /// the handler will already process messages while the batch is still being send.
 /// </summary>
-partial class GatedPublishRunner : LoopRunner
+partial class GatedPublishRunner : LoopRunner, IConfigureUnicastBus
 {
     int batchSize = 16;
     ILog Log = LogManager.GetLogger(typeof(GatedPublishRunner));
@@ -67,5 +68,23 @@ partial class GatedPublishRunner : LoopRunner
 
     public class Event : IEvent
     {
+    }
+
+    public MessageEndpointMappingCollection GenerateMappings()
+    {
+        var mappings = new MessageEndpointMappingCollection();
+
+        var messageType = typeof(Event);
+
+        Log.InfoFormat("Mapping {0} to {1}", messageType, endpointName);
+
+        mappings.Add(new MessageEndpointMapping
+        {
+            AssemblyName = messageType.Assembly.FullName,
+            TypeFullName = messageType.FullName,
+            Endpoint = endpointName
+        });
+
+        return mappings;
     }
 }
