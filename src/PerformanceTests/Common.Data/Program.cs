@@ -27,7 +27,7 @@ namespace Host
             {
                 var permutation = PermutationParser.FromCommandlineArgs();
 
-                Statistics.Initialize(permutation.Id);
+                Statistics.Initialize(permutation);
 
                 EnvironmentStats.Write();
 

@@ -6,10 +6,12 @@ namespace Tests.Tools
     public class TestEnvironment
     {
         PermutationDirectoryResolver resolver;
+        string sessionId;
 
-        public TestEnvironment()
+        public TestEnvironment(string sessionId)
         {
             resolver = new PermutationDirectoryResolver(".");
+            this.sessionId = sessionId;
         }
 
         public TestDescriptor CreateTestEnvironments(Permutation permutation)
@@ -33,6 +35,8 @@ namespace Tests.Tools
             {
                 Permutation = permutation,
                 ProjectAssemblyPath = projectAssemblyPath,
+                Category = permutation.Category,
+                Description = permutation.Description,
             };
 
             permutation.Exe = projectAssemblyPath;
@@ -45,11 +49,12 @@ namespace Tests.Tools
         void GenerateBat(TestDescriptor value)
         {
             var args = PermutationParser.ToArgs(value.Permutation);
+            var sessionIdArgument = string.Format(" --sessionId={0}", sessionId);
             var exe = new FileInfo(value.ProjectAssemblyPath);
-
+            
             var batFile = Path.Combine(exe.DirectoryName, "start.bat");
 
-            if (!File.Exists(batFile)) File.WriteAllText(batFile, exe.Name + " " + args);
+            if (!File.Exists(batFile)) File.WriteAllText(batFile, exe.Name + " " + args + " " + sessionIdArgument);
         }
 
         void CopyAssembliesToStarupDir(DirectoryInfo destination, string[] baseFiles, FileInfo[] overrides)

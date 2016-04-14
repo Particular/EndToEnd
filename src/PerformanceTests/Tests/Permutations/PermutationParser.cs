@@ -10,7 +10,10 @@ namespace Tests.Permutations
 
         public static string ToArgs(Permutation instance)
         {
-            return "--tests:" + string.Join(Seperator, instance.Tests) + " --variables:" + ToString(instance);
+            return "--tests:" + string.Join(Seperator, instance.Tests) + 
+                   " --category:" + instance.Category +
+                   " --description:\"" + instance.Description + "\"" +
+                   " --variables:" + ToString(instance);
         }
 
         public static Permutation FromCommandlineArgs()
@@ -18,9 +21,13 @@ namespace Tests.Permutations
             var args = Environment.GetCommandLineArgs();
             var variables = GetVar(args, "variables");
             var tests = GetVar(args, "tests").SplitValues();
+            var category = GetVar(args, "category");
+            var description = GetVar(args, "description");
 
             var instance = Parse(variables);
             instance.Tests = tests;
+            instance.Category = category;
+            instance.Description = description;
             return instance;
         }
 

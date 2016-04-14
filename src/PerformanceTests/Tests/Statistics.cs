@@ -8,6 +8,7 @@ using NLog;
 using NLog.Config;
 using NLog.Layouts;
 using NLog.Targets;
+using Tests.Permutations;
 using LogLevel = NLog.LogLevel;
 
 [Serializable]
@@ -42,9 +43,9 @@ public class Statistics
         }
     }
 
-    public static void Initialize(string permutationId)
+    public static void Initialize(Permutation permutation)
     {
-        instance = new Statistics(permutationId);
+        instance = new Statistics(permutation);
         instance.StartTime = DateTime.UtcNow;
         perfCountersTimer = new Timer(state =>
             perfCounterValues.Add(privateBytesCounter.NextValue()),
@@ -53,9 +54,9 @@ public class Statistics
             TimeSpan.FromSeconds(1));
     }
 
-    Statistics(string permutationId)
+    Statistics(Permutation permutation)
     {
-        ConfigureSplunk(permutationId);
+        ConfigureSplunk(permutation);
     }
 
     public void Reset()
@@ -98,7 +99,7 @@ public class Statistics
         logger.Debug($"{key}: {value:0.0} ({unit})");
     }
 
-    void ConfigureSplunk(string permutationId)
+    void ConfigureSplunk(Permutation permutation)
     {
         var url = ConfigurationManager.AppSettings["SplunkURL"];
         var port = int.Parse(ConfigurationManager.AppSettings["SplunkPort"]);
@@ -108,14 +109,16 @@ public class Statistics
         var target = new NetworkTarget
         {
             Address = $"tcp://{url}:{port}",
-            Layout = Layout.FromString("${level}~${gdc:item=sessionid}~${gdc:item=permutationId}~${message}~${newline}"),
+            Layout = Layout.FromString("${level}~${gdc:item=sessionid}~${gdc:item=testcategory}~${gdc:item=testdescription}~${gdc:item=permutationId}~${message}~${newline}"),
         };
 
-        config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, target));
+        config.LoggingRules.Add(new LoggingRule("Statistics", LogLevel.Debug, target));
         LogManager.Configuration = config;
 
         GlobalDiagnosticsContext.Set("sessionid", sessionId);
-        GlobalDiagnosticsContext.Set("permutationId", permutationId);
+        GlobalDiagnosticsContext.Set("permutationId", permutation.Id);
+        GlobalDiagnosticsContext.Set("testcategory", permutation.Category);
+        GlobalDiagnosticsContext.Set("testdescription", permutation.Description);
 
         logger.Debug($"Splunk Tracelogger configured at {url}:{port}");
     }

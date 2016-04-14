@@ -6,5 +6,7 @@ namespace Tests.Tools
     {
         public Permutation Permutation { get; set; }
         public string ProjectAssemblyPath { get; set; }
+        public string Category { get; set; }
+        public string Description { get; set; }
     }
 }

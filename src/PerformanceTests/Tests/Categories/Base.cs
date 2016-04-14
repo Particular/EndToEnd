@@ -4,6 +4,7 @@ namespace Categories
     using System.Configuration;
     using System.Diagnostics;
     using System.IO;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
     using NUnit.Framework;
     using Tests.Permutations;
@@ -11,10 +12,9 @@ namespace Categories
     using VisualStudioDebugHelper;
     using Variables;
 
-    [TestFixture]
     public abstract class Base
     {
-        static string SessionId;
+        public static string SessionId;
         static readonly bool InvokeEnabled = bool.Parse(ConfigurationManager.AppSettings["InvokeEnabled"]);
 
         public virtual void ReceiveRunner(Permutation permutation)
@@ -39,10 +39,14 @@ namespace Categories
 
         void Tasks(Permutation permutation, [CallerMemberName] string memberName = "")
         {
-            permutation.Category = GetType().Name;
+            var fixture = GetType().GetCustomAttribute<TestFixtureAttribute>();
+            permutation.Category = fixture.Category;
+            permutation.Description = fixture.Description;
             permutation.Tests = new[] { memberName };
-            var environment = new TestEnvironment();
+
+            var environment = new TestEnvironment(SessionId);
             environment.CreateTestEnvironments(permutation);
+
             Invoke(permutation);
         }
 
@@ -61,9 +65,11 @@ namespace Categories
             var sessionIdArgument = string.Format(" --sessionId={0}", SessionId);
 
             var exe = new FileInfo(permutation.Exe);
+            var arguments = PermutationParser.ToArgs(permutation) + processIdArgument + sessionIdArgument;
 
-            var pi = new ProcessStartInfo(exe.FullName, PermutationParser.ToArgs(permutation) + processIdArgument + sessionIdArgument)
+            var pi = new ProcessStartInfo(exe.FullName)
             {
+                Arguments = arguments,
                 UseShellExecute = false,
                 WorkingDirectory = exe.DirectoryName,
             };
@@ -71,7 +77,7 @@ namespace Categories
 
             using (var p = Process.Start(pi))
             {
-                if (!p.WaitForExit(70000))
+                if (!p.WaitForExit(150000))
                 {
                     p.Kill();
                     Assert.Fail("Killed!");
@@ -95,11 +101,15 @@ namespace Categories
                 x86.Delete();
             }
         }
-
-        [TestFixtureSetUp]
-        public void RunBeforeAnyTests()
+    }
+    
+    [SetUpFixture]
+    public class TestSessionInitializer
+    {
+        [SetUp]
+        public void Setup()
         {
-            SessionId = Guid.NewGuid().ToString();
+            Base.SessionId = DateTime.UtcNow.Ticks.ToString();
         }
     }
 }

@@ -77,11 +77,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Utils.csproj">
-      <Project>{572499ED-E234-4C66-BD6E-D5A845065C5F}</Project>
-      <Name>Utils</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj">
       <Project>{4ffa67b5-3cd7-4e37-918d-26dbd9947fb3}</Project>
       <Name>VisualStudioDebugHelper</Name>
