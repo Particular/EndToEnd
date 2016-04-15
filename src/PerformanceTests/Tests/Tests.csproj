@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FEAAE402-8ED0-47FB-8E54-42B1D7F654CC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Tests</RootNamespace>
+    <AssemblyName>Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Categories\DistributorFixture.cs" />
+    <Compile Include="Categories\PlatformFixture.cs" />
+    <Compile Include="Categories\MsmqV5vsV6Fixture.cs" />
+    <Compile Include="Categories\AuditOnVsOffFixture.cs" />
+    <Compile Include="Categories\Base.cs" />
+    <Compile Include="Categories\OutboxVsDtcFixture.cs" />
+    <Compile Include="Categories\PersistersFixture.cs" />
+    <Compile Include="Categories\PublishVsSendFixture.cs" />
+    <Compile Include="Categories\ResourceUtilizationFixture.cs" />
+    <Compile Include="Categories\SenderSideFixture.cs" />
+    <Compile Include="Integration\MutatorsTests.cs" />
+    <Compile Include="Integration\PermutationDirectoryResolverTests.cs" />
+    <Compile Include="Integration\SagasTests.cs" />
+    <Compile Include="Tools\PermutationDirectoryResolver.cs" />
+    <Compile Include="Tools\TestDescriptor.cs" />
+    <Compile Include="Tools\TestEnvironment.cs" />
+    <Compile Include="Tools\Extensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Distribution.V5.MsmqDistributor.V5\Distribution.V5.MsmqDistributor.V5.csproj">
+      <Project>{e1fc8d12-8344-419f-9ae1-b1495b6dea32}</Project>
+      <Name>Distribution.V5.MsmqDistributor.V5</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Distribution.V6.SenderSide\Distribution.V6.SenderSide.csproj">
+      <Project>{a1fef639-4bc1-48d8-bb7d-35e985fd404b}</Project>
+      <Name>Distribution.V6.SenderSide</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{572499ed-e234-4c66-bd6e-d5a845065c5f}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj">
+      <Project>{4ffa67b5-3cd7-4e37-918d-26dbd9947fb3}</Project>
+      <Name>VisualStudioDebugHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NServiceBus5\NServiceBus5.csproj">
+      <Project>{be2c7b5e-7a71-4b0c-9020-343ed2010993}</Project>
+      <Name>NServiceBus5</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NServiceBus6\NServiceBus6.csproj">
+      <Project>{10d11044-c92c-42ad-830e-57012ff4f039}</Project>
+      <Name>NServiceBus6</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence.V5.Azure_v6\Persistence.V5.Azure_v6.csproj">
+      <Project>{a87b5d9c-1abe-4f11-a080-6903f7b456fa}</Project>
+      <Name>Persistence.V5.Azure_v6</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence.V5.InMemory.V5\Persistence.V5.InMemory.csproj">
+      <Project>{d8cb2da9-4ae4-417c-89c3-00555f5e1f47}</Project>
+      <Name>Persistence.V5.InMemory</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence.V5.NHibernate.V6\Persistence.V5.NHibernate_v6.csproj">
+      <Project>{207e1813-ec15-4c3b-adbc-88e3733257e4}</Project>
+      <Name>Persistence.V5.NHibernate_v6</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence.V5.RavenDB.V3\Persistence.V5.RavenDB_v3.csproj">
+      <Project>{2951d082-f37d-45f1-92fa-19dcff3d8622}</Project>
+      <Name>Persistence.V5.RavenDB_v3</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence.V6.Azure_v7\Persistence.V6.Azure_v7.csproj">
+      <Project>{426cf1b4-1aec-42a3-b695-33bee5a694f3}</Project>
+      <Name>Persistence.V6.Azure_v7</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence.V6.InMemory\Persistence.V6.InMemory.csproj">
+      <Project>{fac26029-1e00-43e5-b7db-13318fc1092a}</Project>
+      <Name>Persistence.V6.InMemory</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence.V6.NHibernate.V7\Persistence.V6.NHibernate_v7.csproj">
+      <Project>{02ca6a55-a771-4ad5-912a-484a2bbefbd5}</Project>
+      <Name>Persistence.V6.NHibernate_v7</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence.V6.RavenDB.V4\Persistence.V6.RavenDB_v4.csproj">
+      <Project>{c3e92dc8-f3c3-4cbf-bbc8-02b6dd440817}</Project>
+      <Name>Persistence.V6.RavenDB_v4</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.V5.AzureServiceBus.V6\Transport.V5.AzureServiceBus_v6.csproj">
+      <Project>{19be6cc3-9715-4cfa-8b19-5cf42caae4a2}</Project>
+      <Name>Transport.V5.AzureServiceBus_v6</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.V5.AzureStorageQueues.V6\Transport.V5.AzureStorageQueues_v6.csproj">
+      <Project>{152520f2-7d43-443b-b929-73bdfe9ce792}</Project>
+      <Name>Transport.V5.AzureStorageQueues_v6</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.V5.MSMQ.V5\Transport.V5.MSMQ.csproj">
+      <Project>{1c7db98e-aec5-4921-a765-ac81f1b8e40a}</Project>
+      <Name>Transport.V5.MSMQ</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.V5.RabbitMQ.V3\Transport.V5.RabbitMQ_v3.csproj">
+      <Project>{87b17c90-2562-4187-a152-3000dd9a6e1b}</Project>
+      <Name>Transport.V5.RabbitMQ_v3</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.V5.SQLServer.V2\Transport.V5.SQLServer_v2.csproj">
+      <Project>{1017c202-2ea7-4074-9bf9-276921403f3d}</Project>
+      <Name>Transport.V5.SQLServer_v2</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.V6.AzureServiceBus.V7\Transport.V6.AzureServiceBus_v7.csproj">
+      <Project>{3f77a6df-9683-4450-a0fe-45259461947f}</Project>
+      <Name>Transport.V6.AzureServiceBus_v7</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.V6.AzureStorageQueues.V7\Transport.V6.AzureStorageQueues_v7.csproj">
+      <Project>{b8cd6b76-6416-4c10-8746-ec65ca09b191}</Project>
+      <Name>Transport.V6.AzureStorageQueues_v7</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.V6.MSMQ.V6\Transport.V6.MSMQ.csproj">
+      <Project>{182f83fe-f6c2-4b6c-bf65-48edb28ea14a}</Project>
+      <Name>Transport.V6.MSMQ</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.V6.RabbitMQ.V4\Transport.V6.RabbitMQ_v4.csproj">
+      <Project>{245211cb-e830-454e-be75-dcfa904ebb8b}</Project>
+      <Name>Transport.V6.RabbitMQ_v4</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Transport.V6.SQLServer.V3\Transport.V6.SQLServer_v3.csproj">
+      <Project>{dceceb8b-70f6-459f-8893-57218338d0f7}</Project>
+      <Name>Transport.V6.SQLServer_v3</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\..\..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Fody.1.29.4\build\dotnet\Fody.targets'))" />
+  </Target>
+</Project>

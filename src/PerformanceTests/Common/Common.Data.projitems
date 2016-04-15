@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>19307507-7c7a-433e-9752-7a3e63876991</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Common</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AuditProfile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CheckGCServer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CheckPlatform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IConfigureUnicastBus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EnvironmentStats.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)INeedContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IProfile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IProfileExtensionMethods.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PerformanceCounters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Program.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\BaseRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedSendLocal\GatedSendLocalRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedSendLocal\GatedSendLocalRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedSendLocal\GatedSendLocalRunner.V6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\ICreateSeedData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\Receive\ReceiveRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\Receive\ReceiveRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\Receive\ReceiveRunner.V6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedPublish\GatedPublishRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedPublish\GatedPublishRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedPublish\GatedPublishRunner.V6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProfilesExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\LoopRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOne\SendLocalOneOnOneRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOne\SendLocalOneOnOneRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOne\SendLocalOneOnOneRunner.V6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SerializerProfile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StatisticsUoW.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Statistics\SimpleStatisticsFeature.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Statistics\SimpleStatisticsFeature.V6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Statistics\StatisticsBehavior.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Statistics\StatisticsBehavior.V6.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Saga\" />
+  </ItemGroup>
+</Project>
