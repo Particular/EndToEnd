@@ -9,9 +9,9 @@ using NServiceBus;
 /// </summary>
 class GatedSendLocalRunner : LoopRunner
 {
-    protected override Task SendMessage()
+    protected override Task SendMessage(ISession session)
     {
-        return Session.SendLocal(new Command
+        return session.SendLocal(new Command
         {
             Data = Data
         });

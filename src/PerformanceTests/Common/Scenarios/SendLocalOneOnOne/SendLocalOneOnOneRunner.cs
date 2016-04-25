@@ -13,9 +13,9 @@ partial class SendLocalOneOnOneRunner : BaseRunner
 {
     const int seedSize = 1000;
 
-    protected override void Start()
+    protected override void Start(ISession session)
     {
-        TaskHelper.ParallelFor(seedSize, () => Session.SendLocal(new Command { Data = Data })).GetAwaiter().GetResult();
+        TaskHelper.ParallelFor(seedSize, () => session.SendLocal(new Command { Data = Data })).GetAwaiter().GetResult();
     }
 
     protected override void Stop()

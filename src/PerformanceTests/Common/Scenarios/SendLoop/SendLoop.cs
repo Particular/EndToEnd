@@ -8,9 +8,9 @@ abstract class SendLoop : BaseLoop
     {
         SendOnly = true;
     }
-    protected override Task SendMessage()
+    protected override Task SendMessage(ISession session)
     {
-        return Session.SendLocal(new Command { Data = Data });
+        return session.SendLocal(new Command { Data = Data });
     }
 
     class Command : ICommand

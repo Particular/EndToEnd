@@ -24,14 +24,13 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
     public Permutation Permutation { get; private set; }
     public string EndpointName { get; private set; }
-    protected ISession Session { get; private set; }
+    ISession Session { get; set; }
 
     protected byte[] Data { private set; get; }
     protected bool SendOnly { get; set; }
 
     public virtual void Execute(Permutation permutation, string endpointName)
     {
-
         Permutation = permutation;
         EndpointName = endpointName;
 
@@ -42,7 +41,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
         try
         {
-            Start();
+            Start(Session);
             Log.InfoFormat("Warmup: {0}", Settings.WarmupDuration);
             Thread.Sleep(Settings.WarmupDuration);
             Statistics.Instance.Reset(GetType().Name);
@@ -57,7 +56,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         }
     }
 
-    protected virtual void Start()
+    protected virtual void Start(ISession session)
     {
     }
 

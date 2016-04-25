@@ -10,9 +10,9 @@ using NServiceBus.Config;
 /// </summary>
 class GatedPublishRunner : LoopRunner, IConfigureUnicastBus
 {
-    protected override Task SendMessage()
+    protected override Task SendMessage(ISession session)
     {
-        return Session.Publish(new Event
+        return session.Publish(new Event
         {
             Data = Data
         });
