@@ -18,6 +18,7 @@ static class EnvironmentStats
         log.InfoFormat("MachineName: {0}", Environment.MachineName);
         log.InfoFormat("WorkingSet: {0}", Environment.WorkingSet);
         log.InfoFormat("SystemPageSize: {0}", Environment.SystemPageSize);
+        log.InfoFormat("HostName: {0}", Dns.GetHostName());
 
         log = LogManager.GetLogger("ServicePointManager");
         log.InfoFormat("DefaultConnectionLimit: {0}", ServicePointManager.DefaultConnectionLimit);
