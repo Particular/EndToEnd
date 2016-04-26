@@ -104,7 +104,7 @@ namespace Categories
 
             using (var p = Process.Start(pi))
             {
-                var maxDurationInSeconds = 17 * 60;
+                var maxDurationInSeconds = 150;
                 if (!p.WaitForExit(maxDurationInSeconds * 1000))
                 {
                     p.Kill();
