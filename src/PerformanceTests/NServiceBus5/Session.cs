@@ -24,13 +24,13 @@ class Session : ISession
     public Task Send(object message)
     {
         instance.Send(message);
-        return Task.FromResult(0);
+        return Task.CompletedTask;
     }
 
     public Task Publish(object message)
     {
         instance.Publish(message);
-        return Task.FromResult(0);
+        return Task.CompletedTask;
     }
 
     public Task SendLocal(object message)
@@ -40,12 +40,12 @@ class Session : ISession
         else
             instance.Send(localAddress, message);
 
-        return Task.FromResult(0);
+        return Task.CompletedTask;
     }
 
     public Task Close()
     {
         instance.Dispose();
-        return Task.FromResult(0);
+        return Task.CompletedTask;
     }
 }

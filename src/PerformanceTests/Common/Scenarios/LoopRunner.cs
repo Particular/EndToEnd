@@ -122,7 +122,7 @@ abstract class LoopRunner : BaseRunner
             var at = DateTimeExtensions.ToUtcDateTime(context.MessageHeaders[Headers.TimeSent]);
             AddLatency(now - at);
             Signal();
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 #endif
     }

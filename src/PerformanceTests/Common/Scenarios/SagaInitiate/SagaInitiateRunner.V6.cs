@@ -14,7 +14,7 @@ partial class SagaInitiateRunner
         public Task Handle(Command message, IMessageHandlerContext context)
         {
             Data.UniqueIdentifier = message.Identifier;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
     }
 
