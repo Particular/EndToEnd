@@ -14,6 +14,10 @@ static class EnvironmentStats
         log.InfoFormat("ProcessorCount: {0}", Environment.ProcessorCount);
         log.InfoFormat("64bit: {0}", Environment.Is64BitProcess);
         log.InfoFormat("Version: {0}", Environment.Version);
+        log.InfoFormat("OSVersion: {0}", Environment.OSVersion);
+        log.InfoFormat("MachineName: {0}", Environment.MachineName);
+        log.InfoFormat("WorkingSet: {0}", Environment.WorkingSet);
+        log.InfoFormat("SystemPageSize: {0}", Environment.SystemPageSize);
 
         log = LogManager.GetLogger("ServicePointManager");
         log.InfoFormat("DefaultConnectionLimit: {0}", ServicePointManager.DefaultConnectionLimit);
