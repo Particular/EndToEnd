@@ -15,6 +15,7 @@ class NHibernateProfile : IProfile, ISetup
     {
         var cs = ConfigurationHelper.GetConnectionString("NHibernate");
         var sql = Assembly.GetExecutingAssembly().GetManifestResourceText("Persistence.V6.NHibernate.init.sql");
+        SqlHelper.CreateDatabase(cs);
         SqlHelper.ExecuteScript(cs, sql);
     }
 }

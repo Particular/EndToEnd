@@ -15,6 +15,7 @@ class SqlServerProfile : IProfile, ISetup
     {
         var cs = ConfigurationHelper.GetConnectionString("SqlServer");
         var sql = Assembly.GetExecutingAssembly().GetManifestResourceText("Transport.V5.SQLServer.init.sql");
+        SqlHelper.CreateDatabase(cs);
         SqlHelper.ExecuteScript(cs, sql);
     }
 }

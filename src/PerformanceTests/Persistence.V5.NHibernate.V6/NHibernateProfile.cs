@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Data.Common;
+using System.Reflection;
 using NServiceBus;
 using NServiceBus.Persistence;
 
@@ -15,6 +16,7 @@ class NHibernateProfile : IProfile, ISetup
     {
         var cs = ConfigurationHelper.GetConnectionString("NHibernate");
         var sql = Assembly.GetExecutingAssembly().GetManifestResourceText("Persistence.V5.NHibernate.init.sql");
+        SqlHelper.CreateDatabase(cs);
         SqlHelper.ExecuteScript(cs, sql);
     }
 }
