@@ -16,7 +16,7 @@ public class StatisticsUoW : IManageUnitsOfWork, INeedInitialization
     {
         DoBegin();
 
-        return System.Threading.Tasks.Task.CompletedTask;
+        return System.Threading.Tasks.Task.FromResult(0);
     }
 #else
     public void Begin()
@@ -57,7 +57,7 @@ public class StatisticsUoW : IManageUnitsOfWork, INeedInitialization
     {
         DoEnd(ex);
 
-        return System.Threading.Tasks.Task.CompletedTask;
+        return System.Threading.Tasks.Task.FromResult(0);
     }
 #else
     public void End(Exception ex = null)

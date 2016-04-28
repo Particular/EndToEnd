@@ -11,6 +11,6 @@ class ParallelForRunner : SendLoop
         {
             action().GetAwaiter().GetResult();
         });
-        return Task.CompletedTask;
+        return Task.FromResult(0);
     }
 }
