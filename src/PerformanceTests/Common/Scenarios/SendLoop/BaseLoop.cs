@@ -18,13 +18,14 @@ abstract class BaseLoop : BaseRunner
     CancellationTokenSource stopLoop { get; set; }
     bool Shutdown { get; set; }
     int BatchSize { get; set; } = 16;
-    protected abstract Task SendMessage();
+    protected abstract Task SendMessage(ISession session);
 
-    protected override void Start()
+    protected override void Start(ISession session)
     {
         stopLoop = new CancellationTokenSource();
-        loopTask = Task.Factory.StartNew(Loop, TaskCreationOptions.LongRunning);
+        loopTask = Task.Factory.StartNew(() => Loop(session), TaskCreationOptions.LongRunning);
     }
+
 
     protected override void Stop()
     {
@@ -39,7 +40,7 @@ abstract class BaseLoop : BaseRunner
         }
     }
 
-    async Task Loop(object o)
+    async Task Loop(ISession session)
     {
         try
         {
@@ -57,7 +58,7 @@ abstract class BaseLoop : BaseRunner
 
                     var batchDuration = Stopwatch.StartNew();
 
-                    await Batch(BatchSize, SendMessage);
+                    await Batch(BatchSize, () => SendMessage(session));
 
                     count += BatchSize;
 
