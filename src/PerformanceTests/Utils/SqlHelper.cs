@@ -28,20 +28,36 @@ public static class SqlHelper
 
     public static void CreateDatabase(string connectionString)
     {
-        try
-        {
-            var builder = new DbConnectionStringBuilder
-            {
-                ConnectionString = connectionString
-            };
-            var catalog = builder["database"];
-            builder.Remove("database");
-            var master = builder.ToString();
-            ExecuteScript(master, $"IF db_id('{catalog}') IS NULL CREATE DATABASE {catalog}");
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException("Could not create database.", ex);
-        }
+        //try
+        //{
+        //    var builder = new DbConnectionStringBuilder
+        //    {
+        //        ConnectionString = connectionString
+        //    };
+
+        //    object catalog;
+
+        //    if (builder.ContainsKey("database"))
+        //    {
+        //        catalog = builder["database"];
+        //        builder.Remove("database");
+        //    }
+        //    else if (builder.ContainsKey("initial catalog"))
+        //    {
+        //        catalog = builder["initial catalog"];
+        //        builder.Remove("initial catalog");
+        //    }
+        //    else
+        //    {
+        //        return;
+        //    }
+
+        //    var master = builder.ToString();
+        //    ExecuteScript(master, $"IF db_id('{catalog}') IS NULL CREATE DATABASE {catalog}");
+        //}
+        //catch (Exception ex)
+        //{
+        //    throw new InvalidOperationException("Could not create database.", ex);
+        //}
     }
 }
