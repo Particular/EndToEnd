@@ -37,6 +37,19 @@ class FlrConfig : IConfigurationSource
             return flrConfig as T;
         }
 
+        // To provide SLR Config
+        if (typeof(T) == typeof(SecondLevelRetriesConfig))
+        {
+            SecondLevelRetriesConfig slrConfig = new SecondLevelRetriesConfig
+            {
+                Enabled = true,
+                NumberOfRetries = 2,
+                TimeIncrease = TimeSpan.FromSeconds(10)
+            };
+
+            return slrConfig as T;
+        }
+
         // To in app.config for other sections not defined in this method, otherwise return null.
         return ConfigurationManager.GetSection(typeof(T).Name) as T;
     }
