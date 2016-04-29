@@ -235,12 +235,12 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     {
         IConfigureUnicastBus configureUnicastBus;
 
+        //read from existing config 
+        var config = (UnicastBusConfig)ConfigurationManager.GetSection(typeof(UnicastBusConfig).Name);
+        if (config != null) throw new InvalidOperationException("UnicastBUs Configuration should be in code using IConfigureUnicastBus interface.");
+
         if (typeof(T) == typeof(UnicastBusConfig) && null != (configureUnicastBus = this as IConfigureUnicastBus))
         {
-            //read from existing config 
-            var config = (UnicastBusConfig)ConfigurationManager.GetSection(typeof(UnicastBusConfig).Name);
-            if (config != null) throw new InvalidOperationException("UnicastBUs Configuration should be in code using IConfigureUnicastBus interface.");
-
             return new UnicastBusConfig
             {
                 MessageEndpointMappings = configureUnicastBus.GenerateMappings()
