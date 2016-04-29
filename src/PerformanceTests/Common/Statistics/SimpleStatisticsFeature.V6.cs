@@ -43,13 +43,13 @@ namespace NServiceBus.Performance
             protected override Task OnStart(IMessageSession session)
             {
                 Collector.Start();
-                return Task.CompletedTask;
+                return Task.FromResult(0);
             }
 
             protected override Task OnStop(IMessageSession session)
             {
                 Collector.Stop();
-                return Task.CompletedTask;
+                return Task.FromResult(0);
             }
         }
 
