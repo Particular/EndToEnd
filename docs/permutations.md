@@ -33,12 +33,14 @@ The base class contains every single scenario and the tests in a test fixture wi
 Finally the `Base` class will execute the permutation and wait for results. If the test doesn't finish in 150 seconds the permutation will be killed and the test will fail. If the process returns any result besides 0, the test will fail as well.
 
 ## TestEnvironment generator
-The `TestEnvironment` class does bascially the following
+The `TestEnvironment` class does basically the following
 
 - Remove any files already in the permutation folder
 - Copy all files into the permutation folder
 - Create a batch file
 - Update the app.config file with gcServer based on permutation
+
+All files will be compiled into the \bin\ folder and then copied to a folder with a name specific to that permutation. It can be found under \bin\@\[permutation_name]. This is where the batch file (.bat) can also be executed from to manually start the performance test.
 
 ## Permutation execution
 
