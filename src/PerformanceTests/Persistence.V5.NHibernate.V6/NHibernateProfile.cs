@@ -1,5 +1,4 @@
-﻿using System.Data.Common;
-using System.Reflection;
+﻿using System.Reflection;
 using NServiceBus;
 using NServiceBus.Persistence;
 
