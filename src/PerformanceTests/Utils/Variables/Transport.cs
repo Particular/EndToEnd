@@ -6,6 +6,6 @@ namespace Variables
         RabbitMQ,
         AzureStorageQueues,
         AzureServiceBus,
-        SQLServer
+        SQLServer,
     }
 }
