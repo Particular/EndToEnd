@@ -97,6 +97,10 @@
       <Name>NServiceBus6</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{572499ED-E234-4C66-BD6E-D5A845065C5F}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
