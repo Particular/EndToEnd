@@ -88,7 +88,12 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
             var count = 0L;
 
-            Parallel.ForEach(IterateUntilFalse(() => !cts.Token.IsCancellationRequested), b =>
+            var po = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = ConcurrencyLevelConverter.Convert(Permutation.ConcurrencyLevel)
+            };
+
+            Parallel.ForEach(IterateUntilFalse(() => !cts.Token.IsCancellationRequested), po, b =>
             {
                 Interlocked.Increment(ref count);
                 ((ICreateSeedData)this).SendMessage(Session).GetAwaiter().GetResult();
