@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using NServiceBus;
-using NServiceBus.Transports.SQLServer;
+using NServiceBus.Transport.SQLServer;
 using Tests.Permutations;
 
 class SqlServerProfile : IProfile, ISetup, INeedPermutation
