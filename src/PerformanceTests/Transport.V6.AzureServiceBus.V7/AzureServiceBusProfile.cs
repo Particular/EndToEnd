@@ -1,5 +1,6 @@
 ﻿using NServiceBus;
 using NServiceBus.AzureServiceBus;
+using NServiceBus.AzureServiceBus.Addressing;
 
 class AzureServiceBusProfile : IProfile
 {
@@ -10,6 +11,7 @@ class AzureServiceBusProfile : IProfile
         endpointConfiguration
             .UseTransport<AzureServiceBusTransport>()
             .UseTopology<ForwardingTopology>()
-            .ConnectionString(connectionstring);
+            .ConnectionString(connectionstring)
+            .Sanitization().UseStrategy<EndpointOrientedTopologySanitization>();
     }
 }
