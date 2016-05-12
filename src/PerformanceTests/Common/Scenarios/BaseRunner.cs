@@ -13,6 +13,7 @@ using NServiceBus.Config.ConfigurationSource;
 using NServiceBus.Logging;
 using Tests.Permutations;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Scenarios;
@@ -46,7 +47,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             if (!IsSeedingData)
             {
                 Log.InfoFormat("Warmup: {0}", Settings.WarmupDuration);
-                Task.Delay(Settings.WarmupDuration).GetAwaiter().GetResult();
+                Task.Delay(Settings.WarmupDuration).ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             var runDuration = IsSeedingData
@@ -56,7 +57,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             Log.InfoFormat("Run: {0}", runDuration);
 
             Statistics.Instance.Reset(GetType().Name);
-            Task.Delay(runDuration).GetAwaiter().GetResult(); 
+            Task.Delay(runDuration).ConfigureAwait(false).GetAwaiter().GetResult();
             Statistics.Instance.Dump();
 
             Stop();
@@ -89,17 +90,28 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             var cts = new CancellationTokenSource();
             cts.CancelAfter(Settings.SeedDuration);
 
-            var count = 0L;
+            var maxConcurrency = ConcurrencyLevelConverter.Convert(Permutation.ConcurrencyLevel);
 
-            Parallel.ForEach(IterateUntilFalse(() => !cts.Token.IsCancellationRequested), b =>
+            var instance = (ICreateSeedData)this;
+            var count = 0L;
+            var start = Stopwatch.StartNew();
+
+            var po = new ParallelOptions
             {
+                MaxDegreeOfParallelism = maxConcurrency
+            };
+            Parallel.ForEach(IterateUntilFalse(() => !cts.Token.IsCancellationRequested), po, b =>
+            {
+                instance.SendMessage(Session).ConfigureAwait(false).GetAwaiter().GetResult();
                 Interlocked.Increment(ref count);
-                ((ICreateSeedData)this).SendMessage(Session).GetAwaiter().GetResult();
             });
 
-            var avg = count / Settings.SeedDuration.TotalSeconds;
+            var elapsed = start.Elapsed;
+            var avg = count / elapsed.TotalSeconds;
             Log.InfoFormat("Done seeding, seeded {0:N0} messages, {1:N1} msg/s", count, avg);
             LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedThroughputAvg", avg, "msg/s");
+            LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedCount", count, "#");
+            LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedDuration", elapsed.TotalMilliseconds, "ms");
         }
         finally
         {
@@ -133,7 +145,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             Session = new Session(Bus.CreateSendOnly(configuration));
             return;
         }
-        
+
         configuration.PurgeOnStartup(!IsSeedingData && IsPurgingSupported);
         Session = new Session(Bus.Create(configuration).Start());
     }
@@ -172,15 +184,15 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     {
         var configuration = CreateConfiguration();
         if (IsPurgingSupported) configuration.PurgeOnStartup(true);
-        var instance = Endpoint.Start(configuration).GetAwaiter().GetResult();
-        instance.Stop().GetAwaiter().GetResult();
+        var instance = Endpoint.Start(configuration).ConfigureAwait(false).GetAwaiter().GetResult();
+        instance.Stop().ConfigureAwait(false).GetAwaiter().GetResult();
     }
 
     void CreateSendOnlyEndpoint()
     {
         var configuration = CreateConfiguration();
         configuration.SendOnly();
-        var instance = Endpoint.Start(configuration).GetAwaiter().GetResult();
+        var instance = Endpoint.Start(configuration).ConfigureAwait(false).GetAwaiter().GetResult();
         Session = new Session(instance);
     }
 
@@ -193,13 +205,13 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         if (SendOnly)
         {
             configuration.SendOnly();
-            Session = new Session(Endpoint.Start(configuration).GetAwaiter().GetResult());
+            Session = new Session(Endpoint.Start(configuration).ConfigureAwait(false).GetAwaiter().GetResult());
             return;
         }
 
         configuration.PurgeOnStartup(!IsSeedingData && IsPurgingSupported);
 
-        var instance = Endpoint.Start(configuration).GetAwaiter().GetResult();
+        var instance = Endpoint.Start(configuration).ConfigureAwait(false).GetAwaiter().GetResult();
         Session = new Session(instance);
     }
 
@@ -263,8 +275,9 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     bool IsSeedingData => this is ICreateSeedData;
     bool IsPurgingSupported => Permutation.Transport != Transport.AzureServiceBus;
 
-    static IEnumerable<bool> IterateUntilFalse(Func<bool> condition)
+    static IEnumerable<int> IterateUntilFalse(Func<bool> condition)
     {
-        while (condition()) yield return true;
+        var i = 0;
+        while (condition()) yield return i++;
     }
 }

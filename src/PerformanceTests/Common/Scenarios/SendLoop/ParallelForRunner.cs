@@ -9,7 +9,7 @@ class ParallelForRunner : SendLoop
     {
         Parallel.For(0, count, options, i =>
         {
-            action().GetAwaiter().GetResult();
+            action().ConfigureAwait(false).GetAwaiter().GetResult();
         });
         return Task.FromResult(0);
     }
