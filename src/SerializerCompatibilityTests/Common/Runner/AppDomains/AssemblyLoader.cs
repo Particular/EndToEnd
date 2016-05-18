@@ -12,8 +12,8 @@
         public AssemblyLoader()
         {
 #if NCRUNCH
-    // This code isn't needed for other test runners or NCrunch with the 
-    // 'Copy Referenced Assemblies To Workspace' setting enabled, because they 
+    // This code isn't needed for other test runners or NCrunch with the
+    // 'Copy Referenced Assemblies To Workspace' setting enabled, because they
     // will have the ReferencedProject.dll sitting in the current directory.
     // see https://www.ncrunch.net/documentation/troubleshooting_tests-that-build-their-own-appdomains
 
@@ -41,7 +41,7 @@
 #if NCRUNCH
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            // Search through the known assembly locations returned from the NCrunchEnvironment.GetAllAssemblyLocations method, 
+            // Search through the known assembly locations returned from the NCrunchEnvironment.GetAllAssemblyLocations method,
             // and load any assembly with a name matching the one we're looking for
 
             var shortAssemblyName = getShortAssemblyName(args.Name);

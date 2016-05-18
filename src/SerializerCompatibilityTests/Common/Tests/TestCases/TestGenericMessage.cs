@@ -4,7 +4,7 @@
     using NUnit.Framework;
     using Types;
 
-    [Ignore]
+    [Explicit]
     public class TestGenericMessage : TestCase
     {
         public override Type MessageType => typeof(GenericMessage<int, string>);

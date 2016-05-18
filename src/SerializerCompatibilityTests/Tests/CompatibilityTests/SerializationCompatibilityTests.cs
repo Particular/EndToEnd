@@ -9,7 +9,7 @@
     [Category("All")]
     public class SerializationCompatibilityTests
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             outputDirectory = new OutputDirectoryCreator().SetupOutputDirectory("SerializationCompatibilityFiles");
@@ -19,18 +19,14 @@
         {
             var nsbVersion = testCaseInfo.RunPackage.Version;
             var outputFileName = new TestCaseFileName(nsbVersion, testCaseInfo.TestCase.Name, testCaseInfo.Format);
-            var outputFilePath = Path.Combine(outputDirectory, outputFileName.ToString());
-
-            return outputFilePath;
+            return Path.Combine(outputDirectory, outputFileName.ToString());
         }
 
         string CreateInputFilePath(TestInfo testCaseInfo)
         {
             var nsbVersion = testCaseInfo.CheckVersion;
             var inputFileName = new TestCaseFileName(nsbVersion, testCaseInfo.TestCase.Name, testCaseInfo.Format);
-            var inputFilePath = Path.Combine(outputDirectory, inputFileName.ToString());
-
-            return inputFilePath;
+            return Path.Combine(outputDirectory, inputFileName.ToString());
         }
 
         [Test, TestCaseSource(typeof(TestInfoGenerator), "Generate", Category = "SerializerCompatibility")]

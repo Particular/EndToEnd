@@ -24,9 +24,9 @@
         {
             if (Type == TestType.Serialization)
             {
-                return string.Format("Serialization_{0}_{1}_{2}", TestCase.Name, Format, RunPackage.Version);
+                return $"Serialization_{TestCase.Name}_{Format}_{RunPackage.Version}";
             }
-            return string.Format("Deserialization_{0}_{1}_{2}->{3}", TestCase.Name, Format, CheckVersion, RunPackage.Version);
+            return $"Deserialization_{TestCase.Name}_{Format}_{CheckVersion}->{RunPackage.Version}";
         }
     }
 }

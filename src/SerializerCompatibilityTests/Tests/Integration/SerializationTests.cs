@@ -17,9 +17,7 @@
             var package = nuGetPackageResolver.DownloadPackageWithDependencies(packages).Result;
             var domain = domainCreator.CreateDomain(TestsGlobal.BinDirectoryTemplate, package);
 
-            var runner = new AppDomainRunner(domain);
-
-            return runner;
+            return new AppDomainRunner(domain);
         }
 
         [SetUp]

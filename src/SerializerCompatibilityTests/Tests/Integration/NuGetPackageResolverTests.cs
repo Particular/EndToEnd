@@ -10,7 +10,7 @@
     [TestFixture]
     public class NuGetPackageResolverTests
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
             testPackagesDirectory = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../.."));
