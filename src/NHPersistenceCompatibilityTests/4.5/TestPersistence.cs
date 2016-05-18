@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataDefinitions;
 using NServiceBus.SagaPersisters.NHibernate;
 using NServiceBus.UnitOfWork;
 using NServiceBus.UnitOfWork.NHibernate;

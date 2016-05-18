@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Common;
 using NUnit.Framework;
 
@@ -9,6 +10,13 @@ namespace PersistenceCompatibilityTests
     public abstract class TestRun
     {
         private static string BinDirectoryTemplate = "TestRun_{0}_{1}";
+
+        protected PersisterFacade CreatePersister(string versionName)
+        {
+            var rawPersister = CreateTestFacade<IRawPersister>(versionName);
+
+            return new PersisterFacade(rawPersister);
+        }
 
         protected AppDomainRunner<T> CreateTestFacade<T>(string versionName)
         {

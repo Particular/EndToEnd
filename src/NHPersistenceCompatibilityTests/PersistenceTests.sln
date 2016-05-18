@@ -15,7 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5.0", "5.0\5.0.csproj", "{0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4.5", "4.5\4.5.csproj", "{FF4E993B-A2DA-4BEB-9DE2-33D33F208543}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DataDefinitions", "DataDefinitions\DataDefinitions.shproj", "{8E84B517-487C-4318-81D0-B9A237B257BF}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		DataDefinitions\DataDefinitions.projitems*{a56d3be8-0a16-4b72-8231-64431a534b57}*SharedItemsImports = 4
+		DataDefinitions\DataDefinitions.projitems*{ff4e993b-a2da-4beb-9de2-33d33f208543}*SharedItemsImports = 4
+		DataDefinitions\DataDefinitions.projitems*{8e84b517-487c-4318-81d0-b9a237b257bf}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

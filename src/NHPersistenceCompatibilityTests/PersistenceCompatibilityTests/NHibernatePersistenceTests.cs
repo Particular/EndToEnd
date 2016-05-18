@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataDefinitions;
 using NUnit.Framework;
 
 namespace PersistenceCompatibilityTests
@@ -8,6 +9,24 @@ namespace PersistenceCompatibilityTests
     [TestFixture]
     public class NHibernatePersistenceTests : TestRun
     {
+        [Test]
+        public void test()
+        {
+            var persister = CreatePersister("4.5");
+            var writeData = new TestSagaData
+            {
+                Id = Guid.NewGuid(),
+                Originator = "test-originator"
+            };
+
+            persister.Save<TestSagaData>(writeData);
+
+            var readData = persister.Get<TestSagaData>(writeData.Id);
+
+            Assert.AreEqual(writeData.Id, readData.Id);
+            Assert.AreEqual(writeData.Originator, readData.Originator);
+        }
+
         [TestCaseSource(nameof(GenerateTestCases))]
         public void can_fetch_saga_persisted_by_another_version(string sourceVersion, string destinationVersion)
         {
