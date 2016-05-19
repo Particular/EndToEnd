@@ -40,8 +40,7 @@ namespace Common
                 if (requestedAssembly.Name != shortName)
                     return null;
 
-                Debug.WriteLine("Redirecting assembly load of " + args.Name
-                                + ",\tloaded by " + (args.RequestingAssembly?.FullName ?? "(unknown)"));
+                Trace.WriteLine($"Redirecting assembly load of {args.Name},\tloaded by " + (args.RequestingAssembly?.FullName ?? "(unknown)"));
 
                 requestedAssembly.Version = targetVersion;
                 requestedAssembly.SetPublicKeyToken(publicKeyToken);
