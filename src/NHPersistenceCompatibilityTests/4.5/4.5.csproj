@@ -71,7 +71,6 @@
     <Compile Include="NHibernateSessionFactory.cs" />
     <Compile Include="Persister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestPersistence.cs" />
     <Compile Include="TestSagaData.cs" />
     <Compile Include="TestSagaDataWithComposite.cs" />
     <Compile Include="TestSagaDataWithList.cs" />
@@ -90,7 +89,7 @@
       <Name>PersistenceCompatibilityTests</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\DataDefinitions\DataDefinitions.projitems" Label="Shared" />
+  <Import Project="..\SharedDefinitions\SharedDefinitions.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

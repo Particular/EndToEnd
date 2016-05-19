@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 public class RawPersister : MarshalByRefObject, IRawPersister
 {
-    public void Save(string typeFullName, string body, string correlationPropertyName, string correlationPropertyValue)
+    public void Save(string typeFullName, string body)
     {
         var sagaDataType = Type.GetType(typeFullName);
         var sagaData = JsonConvert.DeserializeObject(body, sagaDataType);
@@ -12,7 +12,7 @@ public class RawPersister : MarshalByRefObject, IRawPersister
 
         var saveMethod = persister.GetType().GetMethod(nameof(Save)).MakeGenericMethod(sagaDataType);
 
-        saveMethod.Invoke(persister, new [] { sagaData, correlationPropertyName, correlationPropertyValue });
+        saveMethod.Invoke(persister, new [] { sagaData });
     }
 
     public object Get(string typeFullName, Guid id)

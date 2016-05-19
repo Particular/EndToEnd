@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 public class RawPersister : MarshalByRefObject, IRawPersister
 {
-    public void Save(string typeFullName, string body, string correlationPropertyName, string correlationPropertyValue)
+    public void Save(string typeFullName, string body, string correlationPropertyName = null, string correlationPropertyValue = null)
     {
         var sagaDataType = Type.GetType(typeFullName);
         var sagaData = JsonConvert.DeserializeObject(body, sagaDataType);

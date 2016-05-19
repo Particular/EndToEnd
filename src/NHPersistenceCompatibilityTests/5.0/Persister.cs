@@ -3,7 +3,7 @@ using NServiceBus.Saga;
 using NServiceBus.SagaPersisters.NHibernate;
 using NServiceBus.UnitOfWork;
 using NServiceBus.UnitOfWork.NHibernate;
-using Version_4_5;
+using Version_5_0;
 
 public class Persister
 {
