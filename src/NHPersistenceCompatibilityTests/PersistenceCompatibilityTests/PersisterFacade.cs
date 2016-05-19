@@ -22,8 +22,8 @@ namespace PersistenceCompatibilityTests
 
         public T Get<T>(Guid sagaId)
         {
-            string body = string.Empty;
-            Type sagaDataType = typeof (T);
+            var body = string.Empty;
+            var sagaDataType = typeof (T);
 
             _rawPersister.Run(p => body = (string)p.Get(sagaDataType.FullName, sagaId));
 

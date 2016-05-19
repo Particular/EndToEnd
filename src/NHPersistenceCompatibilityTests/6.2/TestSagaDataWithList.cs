@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NServiceBus.Saga;
+﻿using NServiceBus.Saga;
 
 namespace DataDefinitions
 {

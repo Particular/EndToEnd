@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DataDefinitions
 {
+    // ReSharper disable once PartialTypeWithSinglePart
     public partial class TestSagaDataWithList
     {
         public virtual Guid Id { get; set; }

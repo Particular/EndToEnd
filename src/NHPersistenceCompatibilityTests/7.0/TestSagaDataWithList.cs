@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NServiceBus;
+﻿using NServiceBus;
 
 namespace DataDefinitions
 {
