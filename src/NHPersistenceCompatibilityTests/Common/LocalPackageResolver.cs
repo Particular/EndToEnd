@@ -16,14 +16,13 @@ namespace Common
         {
             var versionFolder = Path.Combine(localStore, packageInfo.Version);
             var files = new DirectoryInfo(versionFolder).GetFiles();
-            var package = new Package
+
+            return new Package
             {
                 Info = packageInfo,
                 Version = packageInfo.Version,
                 Files = files.ToArray()
             };
-
-            return package;
         }
     }
 }
