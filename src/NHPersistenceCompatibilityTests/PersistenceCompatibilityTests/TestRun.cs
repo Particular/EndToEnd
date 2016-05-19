@@ -8,8 +8,6 @@ namespace PersistenceCompatibilityTests
 {
     public abstract class TestRun
     {
-        static string BinDirectoryTemplate = "TestRun_{0}_{1}";
-
         protected PersisterFacade CreatePersister(string versionName)
         {
             var rawPersister = CreateTestFacade<IRawPersister>(versionName);
@@ -21,7 +19,7 @@ namespace PersistenceCompatibilityTests
         {
             var packageInfo = new PackageInfo("NServiceBus.NHibernate.Tests", versionName);
             var package = packageResolver.GetLocalPackage(packageInfo);
-            var appDomainDescriptor = domainCreator.CreateDomain(BinDirectoryTemplate, package);
+            var appDomainDescriptor = domainCreator.CreateDomain(package);
             var runner = new AppDomainRunner<T>(appDomainDescriptor);
 
             appDomainDescriptors.Add(appDomainDescriptor);
@@ -65,7 +63,5 @@ namespace PersistenceCompatibilityTests
         LocalPackageResolver packageResolver;
         AppDomainCreator domainCreator;
         IList<AppDomainDescriptor> appDomainDescriptors;
-
-        //static string BinDirectorySearchPattern = string.Format(BinDirectoryTemplate, "*", "*");
     }
 }

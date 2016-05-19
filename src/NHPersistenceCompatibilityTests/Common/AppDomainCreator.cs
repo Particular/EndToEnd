@@ -8,9 +8,9 @@ namespace Common
     [Serializable]
     public class AppDomainCreator
     {
-        public AppDomainDescriptor CreateDomain(string startupDirTemplate, Package package)
+        public AppDomainDescriptor CreateDomain(Package package)
         {
-            var startupDir = CreateStartupDir(startupDirTemplate, package.Version, Guid.NewGuid());
+            var startupDir = CreateStartupDir(package.Version, Guid.NewGuid());
             
             CopyAssembliesToStarupDir(startupDir, package.Files);
 
@@ -60,9 +60,9 @@ namespace Common
             }
         }
 
-        DirectoryInfo CreateStartupDir(string codeBaseDirTemplate, string version, Guid uniqueId)
+        DirectoryInfo CreateStartupDir(string version, Guid uniqueId)
         {
-            var directoryName = string.Format(codeBaseDirTemplate, version, uniqueId);
+            var directoryName = $"TestRun_{version}_{uniqueId}";
 
             if (!Directory.Exists(directoryName))
             {
