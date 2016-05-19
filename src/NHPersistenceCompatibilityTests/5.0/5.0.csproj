@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
@@ -83,10 +84,6 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{77FF50AE-A243-45EE-9598-0B0E870457C5}</Project>
       <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PersistenceCompatibilityTests\PersistenceCompatibilityTests.csproj">
-      <Project>{A56D3BE8-0A16-4B72-8231-64431A534B57}</Project>
-      <Name>PersistenceCompatibilityTests</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\SharedDefinitions\SharedDefinitions.projitems" Label="Shared" />

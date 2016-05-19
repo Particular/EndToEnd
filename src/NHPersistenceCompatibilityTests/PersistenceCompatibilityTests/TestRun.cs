@@ -29,7 +29,7 @@ namespace PersistenceCompatibilityTests
             return runner;
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void CleanUp()
         {
             UnloadAppDomains();
@@ -53,7 +53,7 @@ namespace PersistenceCompatibilityTests
             }
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
