@@ -7,8 +7,8 @@ using Version_7_0;
 
 public class Persister
 {
-    private readonly SagaPersister persister;
-    private readonly NHibernateSessionFactory factory;
+    readonly SagaPersister persister;
+    readonly NHibernateSessionFactory factory;
 
     public Persister()
     {

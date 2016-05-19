@@ -16,7 +16,7 @@ namespace Version_7_0
             SessionFactory = new Lazy<ISessionFactory>(Init);
         }
 
-        private ISessionFactory Init()
+        ISessionFactory Init()
         {
             var configuration = new Configuration().AddProperties(NHibernateConnectionInfo.Settings);
 
@@ -35,7 +35,7 @@ namespace Version_7_0
             return configuration.BuildSessionFactory();
         }
 
-        private void AddMapping(Configuration configuration, Type type)
+        void AddMapping(Configuration configuration, Type type)
         {
             var metaModel = new SagaMetadataCollection();
             metaModel.Initialize(new[] { type });

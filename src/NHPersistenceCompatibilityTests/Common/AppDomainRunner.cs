@@ -16,7 +16,7 @@ namespace Common
             action(appDomainEntry);
         }
 
-        private string ResolveTestFacadeName(Type type)
+        string ResolveTestFacadeName(Type type)
         {
             if (type.IsInterface && type.Name.StartsWith("I"))
             {

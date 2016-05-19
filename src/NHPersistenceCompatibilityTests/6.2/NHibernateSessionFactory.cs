@@ -14,7 +14,7 @@ namespace Version_6_2
             SessionFactory = new Lazy<ISessionFactory>(Init);
         }
 
-        private ISessionFactory Init()
+        ISessionFactory Init()
         {
             var configuration = new NHibernate.Cfg.Configuration().AddProperties(NHibernateConnectionInfo.Settings);
             var modelMapper = new SagaModelMapper(new[]

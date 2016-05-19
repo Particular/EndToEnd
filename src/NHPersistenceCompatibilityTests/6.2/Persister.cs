@@ -6,7 +6,7 @@ using Version_6_2;
 
 public class Persister
 {
-    private readonly NHibernateSessionFactory factory;
+    readonly NHibernateSessionFactory factory;
 
     public Persister()
     {
