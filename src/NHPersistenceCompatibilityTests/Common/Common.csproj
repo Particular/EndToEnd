@@ -50,6 +50,7 @@
     <Compile Include="AppDomainDescriptor.cs" />
     <Compile Include="AppDomainRunner.cs" />
     <Compile Include="CustomAssemblyLoader.cs" />
+    <Compile Include="IRawPersister.cs" />
     <Compile Include="LocalPackageResolver.cs" />
     <Compile Include="NHibernateConnectionInfo.cs" />
     <Compile Include="Package.cs" />

@@ -15,7 +15,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5.0", "5.0\5.0.csproj", "{0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4.5", "4.5\4.5.csproj", "{FF4E993B-A2DA-4BEB-9DE2-33D33F208543}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedDefinitions", "SharedDefinitions\SharedDefinitions.shproj", "{DF0700C4-AB75-47A0-BA68-ABE00A40F7E7}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SharedDefinitions\SharedDefinitions.projitems*{096b1d0d-2d8b-4cb5-a26d-8377da1812ce}*SharedItemsImports = 4
+		SharedDefinitions\SharedDefinitions.projitems*{a56d3be8-0a16-4b72-8231-64431a534b57}*SharedItemsImports = 4
+		SharedDefinitions\SharedDefinitions.projitems*{df0700c4-ab75-47a0-ba68-abe00a40f7e7}*SharedItemsImports = 13
+		SharedDefinitions\SharedDefinitions.projitems*{67e400df-1fa1-4b04-a985-68f187c03610}*SharedItemsImports = 4
+		SharedDefinitions\SharedDefinitions.projitems*{59859466-3f15-40a0-9a9b-003096ccad02}*SharedItemsImports = 4
+		SharedDefinitions\SharedDefinitions.projitems*{ff4e993b-a2da-4beb-9de2-33d33f208543}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

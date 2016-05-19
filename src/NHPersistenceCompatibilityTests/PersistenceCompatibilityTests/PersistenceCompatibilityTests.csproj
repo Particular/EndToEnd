@@ -36,6 +36,10 @@
     <AssemblyOriginatorKeyFile>..\NServiceBus.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -52,6 +56,7 @@
   <ItemGroup>
     <Compile Include="ITestPersistence.cs" />
     <Compile Include="NHibernatePersistenceTests.cs" />
+    <Compile Include="PersisterFacade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestRun.cs" />
   </ItemGroup>
@@ -65,6 +70,7 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\SharedDefinitions\SharedDefinitions.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

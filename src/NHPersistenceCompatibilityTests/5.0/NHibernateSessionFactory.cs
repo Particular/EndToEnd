@@ -1,5 +1,6 @@
 ﻿using System;
 using Common;
+using DataDefinitions;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using NServiceBus.SagaPersisters.NHibernate.AutoPersistence;
