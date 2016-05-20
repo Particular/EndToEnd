@@ -1,5 +1,4 @@
-﻿using System;
-using Common;
+﻿using Common;
 using DataDefinitions;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
