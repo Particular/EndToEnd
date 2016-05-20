@@ -57,7 +57,6 @@
   <ItemGroup>
     <Compile Include="NHibernatePersistenceTests.cs" />
     <Compile Include="PersisterFacade.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestRun.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +67,9 @@
       <Project>{77ff50ae-a243-45ee-9598-0b0e870457c5}</Project>
       <Name>Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="..\SharedDefinitions\SharedDefinitions.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
