@@ -31,5 +31,17 @@ namespace PersistenceCompatibilityTests
 
             return (T) result;
         }
+
+        public T GetByCorrelationId<T>(string correlationPropertyName, object correlationPropertyValue)
+        {
+            var body = string.Empty;
+            var sagaDataType = typeof(T);
+
+            _rawPersister.Run(p => body = (string)p.GetByCorrelationProperty(sagaDataType.FullName, correlationPropertyName, correlationPropertyValue));
+
+            var result = JsonConvert.DeserializeObject(body, sagaDataType);
+
+            return (T)result;
+        }
     }
 }

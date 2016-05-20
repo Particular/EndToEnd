@@ -9,6 +9,7 @@
     <Import_RootNamespace>SharedDefinitions</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ObjectFetcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RawPersister.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestSagaData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestSagaDataWithList.cs" />

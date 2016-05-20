@@ -6,6 +6,10 @@ using NUnit.Framework;
 
 namespace PersistenceCompatibilityTests
 {
+    using System.Data.SqlClient;
+    using System.Threading.Tasks;
+    using Common;
+
     [TestFixture]
     public class NHibernatePersistenceTests
     {
@@ -24,6 +28,26 @@ namespace PersistenceCompatibilityTests
         }
 
         [TestCaseSource(nameof(GenerateTestCases))]
+        public void can_fetch_by_correlation_property(string sourceVersion, string destinationVersion)
+        {
+            var sourcePersister = CreatePersister(sourceVersion);
+            var destinationPersister = CreatePersister(destinationVersion);
+
+            var writeData = new TestSagaData
+            {
+                Id = Guid.NewGuid(),
+                Originator = "test-originator"
+            };
+
+            sourcePersister.Save(writeData, nameof(writeData.Originator), writeData.Originator);
+
+            var readByCorrelationProperty = destinationPersister.GetByCorrelationId<TestSagaData>(nameof(writeData.Originator), writeData.Originator);
+
+            Assert.AreEqual(writeData.Id, readByCorrelationProperty.Id);
+            Assert.AreEqual(writeData.Originator, readByCorrelationProperty.Originator);
+        }
+
+        [TestCaseSource(nameof(GenerateTestCases))]
         public void can_fetch_simple_saga_persisted_by_another_version(string sourceVersion, string destinationVersion)
         {
             var sourcePersister = persisterProvider.Get(sourceVersion);
@@ -35,12 +59,12 @@ namespace PersistenceCompatibilityTests
                 Originator = "test-originator"
             };
 
-            sourcePersister.Save(writeData, nameof(writeData.Id), writeData.Id.ToString());
+            sourcePersister.Save(writeData, nameof(writeData.Originator), writeData.Originator);
 
-            var readData = destinationPersister.Get<TestSagaData>(writeData.Id);
+            var readByGuid = destinationPersister.Get<TestSagaData>(writeData.Id);
 
-            Assert.AreEqual(writeData.Id, readData.Id);
-            Assert.AreEqual(writeData.Originator, readData.Originator);
+            Assert.AreEqual(writeData.Id, readByGuid.Id);
+            Assert.AreEqual(writeData.Originator, readByGuid.Originator);
         }
 
         [TestCaseSource(nameof(GenerateTestCases))]

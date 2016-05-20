@@ -7,7 +7,7 @@ using Version_7_0;
 
 public class Persister
 {
-    readonly SagaPersister persister;
+    readonly ISagaPersister persister;
 
     public Persister()
     {
@@ -31,10 +31,27 @@ public class Persister
 
     public T Get<T>(Guid id) where T : IContainSagaData
     {
-        var session = NHibernateSessionFactory.SessionFactory.OpenSession();
+        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        {
+            var data = persister.Get<T>(id, new TestSessionProvider(session), new ContextBag()).GetAwaiter().GetResult();
 
-        var data = persister.Get<T>(id, new TestSessionProvider(session), new ContextBag()).GetAwaiter().GetResult();
+            //Make sure all lazy properties are fetched before returning result
+            ObjectFetcher.Traverse(data, typeof(T));
 
-        return data;
+            return data;
+        }
+    }
+
+    public T GetByCorrelationProperty<T>(string correlationPropertyName, object correlationPropertyValue) where T : IContainSagaData
+    {
+        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        {
+            var data = persister.Get<T>(correlationPropertyName, correlationPropertyValue, new TestSessionProvider(session), new ContextBag()).GetAwaiter().GetResult();
+
+            //Make sure all lazy properties are fetched before returning result
+            ObjectFetcher.Traverse(data, typeof(T));
+
+            return data;
+        }
     }
 }
