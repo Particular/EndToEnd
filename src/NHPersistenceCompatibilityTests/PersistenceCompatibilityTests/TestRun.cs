@@ -14,7 +14,7 @@ namespace PersistenceCompatibilityTests
         {
             var packageInfo = new PackageInfo("NServiceBus.NHibernate.Tests", versionName);
             var package = packageResolver.GetLocalPackage(packageInfo);
-            var appDomainDescriptor = domainCreator.CreateDomain(BinDirectoryTemplate, package);
+            var appDomainDescriptor = domainCreator.CreateDomain(BinDirectoryTemplate, package, "NServiceBus.NHibernate");
             var runner = new AppDomainRunner<T>(appDomainDescriptor);
 
             appDomainDescriptors.Add(appDomainDescriptor);
@@ -22,7 +22,7 @@ namespace PersistenceCompatibilityTests
             return runner;
         }
 
-        [TestFixtureTearDown]
+        [TearDown]
         public void CleanUp()
         {
             UnloadAppDomains();
@@ -46,7 +46,7 @@ namespace PersistenceCompatibilityTests
             }
         }
 
-        [TestFixtureSetUp]
+        [SetUp]
         public void Setup()
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;

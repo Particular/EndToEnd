@@ -25,7 +25,7 @@ namespace Common
 
             throw new Exception($"Could not resolve test facade for interface {type.Name}");
         }
-        
+
         readonly AppDomainDescriptor appDomainDescriptor;
     }
 }

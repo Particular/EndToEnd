@@ -40,16 +40,12 @@ namespace Common
                 if (requestedAssembly.Name != shortName)
                     return null;
 
-                Debug.WriteLine("Redirecting assembly load of " + args.Name
-                                + ",\tloaded by " + (args.RequestingAssembly?.FullName ?? "(unknown)"));
-
-                requestedAssembly.Version = targetVersion;
-                requestedAssembly.SetPublicKeyToken(publicKeyToken);
-                requestedAssembly.CultureInfo = CultureInfo.InvariantCulture;
-
                 domain.AssemblyResolve -= Resolve;
 
-                return Assembly.Load(requestedAssembly);
+                // load the assembly without a specific version - this is safe since these directories
+                // are created at test time and we want to load the version that has been downloaded
+                // from Nuget
+                return Assembly.Load(requestedAssembly.Name);
             }
 
             readonly AppDomain domain;

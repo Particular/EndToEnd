@@ -8,11 +8,12 @@ namespace Common
     [Serializable]
     public class AppDomainCreator
     {
-        public AppDomainDescriptor CreateDomain(string startupDirTemplate, Package package)
+        public AppDomainDescriptor CreateDomain(string startupDirTemplate, Package package, string nugetPackageToInstall)
         {
             var startupDir = CreateStartupDir(startupDirTemplate, package.Version, Guid.NewGuid());
             
             CopyAssembliesToStarupDir(startupDir, package.Files);
+            InstallCorrectNugetVersion(startupDir, nugetPackageToInstall, package.Version);
 
             var appDomain = AppDomain.CreateDomain(
                 $"{package.Info.AssemblyName} {package.Version}",
@@ -32,6 +33,21 @@ namespace Common
                 ProjectAssemblyPath = Path.Combine(startupDir.FullName, package.Info.AssemblyName + ".dll"),
                 PackageVersion = package.Version
             };
+        }
+
+        private void InstallCorrectNugetVersion(DirectoryInfo startupDir, string packageName, string version)
+        {
+            var downloadNugetLocation = Path.Combine(startupDir.FullName, "..", packageName + version);
+
+            var helper = new NugetHelper();
+            helper.DownloadPackageTo(packageName, version, downloadNugetLocation);
+
+            var files = new DirectoryInfo(downloadNugetLocation).GetFiles("*.dll", SearchOption.AllDirectories)
+                // Don't overwrite the core NServiceBus libraries, we're testing package compatability
+                // so we don't want to change the core versions, just the downstream paackages.
+                .Where(f => f.Name != "NServiceBus.Core.dll")
+                .Where(f => f.Name != "NServiceBus.dll").ToArray();
+            CopyAssembliesToStarupDir(startupDir, files);
         }
 
         void SetupBindingRedirects(Package package, AppDomain appDomain)
@@ -56,7 +72,7 @@ namespace Common
             {
                 var newFilename = Path.Combine(destination.FullName, file.Name);
 
-                File.Copy(file.FullName, newFilename);
+                File.Copy(file.FullName, newFilename, true);
             }
         }
 

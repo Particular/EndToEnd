@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Common;
 
 namespace PersistenceCompatibilityTests
 {
@@ -50,7 +51,8 @@ namespace PersistenceCompatibilityTests
 
         static object[][] GenerateTestCases()
         {
-            var versions = new [] {"4.5", "5.0", "6.2", "7.0"};
+            var nugetHelper = new NugetHelper();
+            var versions = nugetHelper.GetPossibleVersionsFor("NServiceBus.NHibernate", minimumVersion: "4.5.0");
 
             var cases = from va in versions
                 from vb in versions
