@@ -7,16 +7,9 @@ using Version_5_0;
 
 public class Persister
 {
-    readonly NHibernateSessionFactory factory;
-
-    public Persister()
-    {
-        factory = new NHibernateSessionFactory();
-    }
-
     public void Save<T>(T data, string correlationPropertyName = null, string correlationPropertyValue = null) where T : IContainSagaData
     {
-        var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = factory.SessionFactory.Value };
+        var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = NHibernateSessionFactory.SessionFactory };
         var persister = new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
 
         ((IManageUnitsOfWork)unitOfWorkManager).Begin();
@@ -28,7 +21,7 @@ public class Persister
 
     public T Get<T>(Guid id) where T : IContainSagaData
     {
-        var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = factory.SessionFactory.Value };
+        var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = NHibernateSessionFactory.SessionFactory };
         var persister = new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
 
         var data = persister.Get<T>(id);

@@ -9,12 +9,12 @@ namespace Version_4_5
 {
     public class NHibernateSessionFactory
     {
-        public NHibernateSessionFactory()
+        static NHibernateSessionFactory()
         {
-            SessionFactory = new Lazy<ISessionFactory>(Init);
+            SessionFactory = Init();
         }
 
-        ISessionFactory Init()
+        static ISessionFactory Init()
         {
             var configuration = new NHibernate.Cfg.Configuration().AddProperties(NHibernateConnectionInfo.Settings);
             var modelMapper = new SagaModelMapper(new[]
@@ -31,6 +31,6 @@ namespace Version_4_5
             return configuration.BuildSessionFactory();
         }
 
-        public Lazy<ISessionFactory> SessionFactory { get; }
+        public static ISessionFactory SessionFactory { get; }
     }
 }

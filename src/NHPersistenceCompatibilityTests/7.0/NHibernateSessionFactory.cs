@@ -11,12 +11,12 @@ namespace Version_7_0
 {
     public class NHibernateSessionFactory
     {
-        public NHibernateSessionFactory()
+        static NHibernateSessionFactory()
         {
-            SessionFactory = new Lazy<ISessionFactory>(Init);
+            SessionFactory = Init();
         }
 
-        ISessionFactory Init()
+        static ISessionFactory Init()
         {
             var configuration = new Configuration().AddProperties(NHibernateConnectionInfo.Settings);
 
@@ -25,7 +25,6 @@ namespace Version_7_0
                 typeof(TestSaga),
                 typeof(TestSagaWithList),
                 typeof(TestSagaWithComposite),
-
             };
 
             types.ForEach(t => AddMapping(configuration, t));
@@ -35,7 +34,7 @@ namespace Version_7_0
             return configuration.BuildSessionFactory();
         }
 
-        void AddMapping(Configuration configuration, Type type)
+        static void AddMapping(Configuration configuration, Type type)
         {
             var metaModel = new SagaMetadataCollection();
             metaModel.Initialize(new[] { type });
@@ -45,6 +44,6 @@ namespace Version_7_0
             configuration.AddMapping(mapper.Compile());
         }
 
-        public Lazy<ISessionFactory> SessionFactory { get; }
+        public static ISessionFactory SessionFactory { get; }
     }
 }

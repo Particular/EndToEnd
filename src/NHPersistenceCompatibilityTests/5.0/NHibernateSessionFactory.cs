@@ -1,5 +1,4 @@
-﻿using System;
-using Common;
+﻿using Common;
 using DataDefinitions;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
@@ -9,12 +8,12 @@ namespace Version_5_0
 {
     public class NHibernateSessionFactory
     {
-        public NHibernateSessionFactory()
+        static NHibernateSessionFactory()
         {
-            SessionFactory = new Lazy<ISessionFactory>(Init);
+            SessionFactory = Init();
         }
 
-        ISessionFactory Init()
+        static ISessionFactory Init()
         {
             var configuration = new NHibernate.Cfg.Configuration().AddProperties(NHibernateConnectionInfo.Settings);
             var modelMapper = new SagaModelMapper(new[]
@@ -31,6 +30,6 @@ namespace Version_5_0
             return configuration.BuildSessionFactory();
         }
 
-        public Lazy<ISessionFactory> SessionFactory { get; }
+        public static ISessionFactory SessionFactory { get; }
     }
 }
