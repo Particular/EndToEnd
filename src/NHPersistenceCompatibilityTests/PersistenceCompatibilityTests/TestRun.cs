@@ -52,7 +52,7 @@ namespace PersistenceCompatibilityTests
         }
 
         [OneTimeSetUp]
-        public void Setup()
+        public void OneTimeSetup()
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
             appDomainDescriptors = new List<AppDomainDescriptor>();

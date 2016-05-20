@@ -28,37 +28,26 @@ public class Persister
             var data = persister.Get<T>(id);
 
             //Make sure all lazy properties are fetched before returning result
-            Fetcher.Traverse(data, typeof (T));
+            ObjectFetcher.Traverse(data, typeof (T));
 
             return data;
         }
     }
 
-    static class Fetcher
+    public T GetByCorrelationProperty<T>(string correlationPropertyName, object correlationPropertyValue) where T : IContainSagaData
     {
-        public static void Traverse(object instance, Type instanceType)
+        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
         {
-            foreach (var propertyInfo in instanceType.GetProperties())
-            {
-                if (ReferenceEquals(propertyInfo.DeclaringType, typeof (object)))
-                {
-                    continue;
-                }
+            var persister = (ISagaPersister)new SagaPersister(new TestSessionProvider(session));
 
-                if (propertyInfo.PropertyType.GetInterface(typeof (IEnumerable<>).FullName) != null)
-                {
-                    propertyInfo.GetValue(instance, null)?.ToString();
-                }
-                else
-                {
-                    var propertyValue = propertyInfo.GetValue(instance, null);
+            var data = persister.Get<T>(correlationPropertyName, correlationPropertyValue);
 
-                    if (propertyValue != null)
-                    {
-                        Traverse(propertyValue, propertyInfo.PropertyType);
-                    }
-                }
-            }
+            //Make sure all lazy properties are fetched before returning result
+            ObjectFetcher.Traverse(data, typeof(T));
+
+            return data;
         }
     }
+
+   
 }
