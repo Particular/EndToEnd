@@ -16,7 +16,10 @@ namespace PersistenceCompatibilityTests
         [SetUp]
         public async Task Setup()
         {
-            var dropAllTables = @"exec sp_MSforeachtable ""declare @name nvarchar(max); set @name = parsename('?', 1); exec sp_MSdropconstraints @name"";
+            var dropAllTables = @"IF  NOT EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'persistencetests')
+                                  CREATE DATABASE [persistencetests]
+                                    
+                                  exec sp_MSforeachtable ""declare @name nvarchar(max); set @name = parsename('?', 1); exec sp_MSdropconstraints @name"";
                                   exec sp_MSforeachtable ""drop table ?""; ";
 
             using (var connection = new SqlConnection(NHibernateConnectionInfo.ConnectionString))
