@@ -10,8 +10,8 @@ namespace PersistenceCompatibilityTests
     using System.Threading.Tasks;
     using Common;
 
-    [TestFixture]
-    public class NHibernatePersistenceTests
+    [TestFixture]    
+    public class SavingSagaTests
     {
         [OneTimeSetUp]
         public void Setup()
