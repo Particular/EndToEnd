@@ -24,7 +24,31 @@ public class Persister
         var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = NHibernateSessionFactory.SessionFactory };
         var persister = new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
 
+        ((IManageUnitsOfWork)unitOfWorkManager).Begin();
+
         var data = persister.Get<T>(id);
+
+        //Make sure all lazy properties are fetched before returning result
+        ObjectFetcher.Traverse(data, typeof(T));
+
+        ((IManageUnitsOfWork)unitOfWorkManager).End();
+
+        return data;
+    }
+
+    public T GetByCorrelationProperty<T>(string correlationPropertyName, object correlationPropertyValue) where T : IContainSagaData
+    {
+        var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = NHibernateSessionFactory.SessionFactory };
+        var persister = (ISagaPersister)new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
+
+        ((IManageUnitsOfWork)unitOfWorkManager).Begin();
+
+        var data = persister.Get<T>(correlationPropertyName, correlationPropertyValue);
+
+        //Make sure all lazy properties are fetched before returning result
+        ObjectFetcher.Traverse(data, typeof(T));
+
+        ((IManageUnitsOfWork)unitOfWorkManager).End();
 
         return data;
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Newtonsoft.Json;
 
 public class RawPersister : MarshalByRefObject, IRawPersister
@@ -8,9 +9,8 @@ public class RawPersister : MarshalByRefObject, IRawPersister
         var sagaDataType = Type.GetType(typeFullName);
         var sagaData = JsonConvert.DeserializeObject(body, sagaDataType);
 
-        var persister = Activator.CreateInstance(Type.GetType("Persister"));
-
-        var saveMethod = persister.GetType().GetMethod(nameof(Save)).MakeGenericMethod(sagaDataType);
+        var persister = CreatePersisterInstance();
+        var saveMethod = GetMethod(persister, nameof(Save), sagaDataType);
 
         saveMethod.Invoke(persister, new [] { sagaData, correlationPropertyName, correlationPropertyValue });
     }
@@ -19,14 +19,33 @@ public class RawPersister : MarshalByRefObject, IRawPersister
     {
         var sagaDataType = Type.GetType(typeFullName);
 
-        var persister = Activator.CreateInstance(Type.GetType("Persister"));
-
-        var getMethod = persister.GetType().GetMethod(nameof(Get)).MakeGenericMethod(sagaDataType);
+        var persister = CreatePersisterInstance();
+        var getMethod = GetMethod(persister, nameof(Get), sagaDataType);
 
         var result = getMethod.Invoke(persister, new object[] { id });
 
-        var body = JsonConvert.SerializeObject(result);
+        return JsonConvert.SerializeObject(result);
+    }
 
-        return body;
+    public object GetByCorrelationProperty(string typeFullName, string correlationPropertyName, object correlationPropertyValue)
+    {
+        var sagaDataType = Type.GetType(typeFullName);
+
+        var persister = CreatePersisterInstance();
+        var getMethod = GetMethod(persister, nameof(GetByCorrelationProperty), sagaDataType);
+
+        var result = getMethod.Invoke(persister, new[] { correlationPropertyName, correlationPropertyValue });
+
+        return JsonConvert.SerializeObject(result);
+    }
+
+    static MethodInfo GetMethod(object persister, string methodName, Type sagaDataType)
+    {
+        return persister.GetType().GetMethod(methodName).MakeGenericMethod(sagaDataType);
+    }
+
+    static object CreatePersisterInstance()
+    {
+        return Activator.CreateInstance(Type.GetType("Persister"));
     }
 }
