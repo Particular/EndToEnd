@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NServiceBus.Saga;
 using NServiceBus.SagaPersisters.NHibernate;
 using Version_6_2;
@@ -14,6 +13,18 @@ public class Persister
             var persister = new SagaPersister(new TestSessionProvider(session));
 
             persister.Save(data);
+
+            session.Flush();
+        }
+    }
+
+    public void Update<T>(T data) where T : IContainSagaData
+    {
+        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        {
+            var persister = new SagaPersister(new TestSessionProvider(session));
+
+            persister.Update(data);
 
             session.Flush();
         }

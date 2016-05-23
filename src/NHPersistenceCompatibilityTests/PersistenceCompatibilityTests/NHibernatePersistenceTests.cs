@@ -36,7 +36,8 @@ namespace PersistenceCompatibilityTests
             var writeData = new TestSagaData
             {
                 Id = Guid.NewGuid(),
-                Originator = "test-originator"
+                Originator = "test-originator",
+                SomeValue = "test"
             };
 
             sourcePersister.Save(writeData, nameof(writeData.Originator), writeData.Originator);
@@ -45,6 +46,7 @@ namespace PersistenceCompatibilityTests
 
             Assert.AreEqual(writeData.Id, readByCorrelationProperty.Id);
             Assert.AreEqual(writeData.Originator, readByCorrelationProperty.Originator);
+            Assert.AreEqual(writeData.SomeValue, readByCorrelationProperty.SomeValue);
         }
 
         [TestCaseSource(nameof(GenerateTestCases))]
@@ -56,7 +58,8 @@ namespace PersistenceCompatibilityTests
             var writeData = new TestSagaData
             {
                 Id = Guid.NewGuid(),
-                Originator = "test-originator"
+                Originator = "test-originator", 
+                SomeValue = "test"
             };
 
             sourcePersister.Save(writeData, nameof(writeData.Originator), writeData.Originator);
@@ -65,6 +68,7 @@ namespace PersistenceCompatibilityTests
 
             Assert.AreEqual(writeData.Id, readByGuid.Id);
             Assert.AreEqual(writeData.Originator, readByGuid.Originator);
+            Assert.AreEqual("test", readByGuid.SomeValue);
         }
 
         [TestCaseSource(nameof(GenerateTestCases))]

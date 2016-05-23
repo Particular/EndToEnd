@@ -11,5 +11,6 @@ namespace DataDefinitions
 #endif
         public virtual string Originator { get; set; }
         public virtual string OriginalMessageId { get; set; }
+        public virtual string SomeValue { get; set; }
     }
 }

@@ -19,6 +19,18 @@ public class Persister
         ((IManageUnitsOfWork)unitOfWorkManager).End();
     }
 
+    public void Update<T>(T data) where T : IContainSagaData
+    {
+        var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = NHibernateSessionFactory.SessionFactory };
+        var persister = new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
+
+        ((IManageUnitsOfWork)unitOfWorkManager).Begin();
+
+        persister.Update(data);
+
+        ((IManageUnitsOfWork)unitOfWorkManager).End();
+    }
+
     public T Get<T>(Guid id) where T : IContainSagaData
     {
         var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = NHibernateSessionFactory.SessionFactory };

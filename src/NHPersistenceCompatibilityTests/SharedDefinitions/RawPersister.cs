@@ -15,6 +15,17 @@ public class RawPersister : MarshalByRefObject, IRawPersister
         saveMethod.Invoke(persister, new [] { sagaData, correlationPropertyName, correlationPropertyValue });
     }
 
+    public void Update(string typeFullName, string body)
+    {
+        var sagaDataType = Type.GetType(typeFullName);
+        var sagaData = JsonConvert.DeserializeObject(body, sagaDataType);
+
+        var persister = CreatePersisterInstance();
+        var updateMethod = GetMethod(persister, nameof(Update), sagaDataType);
+
+        updateMethod.Invoke(persister, new[] { sagaData });
+    }
+
     public object Get(string typeFullName, Guid id)
     {
         var sagaDataType = Type.GetType(typeFullName);
