@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DataDefinitions;
 using NUnit.Framework;
+using Common;
 
 namespace PersistenceCompatibilityTests
 {
@@ -113,17 +114,19 @@ namespace PersistenceCompatibilityTests
             CollectionAssert.AreEqual(writeData.Composite.Value, readData.Composite.Value);
         }
 
-        static string[] NHibernatePackageVersions => new[] { "4.5", "5.0", "6.2", "7.0" };
-
         static object[][] GenerateTestCases()
         {
+            var nuget = new NugetHelper();
+            NHibernatePackageVersions = nuget.GetPossibleVersionsFor("NServiceBus.NHibernate", "4.5.0");
+
             var cases = from va in NHibernatePackageVersions
                         from vb in NHibernatePackageVersions
-                        select new object[] {va, vb};
+                        select new object[] { va, vb };
 
             return cases.ToArray();
         }
 
         PersisterProvider persisterProvider;
+        private static IEnumerable<string> NHibernatePackageVersions;
     }
 }

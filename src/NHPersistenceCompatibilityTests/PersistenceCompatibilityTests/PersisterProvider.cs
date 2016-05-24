@@ -2,22 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Common;
+using System.Linq;
 
 namespace PersistenceCompatibilityTests
 {
     public class PersisterProvider
     {
-        public void Initialize(string[] nHibernatePackageVersions)
+        // Todo: This should probably not be hardcoded to NHibernate. This class should be reusable
+        // when testing different persisters.
+        public void Initialize(IEnumerable<string> nHibernatePackageVersions)
         {
             appDomainDescriptors = new List<AppDomainDescriptor>();
             cachedPersisterFacades = new Dictionary<string, PersisterFacade>();
 
-            foreach (var version in nHibernatePackageVersions)
+            foreach (var version in nHibernatePackageVersions.Where(nhVersion => !cachedPersisterFacades.ContainsKey(nhVersion)))
             {
                 var appDomain = CreateAppDomain(version);
 
                 appDomainDescriptors.Add(appDomain);
-
 
                 var runner = new AppDomainRunner<IRawPersister>(appDomain);
                 var facade = new PersisterFacade(runner);
@@ -34,7 +36,7 @@ namespace PersistenceCompatibilityTests
 
             var packageInfo = new PackageInfo("NServiceBus.NHibernate.Tests", versionName);
             var package = packageResolver.GetLocalPackage(packageInfo);
-            var appDomainDescriptor = domainCreator.CreateDomain(package);
+            var appDomainDescriptor = domainCreator.CreateDomain(package, "NServiceBus.NHibernate");
            
             return appDomainDescriptor;
         }

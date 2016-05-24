@@ -13,9 +13,9 @@ namespace Common
             this.appDomain = appDomain;
         }
 
-        public void AddAssemblyRedirect(string shortName, Version targetVersion, byte[] publicKeyToken)
+        public void AddAssemblyRedirect(string shortName)
         {
-            var resolver = new BindingRedirectResolver(appDomain, shortName, targetVersion, publicKeyToken);
+            var resolver = new BindingRedirectResolver(appDomain, shortName);
 
             appDomain.AssemblyResolve += resolver.Resolve;
         }
@@ -25,12 +25,10 @@ namespace Common
         [Serializable]
         class BindingRedirectResolver
         {
-            public BindingRedirectResolver(AppDomain domain, string shortName, Version targetVersion, byte[] publicKeyToken)
+            public BindingRedirectResolver(AppDomain domain, string shortName)
             {
                 this.domain = domain;
                 this.shortName = shortName;
-                this.targetVersion = targetVersion;
-                this.publicKeyToken = publicKeyToken;
             }
 
             public Assembly Resolve(object sender, ResolveEventArgs args)
@@ -40,21 +38,16 @@ namespace Common
                 if (requestedAssembly.Name != shortName)
                     return null;
 
-                Trace.WriteLine($"Redirecting assembly load of {args.Name},\tloaded by " + (args.RequestingAssembly?.FullName ?? "(unknown)"));
-
-                requestedAssembly.Version = targetVersion;
-                requestedAssembly.SetPublicKeyToken(publicKeyToken);
-                requestedAssembly.CultureInfo = CultureInfo.InvariantCulture;
-
                 domain.AssemblyResolve -= Resolve;
 
-                return Assembly.Load(requestedAssembly);
+                // load the assembly without a specific version - this is safe since these directories
+                // are created at test time and we want to load the version that has been downloaded
+                // from Nuget
+                return Assembly.Load(requestedAssembly.Name);
             }
 
             AppDomain domain;
-            byte[] publicKeyToken;
             string shortName;
-            Version targetVersion;
         }
     }
 }

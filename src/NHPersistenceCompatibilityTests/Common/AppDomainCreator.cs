@@ -8,11 +8,12 @@ namespace Common
     [Serializable]
     public class AppDomainCreator
     {
-        public AppDomainDescriptor CreateDomain(Package package)
+        public AppDomainDescriptor CreateDomain(Package package, string nugetPackageToInstall)
         {
             var startupDir = CreateStartupDir(package.Version, Guid.NewGuid());
             
-            CopyAssembliesToStarupDir(startupDir, package.Files);
+            CopyAssembliesToStartupDir(startupDir, package.Files);
+            InstallCorrectNugetVersion(startupDir, nugetPackageToInstall, package.Version);
 
             var appDomain = AppDomain.CreateDomain(
                 $"{package.Info.AssemblyName} {package.Version}",
@@ -34,6 +35,22 @@ namespace Common
             };
         }
 
+        private void InstallCorrectNugetVersion(DirectoryInfo startupDir, string packageName, string version)
+        {
+            var downloadNugetLocation = Path.Combine(startupDir.FullName, "..", packageName + version);
+
+            var helper = new NugetHelper();
+            helper.DownloadPackageTo(packageName, version, downloadNugetLocation);
+
+            var files = new DirectoryInfo(downloadNugetLocation).GetFiles("*.dll", SearchOption.AllDirectories)
+                // Don't overwrite the core NServiceBus libraries, we're testing package compatability
+                // so we don't want to change the core versions, just the downstream paackages.
+                .Where(f => f.Name != "NServiceBus.Core.dll")
+                .Where(f => f.Name != "NServiceBus.dll").ToArray();
+
+            CopyAssembliesToStartupDir(startupDir, files);
+        }
+
         void SetupBindingRedirects(Package package, AppDomain appDomain)
         {
             var assemblyRedirector = new CustomAssemblyLoader(appDomain);
@@ -42,21 +59,19 @@ namespace Common
             foreach (var assembly in assemblies)
             {
                 var assemblyName = AssemblyName.GetAssemblyName(assembly.FullName);
-                var token = assemblyName.GetPublicKeyToken();
                 var shortName = assemblyName.Name;
-                var version = assemblyName.Version;
 
-                assemblyRedirector.AddAssemblyRedirect(shortName, version, token);
+                assemblyRedirector.AddAssemblyRedirect(shortName);
             }
         }
 
-        void CopyAssembliesToStarupDir(DirectoryInfo destination, FileInfo[] baseFiles)
+        void CopyAssembliesToStartupDir(DirectoryInfo destination, FileInfo[] baseFiles)
         {
             foreach (var file in baseFiles)
             {
                 var newFilename = Path.Combine(destination.FullName, file.Name);
 
-                File.Copy(file.FullName, newFilename);
+                File.Copy(file.FullName, newFilename, true);
             }
         }
 
