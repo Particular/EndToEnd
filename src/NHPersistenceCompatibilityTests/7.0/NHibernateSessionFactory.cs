@@ -11,12 +11,7 @@ namespace Version_7_0
 {
     public class NHibernateSessionFactory
     {
-        static NHibernateSessionFactory()
-        {
-            SessionFactory = Init();
-        }
-
-        static ISessionFactory Init()
+        public static ISessionFactory Create()
         {
             var configuration = new Configuration().AddProperties(NHibernateConnectionInfo.Settings);
 
@@ -31,7 +26,9 @@ namespace Version_7_0
 
             new SchemaUpdate(configuration).Execute(false, true);
 
-            return configuration.BuildSessionFactory();
+            var sessionFactory = configuration.BuildSessionFactory();
+
+            return sessionFactory;
         }
 
         static void AddMapping(Configuration configuration, Type type)
@@ -43,7 +40,5 @@ namespace Version_7_0
 
             configuration.AddMapping(mapper.Compile());
         }
-
-        public static ISessionFactory SessionFactory { get; }
     }
 }

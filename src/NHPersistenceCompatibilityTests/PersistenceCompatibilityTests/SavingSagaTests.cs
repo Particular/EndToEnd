@@ -6,32 +6,34 @@ using NUnit.Framework;
 
 namespace PersistenceCompatibilityTests
 {
-    using System.Data.SqlClient;
-    using System.Threading.Tasks;
-    using Common;
-
     [TestFixture]    
     public class SavingSagaTests
     {
+
         [OneTimeSetUp]
-        public void Setup()
+        public void OneTimeSetup()
         {
-            Database.Cleanup();
             persisterProvider = new PersisterProvider();
             persisterProvider.Initialize(NHibernatePackageVersions);
         }
 
         [OneTimeTearDown]
-        public void CleanUp()
+        public void OneTimeCleanUp()
         {
             persisterProvider.Dispose();
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            Database.Cleanup();
         }
 
         [TestCaseSource(nameof(GenerateTestCases))]
         public void can_fetch_by_correlation_property(string sourceVersion, string destinationVersion)
         {
-            var sourcePersister = CreatePersister(sourceVersion);
-            var destinationPersister = CreatePersister(destinationVersion);
+            var sourcePersister = persisterProvider.Get(sourceVersion);
+            var destinationPersister = persisterProvider.Get(destinationVersion);
 
             var writeData = new TestSagaData
             {

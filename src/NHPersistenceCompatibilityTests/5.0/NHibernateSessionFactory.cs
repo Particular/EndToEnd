@@ -8,12 +8,7 @@ namespace Version_5_0
 {
     public class NHibernateSessionFactory
     {
-        static NHibernateSessionFactory()
-        {
-            SessionFactory = Init();
-        }
-
-        static ISessionFactory Init()
+       public static ISessionFactory Create()
         {
             var configuration = new NHibernate.Cfg.Configuration().AddProperties(NHibernateConnectionInfo.Settings);
             var modelMapper = new SagaModelMapper(new[]
@@ -29,7 +24,5 @@ namespace Version_5_0
 
             return configuration.BuildSessionFactory();
         }
-
-        public static ISessionFactory SessionFactory { get; }
     }
 }

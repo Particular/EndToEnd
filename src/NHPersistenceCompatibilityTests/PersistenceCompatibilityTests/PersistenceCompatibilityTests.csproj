@@ -56,14 +56,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database.cs" />
-    <Compile Include="NHibernatePersistenceTests.cs" />
-    <Compile Include="PersisterFacade.cs" />
+    <Compile Include="Util\Database.cs" />
     <Compile Include="PersisterProvider.cs" />
     <Compile Include="SavingSagaTests.cs" />
     <Compile Include="UpdatingSagaTests.cs" />
     <Compile Include="Util\PersisterFacade.cs" />
-    <Compile Include="Util\TestRun.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

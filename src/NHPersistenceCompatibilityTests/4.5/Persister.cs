@@ -9,59 +9,71 @@ public class Persister
 {
     public void Save<T>(T data, string correlationPropertyName = null, string correlationPropertyValue = null) where T : IContainSagaData
     {
-        var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = NHibernateSessionFactory.SessionFactory };
-        var persister = new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        {
+            var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = sessionFactory };
+            var persister = new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
 
-        ((IManageUnitsOfWork)unitOfWorkManager).Begin();
+            ((IManageUnitsOfWork)unitOfWorkManager).Begin();
 
-        persister.Save(data);
+            persister.Save(data);
 
-        ((IManageUnitsOfWork)unitOfWorkManager).End();
+            ((IManageUnitsOfWork)unitOfWorkManager).End();
+        }
     }
 
     public void Update<T>(T data) where T : IContainSagaData
     {
-        var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = NHibernateSessionFactory.SessionFactory };
-        var persister = new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        {
+            var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = sessionFactory};
+            var persister = new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
 
-        ((IManageUnitsOfWork)unitOfWorkManager).Begin();
+            ((IManageUnitsOfWork)unitOfWorkManager).Begin();
 
-        persister.Update(data);
+            persister.Update(data);
 
-        ((IManageUnitsOfWork)unitOfWorkManager).End();
+            ((IManageUnitsOfWork)unitOfWorkManager).End();
+        }
     }
 
     public T Get<T>(Guid id) where T : IContainSagaData
     {
-        var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = NHibernateSessionFactory.SessionFactory };
-        var persister = new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        {
+            var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = sessionFactory };
+            var persister = new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
 
-        ((IManageUnitsOfWork)unitOfWorkManager).Begin();
+            ((IManageUnitsOfWork)unitOfWorkManager).Begin();
 
-        var data = persister.Get<T>(id);
+            var data = persister.Get<T>(id);
 
-        //Make sure all lazy properties are fetched before returning result
-        ObjectFetcher.Traverse(data, typeof(T));
+            //Make sure all lazy properties are fetched before returning result
+            ObjectFetcher.Traverse(data, typeof(T));
 
-        ((IManageUnitsOfWork)unitOfWorkManager).End();
+            ((IManageUnitsOfWork)unitOfWorkManager).End();
 
-        return data;
+            return data;
+        }
     }
 
     public T GetByCorrelationProperty<T>(string correlationPropertyName, object correlationPropertyValue) where T : IContainSagaData
     {
-        var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = NHibernateSessionFactory.SessionFactory };
-        var persister = (ISagaPersister)new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        {
+            var unitOfWorkManager = new UnitOfWorkManager { SessionFactory = sessionFactory };
+            var persister = (ISagaPersister)new SagaPersister { UnitOfWorkManager = unitOfWorkManager };
 
-        ((IManageUnitsOfWork)unitOfWorkManager).Begin();
+            ((IManageUnitsOfWork)unitOfWorkManager).Begin();
 
-        var data = persister.Get<T>(correlationPropertyName, correlationPropertyValue);
+            var data = persister.Get<T>(correlationPropertyName, correlationPropertyValue);
 
-        //Make sure all lazy properties are fetched before returning result
-        ObjectFetcher.Traverse(data, typeof(T));
+            //Make sure all lazy properties are fetched before returning result
+            ObjectFetcher.Traverse(data, typeof(T));
 
-        ((IManageUnitsOfWork)unitOfWorkManager).End();
+            ((IManageUnitsOfWork)unitOfWorkManager).End();
 
-        return data;
+            return data;
+        }
     }
 }

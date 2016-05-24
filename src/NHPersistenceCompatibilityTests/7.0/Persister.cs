@@ -19,7 +19,8 @@ public class Persister
     {
         var correlationProperty = new SagaCorrelationProperty(correlationPropertyName, correlationPropertyValue);
 
-        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        using (var session = sessionFactory.OpenSession())
         {
             persister.Save(data, correlationProperty, new TestSessionProvider(session), new ContextBag())
                 .GetAwaiter()
@@ -31,7 +32,8 @@ public class Persister
 
     public void Update<T>(T data) where T : IContainSagaData
     {
-        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        using (var session = sessionFactory.OpenSession())
         {
             persister.Update(data, new TestSessionProvider(session), new ContextBag())
                 .GetAwaiter()
@@ -43,7 +45,8 @@ public class Persister
 
     public T Get<T>(Guid id) where T : IContainSagaData
     {
-        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        using (var session = sessionFactory.OpenSession())
         {
             var data = persister.Get<T>(id, new TestSessionProvider(session), new ContextBag()).GetAwaiter().GetResult();
 
@@ -56,7 +59,8 @@ public class Persister
 
     public T GetByCorrelationProperty<T>(string correlationPropertyName, object correlationPropertyValue) where T : IContainSagaData
     {
-        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        using (var session = sessionFactory.OpenSession())
         {
             var data = persister.Get<T>(correlationPropertyName, correlationPropertyValue, new TestSessionProvider(session), new ContextBag()).GetAwaiter().GetResult();
 

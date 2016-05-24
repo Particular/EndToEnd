@@ -2,41 +2,37 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.SqlClient;
     using System.Linq;
-    using System.Threading.Tasks;
-    using Common;
     using DataDefinitions;
     using NUnit.Framework;
 
     [TestFixture]
-    public class UpdatingSagaTests : TestRun
+    public class UpdatingSagaTests
     {
-        [SetUp]
-        public async Task Setup()
+        [OneTimeSetUp]
+        public void OneTimeSetup()
         {
-            var dropAllTables = @"IF  NOT EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'persistencetests')
-                                  CREATE DATABASE [persistencetests]
-                                    
-                                  exec sp_MSforeachtable ""declare @name nvarchar(max); set @name = parsename('?', 1); exec sp_MSdropconstraints @name"";
-                                  exec sp_MSforeachtable ""drop table ?""; ";
+            persisterProvider = new PersisterProvider();
+            persisterProvider.Initialize(NHibernatePackageVersions);
+        }
 
-            using (var connection = new SqlConnection(NHibernateConnectionInfo.ConnectionString))
-            {
-                await connection.OpenAsync().ConfigureAwait(false);
+        [OneTimeTearDown]
+        public void CleanUp()
+        {
+            persisterProvider.Dispose();
+        }
 
-                using (var dropAllTablesCommand = new SqlCommand(dropAllTables, connection))
-                {
-                    await dropAllTablesCommand.ExecuteNonQueryAsync().ConfigureAwait(false);
-                }
-            }
+        [SetUp]
+        public void Setup()
+        {
+            Database.Cleanup();
         }
 
         [TestCaseSource(nameof(GenerateTestCases))]
         public void can_fetch_updated_saga_by_correlation_property(string sourceVersion, string destinationVersion)
         {
-            var sourcePersister = CreatePersister(sourceVersion);
-            var destinationPersister = CreatePersister(destinationVersion);
+            var sourcePersister = persisterProvider.Get(sourceVersion);
+            var destinationPersister = persisterProvider.Get(destinationVersion);
 
             var writeData = new TestSagaData
             {
@@ -60,8 +56,8 @@
         [TestCaseSource(nameof(GenerateTestCases))]
         public void can_fetch_simple_saga_updated_by_another_version(string sourceVersion, string destinationVersion)
         {
-            var sourcePersister = CreatePersister(sourceVersion);
-            var destinationPersister = CreatePersister(destinationVersion);
+            var sourcePersister = persisterProvider.Get(sourceVersion);
+            var destinationPersister = persisterProvider.Get(destinationVersion);
 
             var writeData = new TestSagaData
             {
@@ -85,8 +81,8 @@
         [TestCaseSource(nameof(GenerateTestCases))]
         public void can_fetch_saga_with_list_updated_by_another_version(string sourceVersion, string destinationVersion)
         {
-            var sourcePersister = CreatePersister(sourceVersion);
-            var destinationPersister = CreatePersister(destinationVersion);
+            var sourcePersister = persisterProvider.Get(sourceVersion);
+            var destinationPersister = persisterProvider.Get(destinationVersion);
 
             var writeData = new TestSagaDataWithList
             {
@@ -109,8 +105,8 @@
         [TestCaseSource(nameof(GenerateTestCases))]
         public void can_fetch_composite_saga_updated_by_another_version(string sourceVersion, string destinationVersion)
         {
-            var sourcePersister = CreatePersister(sourceVersion);
-            var destinationPersister = CreatePersister(destinationVersion);
+            var sourcePersister = persisterProvider.Get(sourceVersion);
+            var destinationPersister = persisterProvider.Get(destinationVersion);
 
             var writeData = new TestSagaDataWithComposite
             {
@@ -129,15 +125,17 @@
             CollectionAssert.AreEqual("updated", readData.Composite.Value);
         }
 
+        static string[] NHibernatePackageVersions => new[] { "4.5", "5.0", "6.2", "7.0" };
+
         static object[][] GenerateTestCases()
         {
-            var versions = new[] { "4.5", "5.0", "6.2", "7.0" };
-
-            var cases = from va in versions
-                        from vb in versions
+            var cases = from va in NHibernatePackageVersions
+                        from vb in NHibernatePackageVersions
                         select new object[] { va, vb };
 
             return cases.ToArray();
         }
+
+        PersisterProvider persisterProvider;
     }
 }

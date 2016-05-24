@@ -8,7 +8,8 @@ public class Persister
     public void Save<T>(T data, string correlationPropertyName = null, string correlationPropertyValue = null)
         where T : IContainSagaData
     {
-        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        using (var session = sessionFactory.OpenSession())
         {
             var persister = new SagaPersister(new TestSessionProvider(session));
 
@@ -20,7 +21,8 @@ public class Persister
 
     public void Update<T>(T data) where T : IContainSagaData
     {
-        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        using (var session = sessionFactory.OpenSession())
         {
             var persister = new SagaPersister(new TestSessionProvider(session));
 
@@ -32,7 +34,8 @@ public class Persister
 
     public T Get<T>(Guid id) where T : IContainSagaData
     {
-        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        using (var session = sessionFactory.OpenSession())
         {
             var persister = new SagaPersister(new TestSessionProvider(session));
 
@@ -47,7 +50,8 @@ public class Persister
 
     public T GetByCorrelationProperty<T>(string correlationPropertyName, object correlationPropertyValue) where T : IContainSagaData
     {
-        using (var session = NHibernateSessionFactory.SessionFactory.OpenSession())
+        using (var sessionFactory = NHibernateSessionFactory.Create())
+        using (var session = sessionFactory.OpenSession())
         {
             var persister = (ISagaPersister)new SagaPersister(new TestSessionProvider(session));
 
