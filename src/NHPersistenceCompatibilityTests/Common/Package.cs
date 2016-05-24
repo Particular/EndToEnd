@@ -43,6 +43,14 @@ namespace Common
             {
                 return "5.0";
             }
+            else if (Version.StartsWith("6.0"))
+            {
+                return "6.0";
+            }
+            else if (Version.StartsWith("6.1.0"))
+            {
+                return "6.1.0";
+            }
             else if (Version.StartsWith("6"))
             {
                 return "6.2";
