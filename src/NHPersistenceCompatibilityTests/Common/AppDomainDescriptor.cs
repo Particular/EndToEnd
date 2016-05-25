@@ -6,6 +6,7 @@ namespace Common
     {
         public AppDomain AppDomain { get; set; }
         public string ProjectAssemblyPath { get; set; }
+        public string NugetDownloadPath { get; set; }
         public string PackageVersion { get; set; }
 
         public void Dispose()

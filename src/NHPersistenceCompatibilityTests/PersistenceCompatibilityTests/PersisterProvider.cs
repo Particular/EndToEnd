@@ -43,6 +43,12 @@ namespace PersistenceCompatibilityTests
 
         public void Dispose()
         {
+            var nugetFolders = appDomainDescriptors.Select(descriptor => descriptor.NugetDownloadPath).Distinct();
+            foreach (var nugetFolder in nugetFolders)
+            {
+                new DirectoryInfo(nugetFolder)?.Delete(true);
+            }
+
             foreach (var appDomainDescriptor in appDomainDescriptors)
             {
                 appDomainDescriptor.Dispose();

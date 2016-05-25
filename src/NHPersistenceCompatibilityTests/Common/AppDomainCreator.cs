@@ -31,6 +31,7 @@ namespace Common
             {
                 AppDomain = appDomain,
                 ProjectAssemblyPath = Path.Combine(startupDir.FullName, package.Info.AssemblyName + ".dll"),
+                NugetDownloadPath = Path.Combine(startupDir.FullName, "..", nugetPackageToInstall + package.Version),
                 PackageVersion = package.Version
             };
         }
