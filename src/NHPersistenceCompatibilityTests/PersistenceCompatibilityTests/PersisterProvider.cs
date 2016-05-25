@@ -8,16 +8,14 @@ namespace PersistenceCompatibilityTests
 {
     public class PersisterProvider
     {
-        // Todo: This should probably not be hardcoded to NHibernate. This class should be reusable
-        // when testing different persisters.
-        public void Initialize(IEnumerable<string> nHibernatePackageVersions)
+        public void Initialize(string testAssemblyName, string packageName, IEnumerable<string> packageVersions)
         {
             appDomainDescriptors = new List<AppDomainDescriptor>();
             cachedPersisterFacades = new Dictionary<string, PersisterFacade>();
 
-            foreach (var version in nHibernatePackageVersions.Where(nhVersion => !cachedPersisterFacades.ContainsKey(nhVersion)))
+            foreach (var version in packageVersions.Where(nhVersion => !cachedPersisterFacades.ContainsKey(nhVersion)))
             {
-                var appDomain = CreateAppDomain(version);
+                var appDomain = CreateAppDomain(testAssemblyName, packageName, version);
 
                 appDomainDescriptors.Add(appDomain);
 
@@ -28,15 +26,15 @@ namespace PersistenceCompatibilityTests
             }
         }
 
-        AppDomainDescriptor CreateAppDomain(string versionName)
+        AppDomainDescriptor CreateAppDomain(string assemblyName, string packageName, string packageVersionNumber)
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
             var packageResolver = new LocalPackageResolver(path);
             var domainCreator = new AppDomainCreator();
 
-            var packageInfo = new PackageInfo("NServiceBus.NHibernate.Tests", versionName);
+            var packageInfo = new PackageInfo(assemblyName, packageVersionNumber);
             var package = packageResolver.GetLocalPackage(packageInfo);
-            var appDomainDescriptor = domainCreator.CreateDomain(package, "NServiceBus.NHibernate");
+            var appDomainDescriptor = domainCreator.CreateDomain(package, packageName);
            
             return appDomainDescriptor;
         }

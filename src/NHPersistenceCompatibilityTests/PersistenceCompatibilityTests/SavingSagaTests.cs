@@ -15,7 +15,7 @@ namespace PersistenceCompatibilityTests
         public void OneTimeSetup()
         {
             persisterProvider = new PersisterProvider();
-            persisterProvider.Initialize(NHibernatePackageVersions);
+            persisterProvider.Initialize("NServiceBus.NHibernate.Tests", "NServiceBus.NHibernate", NHibernatePackageVersions);    
         }
 
         [OneTimeTearDown]
