@@ -122,7 +122,7 @@
             var readData = destinationPersister.Get<TestSagaDataWithComposite>(writeData.Id);
 
             Assert.AreEqual(writeData.Id, readData.Id);
-            CollectionAssert.AreEqual("updated", readData.Composite.Value);
+            Assert.AreEqual("updated", readData.Composite.Value);
         }
 
         static string[] NHibernatePackageVersions => new[] { "4.5", "5.0", "6.2", "7.0" };

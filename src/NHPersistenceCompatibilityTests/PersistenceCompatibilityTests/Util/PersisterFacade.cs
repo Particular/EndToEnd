@@ -6,25 +6,25 @@ namespace PersistenceCompatibilityTests
 {
     public class PersisterFacade
     {
-        AppDomainRunner<IRawPersister> _rawPersister;
+        AppDomainRunner<IRawPersister> rawPersister;
 
         public PersisterFacade(AppDomainRunner<IRawPersister> rawPersister)
         {
-            _rawPersister = rawPersister;
+            this.rawPersister = rawPersister;
         }
 
         public void Save<T>(T instance, string correlationPropertyName, string correlationPropertyValue)
         {
             var body = JsonConvert.SerializeObject(instance);
 
-            _rawPersister.Run(p => p.Save(instance.GetType().FullName, body, correlationPropertyName, correlationPropertyValue));
+            rawPersister.Run(p => p.Save(instance.GetType().FullName, body, correlationPropertyName, correlationPropertyValue));
         }
 
         public void Update<T>(T instance)
         {
             var body = JsonConvert.SerializeObject(instance);
 
-            _rawPersister.Run(p => p.Update(instance.GetType().FullName, body));
+            rawPersister.Run(p => p.Update(instance.GetType().FullName, body));
         }
 
         public T Get<T>(Guid sagaId)
@@ -32,11 +32,11 @@ namespace PersistenceCompatibilityTests
             var body = string.Empty;
             var sagaDataType = typeof (T);
 
-            _rawPersister.Run(p => body = (string)p.Get(sagaDataType.FullName, sagaId));
+            rawPersister.Run(p => body = (string)p.Get(sagaDataType.FullName, sagaId));
 
-            var result = JsonConvert.DeserializeObject(body, sagaDataType);
+            var result = JsonConvert.DeserializeObject<T>(body);
 
-            return (T) result;
+            return result;
         }
 
         public T GetByCorrelationId<T>(string correlationPropertyName, object correlationPropertyValue)
@@ -44,7 +44,7 @@ namespace PersistenceCompatibilityTests
             var body = string.Empty;
             var sagaDataType = typeof(T);
 
-            _rawPersister.Run(p => body = (string)p.GetByCorrelationProperty(sagaDataType.FullName, correlationPropertyName, correlationPropertyValue));
+            rawPersister.Run(p => body = (string)p.GetByCorrelationProperty(sagaDataType.FullName, correlationPropertyName, correlationPropertyValue));
 
             var result = JsonConvert.DeserializeObject(body, sagaDataType);
 

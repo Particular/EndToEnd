@@ -10,7 +10,7 @@ public class RawPersister : MarshalByRefObject, IRawPersister
         var sagaData = JsonConvert.DeserializeObject(body, sagaDataType);
 
         var persister = CreatePersisterInstance();
-        var saveMethod = GetMethod(persister, nameof(Save), sagaDataType);
+        var saveMethod = GetMethod(persister, "Save", sagaDataType);
 
         saveMethod.Invoke(persister, new [] { sagaData, correlationPropertyName, correlationPropertyValue });
     }
@@ -21,7 +21,7 @@ public class RawPersister : MarshalByRefObject, IRawPersister
         var sagaData = JsonConvert.DeserializeObject(body, sagaDataType);
 
         var persister = CreatePersisterInstance();
-        var updateMethod = GetMethod(persister, nameof(Update), sagaDataType);
+        var updateMethod = GetMethod(persister, "Update", sagaDataType);
 
         updateMethod.Invoke(persister, new[] { sagaData });
     }
@@ -31,7 +31,7 @@ public class RawPersister : MarshalByRefObject, IRawPersister
         var sagaDataType = Type.GetType(typeFullName);
 
         var persister = CreatePersisterInstance();
-        var getMethod = GetMethod(persister, nameof(Get), sagaDataType);
+        var getMethod = GetMethod(persister, "Get", sagaDataType);
 
         var result = getMethod.Invoke(persister, new object[] { id });
 
@@ -43,7 +43,7 @@ public class RawPersister : MarshalByRefObject, IRawPersister
         var sagaDataType = Type.GetType(typeFullName);
 
         var persister = CreatePersisterInstance();
-        var getMethod = GetMethod(persister, nameof(GetByCorrelationProperty), sagaDataType);
+        var getMethod = GetMethod(persister, "GetByCorrelationProperty", sagaDataType);
 
         var result = getMethod.Invoke(persister, new[] { correlationPropertyName, correlationPropertyValue });
 
