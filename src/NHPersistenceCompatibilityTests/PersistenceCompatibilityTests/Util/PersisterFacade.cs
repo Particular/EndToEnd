@@ -46,9 +46,9 @@ namespace PersistenceCompatibilityTests
 
             rawPersister.Run(p => body = (string)p.GetByCorrelationProperty(sagaDataType.FullName, correlationPropertyName, correlationPropertyValue));
 
-            var result = JsonConvert.DeserializeObject(body, sagaDataType);
+            var result = JsonConvert.DeserializeObject<T>(body);
 
-            return (T)result;
+            return result;
         }
     }
 }
