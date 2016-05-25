@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using NUnit.Framework;
 
     public class Conventions
     {
@@ -19,7 +20,8 @@
                 #endif
 
                 var assemblyName = AssemblyNameResolver(definition, version);
-                return $"..\\..\\..\\{assemblyName}\\bin\\{configuration}";
+                var combine = Path.Combine(TestContext.CurrentContext.TestDirectory, $"..\\..\\..\\{assemblyName}\\bin\\{configuration}");
+                return combine;
             };
 
         public static Func<EndpointDefinition, int, string> AssemblyPathResolver =

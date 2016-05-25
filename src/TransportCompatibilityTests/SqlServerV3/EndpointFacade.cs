@@ -14,12 +14,12 @@ namespace SqlServerV3
 
     public class EndpointFacade : MarshalByRefObject, IEndpointFacade
     {
-        private IEndpointInstance endpointInstance;
-        private MessageStore messageStore;
-        private CallbackResultStore callbackResultStore;
-        private SubscriptionStore subscriptionStore;
+        IEndpointInstance endpointInstance;
+        MessageStore messageStore;
+        CallbackResultStore callbackResultStore;
+        SubscriptionStore subscriptionStore;
 
-        private async Task InitializeEndpoint(SqlServerEndpointDefinition endpointDefinition)
+        async Task InitializeEndpoint(SqlServerEndpointDefinition endpointDefinition)
         {
             var endpointConfiguration = new EndpointConfiguration(endpointDefinition.Name);
 
@@ -55,7 +55,7 @@ namespace SqlServerV3
 
             endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(messageStore));
             endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(subscriptionStore));
-            
+
             endpointConfiguration.Pipeline.Register<SubscriptionMonitoringBehavior.Registration>();
 
             endpointInstance = await Endpoint.Start(endpointConfiguration);
@@ -119,8 +119,8 @@ namespace SqlServerV3
         {
             endpointInstance.Stop().GetAwaiter().GetResult();
         }
-        
-        class SubscriptionMonitoringBehavior : Behavior<IIncomingPhysicalMessageContext> 
+
+        class SubscriptionMonitoringBehavior : Behavior<IIncomingPhysicalMessageContext>
         {
             public SubscriptionStore SubscriptionStore { get; set; }
 
