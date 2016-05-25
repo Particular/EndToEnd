@@ -3,16 +3,16 @@
     using System;
     using System.Linq;
     using NUnit.Framework;
-    using TransportCompatibilityTests.Common;
-    using TransportCompatibilityTests.Common.Messages;
-    using TransportCompatibilityTests.Common.RabbitMQ;
-    using TransportCompatibilityTests.RabbitMQ.Infrastructure;
+    using Common;
+    using Common.Messages;
+    using Common.RabbitMQ;
+    using Infrastructure;
 
     [TestFixture]
     public class MessageExchangePatterns : RabbitMqContext
     {
-        private RabbitMqEndpointDefinition sourceEndpointDefinition;
-        private RabbitMqEndpointDefinition destinationEndpointDefinition;
+        RabbitMqEndpointDefinition sourceEndpointDefinition;
+        RabbitMqEndpointDefinition destinationEndpointDefinition;
 
         [SetUp]
         public void SetUp()

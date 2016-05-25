@@ -2,7 +2,7 @@
 
 namespace TransportCompatibilityTests.Common
 {
-    using TransportCompatibilityTests.Common.Messages;
+    using Messages;
 
     public interface IEndpointFacade : IDisposable
     {

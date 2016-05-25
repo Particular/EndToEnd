@@ -9,9 +9,9 @@
 
     public class EndpointFacade : MarshalByRefObject, IEndpointFacade
     {
-        private MessageStore messageStore;
-        private CallbackResultStore callbackResultStore;
-        private IEndpointInstance endpointInstance;
+        MessageStore messageStore;
+        CallbackResultStore callbackResultStore;
+        IEndpointInstance endpointInstance;
 
         public void Bootstrap(EndpointDefinition endpointDefinition)
         {
@@ -20,7 +20,7 @@
                .GetResult();
         }
 
-        private async Task InitializeEndpoint(RabbitMqEndpointDefinition endpointDefinition)
+        async Task InitializeEndpoint(RabbitMqEndpointDefinition endpointDefinition)
         {
             var endpointConfiguration = new EndpointConfiguration(endpointDefinition.Name);
 

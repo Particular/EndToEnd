@@ -14,12 +14,11 @@ namespace SqlServerV1
 
         public abstract void Dispose();
 
-        private class ChangeAppConfig : AppConfig
+        class ChangeAppConfig : AppConfig
         {
-            private readonly string oldConfig =
-                AppDomain.CurrentDomain.GetData("APP_CONFIG_FILE").ToString();
+            string oldConfig = AppDomain.CurrentDomain.GetData("APP_CONFIG_FILE").ToString();
 
-            private bool disposedValue;
+            bool disposedValue;
 
             public ChangeAppConfig(string path)
             {
@@ -39,7 +38,7 @@ namespace SqlServerV1
                 GC.SuppressFinalize(this);
             }
 
-            private static void ResetConfigMechanism()
+            static void ResetConfigMechanism()
             {
                 typeof(ConfigurationManager)
                     .GetField("s_initState", BindingFlags.NonPublic |

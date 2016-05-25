@@ -6,7 +6,7 @@ namespace TransportCompatibilityTests.Common
 {
     public class MessageStore
     {
-        private readonly ConcurrentBag<Tuple<Guid, Type>> messageIds = new ConcurrentBag<Tuple<Guid, Type>>();
+        ConcurrentBag<Tuple<Guid, Type>> messageIds = new ConcurrentBag<Tuple<Guid, Type>>();
 
         public void Add<T>(Guid id)
         {

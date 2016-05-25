@@ -2,7 +2,7 @@
 {
     using System;
     using NUnit.Framework;
-    using TransportCompatibilityTests.Common.AzureServiceBus;
+    using Common.AzureServiceBus;
 
     [TestFixture]
     public abstract class AzureServiceBusContext

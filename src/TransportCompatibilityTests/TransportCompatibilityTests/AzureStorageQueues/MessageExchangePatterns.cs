@@ -3,9 +3,9 @@
     using System;
     using System.Linq;
     using NUnit.Framework;
-    using TransportCompatibilityTests.Common;
-    using TransportCompatibilityTests.Common.AzureStorageQueues;
-    using TransportCompatibilityTests.Common.Messages;
+    using Common;
+    using Common.AzureStorageQueues;
+    using Common.Messages;
 
     [TestFixture]
     public class MessageExchangePatterns : AzureStorageQueuesContext
@@ -33,8 +33,8 @@
                 }
             };
 
-            using (var source = EndpointFacadeBuilder.CreateAndConfigure(this.sourceEndpointDefinition, sourceVersion))
-            using (var destination = EndpointFacadeBuilder.CreateAndConfigure(this.destinationEndpointDefinition, destinationVersion))
+            using (var source = EndpointFacadeBuilder.CreateAndConfigure(sourceEndpointDefinition, sourceVersion))
+            using (var destination = EndpointFacadeBuilder.CreateAndConfigure(destinationEndpointDefinition, destinationVersion))
             {
                 var messageId = Guid.NewGuid();
 
@@ -59,8 +59,8 @@
                 }
             };
 
-            using (var source = EndpointFacadeBuilder.CreateAndConfigure(this.sourceEndpointDefinition, sourceVersion))
-            using (EndpointFacadeBuilder.CreateAndConfigure(this.destinationEndpointDefinition, destinationVersion))
+            using (var source = EndpointFacadeBuilder.CreateAndConfigure(sourceEndpointDefinition, sourceVersion))
+            using (EndpointFacadeBuilder.CreateAndConfigure(destinationEndpointDefinition, destinationVersion))
             {
                 var requestId = Guid.NewGuid();
 
@@ -75,7 +75,7 @@
         [Test, TestCaseSource(nameof(GenerateVersionsPairs))]
         public void It_is_possible_to_publish_events(int sourceVersion, int destinationVersion)
         {
-            this.destinationEndpointDefinition.Mappings = new[]
+            destinationEndpointDefinition.Mappings = new[]
             {
                 new MessageMapping
                 {
@@ -84,8 +84,8 @@
                 }
             };
 
-            using (var source = EndpointFacadeBuilder.CreateAndConfigure(this.sourceEndpointDefinition, sourceVersion))
-            using (var destination = EndpointFacadeBuilder.CreateAndConfigure(this.destinationEndpointDefinition, destinationVersion))
+            using (var source = EndpointFacadeBuilder.CreateAndConfigure(sourceEndpointDefinition, sourceVersion))
+            using (var destination = EndpointFacadeBuilder.CreateAndConfigure(destinationEndpointDefinition, destinationVersion))
             {
                 // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => source.NumberOfSubscriptions > 0);

@@ -3,7 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
-    using TransportCompatibilityTests.Common.Messages;
+    using Messages;
 
     public class EndpointFacadeBuilder
     {
@@ -33,8 +33,8 @@
 
     class MyWrapper : IEndpointFacade
     {
-        private readonly IEndpointFacade facade;
-        private readonly AppDomain domain;
+        IEndpointFacade facade;
+        AppDomain domain;
 
         public MyWrapper(IEndpointFacade facade, AppDomain domain)
         {

@@ -8,7 +8,7 @@ namespace SqlServerV1
 
     class CustomConfiguration : IConfigurationSource
     {
-        private readonly MessageMapping[] messageMappings;
+        MessageMapping[] messageMappings;
 
         public CustomConfiguration(MessageMapping[] messageMappings)
         {

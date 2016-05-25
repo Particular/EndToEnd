@@ -6,7 +6,7 @@
 
     public class CallbackResultStore
     {
-        readonly Dictionary<Type, object> results = new Dictionary<Type, object>();
+        Dictionary<Type, object> results = new Dictionary<Type, object>();
 
         public void Add<T>(T result)
         {

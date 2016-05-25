@@ -8,7 +8,7 @@ using TransportCompatibilityTests.Common.Messages;
 
 namespace TransportCompatibilityTests.AzureServiceBus
 {
-    using TransportCompatibilityTests.Common.AzureServiceBus;
+    using Common.AzureServiceBus;
 
     [TestFixture]
     public class MessageExchangePatterns : AzureServiceBusContext

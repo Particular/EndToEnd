@@ -2,15 +2,15 @@
 {
     using System.Linq;
     using NUnit.Framework;
-    using TransportCompatibilityTests.Common;
-    using TransportCompatibilityTests.Common.Messages;
-    using TransportCompatibilityTests.Common.AzureServiceBus;
+    using Common;
+    using Common.Messages;
+    using Common.AzureServiceBus;
 
     [TestFixture]
     public class Callbacks
     {
-        private AzureServiceBusEndpointDefinition sourceEndpointDefinition;
-        private AzureServiceBusEndpointDefinition destinationEndpointDefinition;
+        AzureServiceBusEndpointDefinition sourceEndpointDefinition;
+        AzureServiceBusEndpointDefinition destinationEndpointDefinition;
 
         [SetUp]
         public void SetUp()
@@ -24,7 +24,7 @@
         // ReSharper disable once InconsistentNaming
         public void Int_callbacks_work(int sourceVersion, int destinationVersion)
         {
-            this.sourceEndpointDefinition.Mappings = new[]
+            sourceEndpointDefinition.Mappings = new[]
             {
                 new MessageMapping
                 {
@@ -55,7 +55,7 @@
                 new MessageMapping
                 {
                     MessageType = typeof(TestEnumCallback),
-                    TransportAddress = this.destinationEndpointDefinition.TransportAddressForVersion(destinationVersion)
+                    TransportAddress = destinationEndpointDefinition.TransportAddressForVersion(destinationVersion)
                 }
             };
 
@@ -71,7 +71,7 @@
             }
         }
 
-        private static object[][] GenerateVersionsPairs()
+        static object[][] GenerateVersionsPairs()
         {
             var asbTransportVersions = new[] { 6, 7 };
 

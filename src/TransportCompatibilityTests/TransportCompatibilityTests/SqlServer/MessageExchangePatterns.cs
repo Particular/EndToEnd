@@ -8,8 +8,8 @@ using TransportCompatibilityTests.Common.Messages;
 
 namespace TransportCompatibilityTests.SqlServer
 {
-    using TransportCompatibilityTests.Common.SqlServer;
-    using MessageMapping = TransportCompatibilityTests.Common.SqlServer.MessageMapping;
+    using Common.SqlServer;
+    using MessageMapping = Common.SqlServer.MessageMapping;
 
     [TestFixture]
     public class MessageExchangePatterns : SqlServerContext
@@ -20,11 +20,11 @@ namespace TransportCompatibilityTests.SqlServer
         [SetUp]
         public void SetUp()
         {
-            this.sourceEndpointDefinition = new SqlServerEndpointDefinition
+            sourceEndpointDefinition = new SqlServerEndpointDefinition
             {
                 Name = "Source"
             };
-            this.destinationEndpointDefinition = new SqlServerEndpointDefinition
+            destinationEndpointDefinition = new SqlServerEndpointDefinition
             {
                 Name = "Destination"
             };
@@ -34,18 +34,18 @@ namespace TransportCompatibilityTests.SqlServer
         [Test, TestCaseSource(nameof(GenerateVersionsPairs))]
         public void It_is_possible_to_send_command_between_different_versions(int sourceVersion, int destinationVersion)
         {
-            this.sourceEndpointDefinition.Mappings = new[]
+            sourceEndpointDefinition.Mappings = new[]
             {
                 new MessageMapping
                 {
                     MessageType = typeof(TestCommand),
-                    TransportAddress = this.destinationEndpointDefinition.TransportAddressForVersion(destinationVersion)
+                    TransportAddress = destinationEndpointDefinition.TransportAddressForVersion(destinationVersion)
                 }
             };
 
-            using (var source = EndpointFacadeBuilder.CreateAndConfigure(this.sourceEndpointDefinition, sourceVersion))
+            using (var source = EndpointFacadeBuilder.CreateAndConfigure(sourceEndpointDefinition, sourceVersion))
             {
-                using (var destination = EndpointFacadeBuilder.CreateAndConfigure(this.destinationEndpointDefinition, destinationVersion))
+                using (var destination = EndpointFacadeBuilder.CreateAndConfigure(destinationEndpointDefinition, destinationVersion))
                 {
                     var messageId = Guid.NewGuid();
 
@@ -61,18 +61,18 @@ namespace TransportCompatibilityTests.SqlServer
         [Test, TestCaseSource(nameof(GenerateVersionsPairs))]
         public void It_is_possible_to_send_request_and_receive_replay(int sourceVersion, int destinationVersion)
         {
-            this.sourceEndpointDefinition.Mappings = new[]
+            sourceEndpointDefinition.Mappings = new[]
             {
                 new MessageMapping
                 {
                     MessageType = typeof(TestRequest),
-                    TransportAddress = this.destinationEndpointDefinition.TransportAddressForVersion(destinationVersion)
+                    TransportAddress = destinationEndpointDefinition.TransportAddressForVersion(destinationVersion)
                 }
             };
 
-            using (var source = EndpointFacadeBuilder.CreateAndConfigure(this.sourceEndpointDefinition, sourceVersion))
+            using (var source = EndpointFacadeBuilder.CreateAndConfigure(sourceEndpointDefinition, sourceVersion))
             {
-                using (EndpointFacadeBuilder.CreateAndConfigure(this.destinationEndpointDefinition, destinationVersion))
+                using (EndpointFacadeBuilder.CreateAndConfigure(destinationEndpointDefinition, destinationVersion))
                 {
                     var requestId = Guid.NewGuid();
 
@@ -88,18 +88,18 @@ namespace TransportCompatibilityTests.SqlServer
         [Test, TestCaseSource(nameof(GenerateVersionsPairs))]
         public void It_is_possible_to_publish_events(int sourceVersion, int destinationVersion)
         {
-            this.destinationEndpointDefinition.Mappings = new[]
+            destinationEndpointDefinition.Mappings = new[]
             {
                 new MessageMapping
                 {
                     MessageType = typeof(TestEvent),
-                    TransportAddress = this.sourceEndpointDefinition.TransportAddressForVersion(sourceVersion)
+                    TransportAddress = sourceEndpointDefinition.TransportAddressForVersion(sourceVersion)
                 }
             };
 
-            using (var source = EndpointFacadeBuilder.CreateAndConfigure(this.sourceEndpointDefinition, sourceVersion))
+            using (var source = EndpointFacadeBuilder.CreateAndConfigure(sourceEndpointDefinition, sourceVersion))
             {
-                using (var destination = EndpointFacadeBuilder.CreateAndConfigure(this.destinationEndpointDefinition, destinationVersion))
+                using (var destination = EndpointFacadeBuilder.CreateAndConfigure(destinationEndpointDefinition, destinationVersion))
                 {
                     // ReSharper disable once AccessToDisposedClosure
                     AssertEx.WaitUntilIsTrue(() => source.NumberOfSubscriptions > 0);
@@ -118,48 +118,48 @@ namespace TransportCompatibilityTests.SqlServer
         [Test, TestCaseSource(nameof(GenerateVersionsPairs))]
         public void It_is_possible_to_send_and_receive_using_custom_schema_in_transport_address(int sourceVersion, int destinationVersion)
         {
-            this.sourceEndpointDefinition.Schema = SourceSchema;
-            this.sourceEndpointDefinition.Mappings = new[]
+            sourceEndpointDefinition.Schema = SourceSchema;
+            sourceEndpointDefinition.Mappings = new[]
             {
                 new MessageMapping
                 {
                     MessageType = typeof(TestRequest),
-                    TransportAddress = this.destinationEndpointDefinition.TransportAddressForVersion(destinationVersion),
+                    TransportAddress = destinationEndpointDefinition.TransportAddressForVersion(destinationVersion),
                     Schema = DestinationSchema
                 }
             };
 
-            this.destinationEndpointDefinition.Schema = DestinationSchema;
+            destinationEndpointDefinition.Schema = DestinationSchema;
 
             //TODO: this is a hack, passing mappings should be separate from passing schemas
             if (sourceVersion == 2 && destinationVersion == 3)
             {
-                this.destinationEndpointDefinition.Mappings = new[]
+                destinationEndpointDefinition.Mappings = new[]
                 {
                     new MessageMapping
                     {
                         MessageType = typeof(TestResponse),
-                        TransportAddress = this.sourceEndpointDefinition.TransportAddressForVersion(sourceVersion) + "." + Environment.MachineName,
+                        TransportAddress = sourceEndpointDefinition.TransportAddressForVersion(sourceVersion) + "." + Environment.MachineName,
                         Schema = SourceSchema
                     }
                 };
             }
             else
             {
-                this.destinationEndpointDefinition.Mappings = new[]
+                destinationEndpointDefinition.Mappings = new[]
                 {
                     new MessageMapping
                     {
                         MessageType = typeof(TestResponse),
-                        TransportAddress = this.sourceEndpointDefinition.TransportAddressForVersion(sourceVersion),
+                        TransportAddress = sourceEndpointDefinition.TransportAddressForVersion(sourceVersion),
                         Schema = SourceSchema
                     }
                 };
             }
 
-            using (var source = EndpointFacadeBuilder.CreateAndConfigure(this.sourceEndpointDefinition, sourceVersion))
+            using (var source = EndpointFacadeBuilder.CreateAndConfigure(sourceEndpointDefinition, sourceVersion))
             {
-                using (EndpointFacadeBuilder.CreateAndConfigure(this.destinationEndpointDefinition, destinationVersion))
+                using (EndpointFacadeBuilder.CreateAndConfigure(destinationEndpointDefinition, destinationVersion))
                 {
                     var requestId = Guid.NewGuid();
 

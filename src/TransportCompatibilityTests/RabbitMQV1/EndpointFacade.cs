@@ -9,10 +9,10 @@
 
     public class EndpointFacade : MarshalByRefObject, IEndpointFacade
     {
-        private IBus bus;
-        private IStartableBus startableBus;
-        private MessageStore messageStore;
-        private CallbackResultStore callbackResultStore;
+        IBus bus;
+        IStartableBus startableBus;
+        MessageStore messageStore;
+        CallbackResultStore callbackResultStore;
         
         public void Bootstrap(EndpointDefinition endpointDefinition)
         {

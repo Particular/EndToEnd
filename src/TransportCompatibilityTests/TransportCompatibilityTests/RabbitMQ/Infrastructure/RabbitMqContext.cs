@@ -5,8 +5,8 @@
     using System.Net;
     using System.Net.Http;
     using NUnit.Framework;
-    using TransportCompatibilityTests.Common;
-    using TransportCompatibilityTests.Common.RabbitMQ;
+    using Common;
+    using Common.RabbitMQ;
 
     [TestFixture]
     public abstract class RabbitMqContext
@@ -29,7 +29,7 @@
             SetupPermission();
         }
 
-        private static void DeleteVirtualHost()
+        static void DeleteVirtualHost()
         {
             ExecuteREST(client =>
             {
@@ -38,7 +38,7 @@
             });
         }
 
-        private static void CreateVirtualHost()
+        static void CreateVirtualHost()
         {
             ExecuteREST(client =>
             {
@@ -47,7 +47,7 @@
             });
         }
 
-        private static void SetupPermission()
+        static void SetupPermission()
         {
             ExecuteREST(client =>
             {
@@ -56,7 +56,7 @@
             });
         }
 
-        private static void ExecuteREST(Func<HttpClient, bool> func)
+        static void ExecuteREST(Func<HttpClient, bool> func)
         {
             using (var client = new HttpClient(new HttpClientHandler
             {

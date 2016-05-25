@@ -10,10 +10,10 @@ namespace AzureServiceBusV6
 
     public class EndpointFacade : MarshalByRefObject, IEndpointFacade
     {
-        private IBus bus;
-        private MessageStore messageStore;
-        private CallbackResultStore callbackResultStore;
-        private SubscriptionStore subscriptionStore;
+        IBus bus;
+        MessageStore messageStore;
+        CallbackResultStore callbackResultStore;
+        SubscriptionStore subscriptionStore;
 
         public void Bootstrap(EndpointDefinition endpointDefinition)
         {

@@ -3,7 +3,7 @@
     using System;
     using System.Data.SqlClient;
     using NUnit.Framework;
-    using TransportCompatibilityTests.Common.SqlServer;
+    using Common.SqlServer;
 
     [TestFixture]
     public abstract class SqlServerContext

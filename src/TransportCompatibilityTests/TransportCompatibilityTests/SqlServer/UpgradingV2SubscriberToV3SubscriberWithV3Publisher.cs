@@ -3,9 +3,9 @@ namespace TransportCompatibilityTests.SqlServer
     using System;
     using System.Linq;
     using NUnit.Framework;
-    using TransportCompatibilityTests.Common;
-    using TransportCompatibilityTests.Common.Messages;
-    using TransportCompatibilityTests.Common.SqlServer;
+    using Common;
+    using Common.Messages;
+    using Common.SqlServer;
 
     [TestFixture]
     public class UpgradingV2SubscriberToV3SubscriberWithV3Publisher : SqlServerContext

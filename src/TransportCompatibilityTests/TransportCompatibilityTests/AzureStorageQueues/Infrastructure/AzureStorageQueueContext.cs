@@ -2,7 +2,7 @@
 {
     using System;
     using NUnit.Framework;
-    using TransportCompatibilityTests.Common.AzureStorageQueues;
+    using Common.AzureStorageQueues;
 
     [TestFixture]
     public abstract class AzureStorageQueuesContext

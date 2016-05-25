@@ -9,13 +9,13 @@
     using TransportCompatibilityTests.Common.Messages;
     using TransportCompatibilityTests.Common.SqlServer;
 
-    internal class EndpointFacade : MarshalByRefObject, IEndpointFacade
+    class EndpointFacade : MarshalByRefObject, IEndpointFacade
     {
-        private IBus bus;
-        private IStartableBus startableBus;
-        private MessageStore messageStore;
-        private CallbackResultStore callbackResultStore;
-        private SubscriptionStore subscriptionStore;
+        IBus bus;
+        IStartableBus startableBus;
+        MessageStore messageStore;
+        CallbackResultStore callbackResultStore;
+        SubscriptionStore subscriptionStore;
 
         public void Dispose()
         {

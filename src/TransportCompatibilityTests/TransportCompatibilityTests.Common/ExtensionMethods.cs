@@ -1,9 +1,9 @@
 ﻿namespace TransportCompatibilityTests.Common
 {
     using System;
-    using TransportCompatibilityTests.Common.AzureServiceBus;
-    using TransportCompatibilityTests.Common.RabbitMQ;
-    using TransportCompatibilityTests.Common.SqlServer;
+    using AzureServiceBus;
+    using RabbitMQ;
+    using SqlServer;
 
     public static class ExtensionMethods
     {

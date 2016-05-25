@@ -12,10 +12,10 @@
     public class EndpointFacade : MarshalByRefObject, IEndpointFacade
     {
         //private IBusSession busSession;
-        private IEndpointInstance endpointInstance;
-        private CallbackResultStore callbackResultStore;
-        private MessageStore messageStore;
-        private SubscriptionStore subscriptionStore;
+        IEndpointInstance endpointInstance;
+        CallbackResultStore callbackResultStore;
+        MessageStore messageStore;
+        SubscriptionStore subscriptionStore;
 
         public void Bootstrap(EndpointDefinition endpointDefinition)
         {
@@ -24,7 +24,7 @@
                 .GetResult();
         }
 
-        private async Task InitializeEndpoint(AzureStorageQueuesEndpointDefinition endpointDefinition)
+        async Task InitializeEndpoint(AzureStorageQueuesEndpointDefinition endpointDefinition)
         {
             var defaultFactory = LogManager.Use<DefaultFactory>();
             defaultFactory.Level(LogLevel.Error);

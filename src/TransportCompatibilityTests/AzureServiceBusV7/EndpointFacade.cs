@@ -11,12 +11,12 @@
 
     public class EndpointFacade : MarshalByRefObject, IEndpointFacade
     {
-        private IEndpointInstance endpointInstance;
-        private MessageStore messageStore;
-        private CallbackResultStore callbackResultStore;
-        private SubscriptionStore subscriptionStore;
+        IEndpointInstance endpointInstance;
+        MessageStore messageStore;
+        CallbackResultStore callbackResultStore;
+        SubscriptionStore subscriptionStore;
 
-        private async Task InitializeEndpoint(AzureServiceBusEndpointDefinition endpointDefinition)
+        async Task InitializeEndpoint(AzureServiceBusEndpointDefinition endpointDefinition)
         {
             var endpointConfiguration = new EndpointConfiguration(endpointDefinition.Name);
 
