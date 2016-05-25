@@ -2,11 +2,10 @@
 using DataDefinitions;
 using NHibernate.Tool.hbm2ddl;
 using NServiceBus.SagaPersisters.NHibernate.AutoPersistence;
+using NHibernate;
 
 namespace Version_4_5
 {
-    using NHibernate;
-
     public class NHibernateSessionFactory
     {
         public static ISessionFactory Create()

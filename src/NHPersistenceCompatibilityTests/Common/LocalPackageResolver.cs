@@ -5,7 +5,7 @@ namespace Common
 {
     public class LocalPackageResolver
     {
-        readonly string localStore;
+        string localStore;
 
         public LocalPackageResolver(string localStore)
         {

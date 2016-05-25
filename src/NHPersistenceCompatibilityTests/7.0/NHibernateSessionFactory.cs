@@ -26,9 +26,7 @@ namespace Version_7_0
 
             new SchemaUpdate(configuration).Execute(false, true);
 
-            var sessionFactory = configuration.BuildSessionFactory();
-
-            return sessionFactory;
+            return configuration.BuildSessionFactory();
         }
 
         static void AddMapping(Configuration configuration, Type type)

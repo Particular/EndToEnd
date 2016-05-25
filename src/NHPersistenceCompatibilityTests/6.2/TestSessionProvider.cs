@@ -6,7 +6,7 @@ namespace Version_6_2
 {
     public class TestSessionProvider : IStorageSessionProvider
     {
-        readonly ISession session;
+        ISession session;
 
         public TestSessionProvider(ISession session)
         {

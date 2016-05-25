@@ -51,7 +51,7 @@ namespace Common
                 return Assembly.Load(requestedAssembly);
             }
 
-            readonly AppDomain domain;
+            AppDomain domain;
             byte[] publicKeyToken;
             string shortName;
             Version targetVersion;

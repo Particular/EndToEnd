@@ -7,8 +7,6 @@ using Version_7_0;
 
 public class Persister
 {
-    readonly ISagaPersister persister;
-
     public Persister()
     {
         persister = new SagaPersister();
@@ -20,54 +18,64 @@ public class Persister
         var correlationProperty = new SagaCorrelationProperty(correlationPropertyName, correlationPropertyValue);
 
         using (var sessionFactory = NHibernateSessionFactory.Create())
-        using (var session = sessionFactory.OpenSession())
         {
-            persister.Save(data, correlationProperty, new TestSessionProvider(session), new ContextBag())
-                .GetAwaiter()
-                .GetResult();
+            using (var session = sessionFactory.OpenSession())
+            {
+                persister.Save(data, correlationProperty, new TestSessionProvider(session), new ContextBag())
+                    .GetAwaiter()
+                    .GetResult();
 
-            session.Flush();
+                session.Flush();
+            }
         }
     }
 
     public void Update<T>(T data) where T : IContainSagaData
     {
         using (var sessionFactory = NHibernateSessionFactory.Create())
-        using (var session = sessionFactory.OpenSession())
         {
-            persister.Update(data, new TestSessionProvider(session), new ContextBag())
-                .GetAwaiter()
-                .GetResult();
+            using (var session = sessionFactory.OpenSession())
+            {
+                persister.Update(data, new TestSessionProvider(session), new ContextBag())
+                    .GetAwaiter()
+                    .GetResult();
 
-            session.Flush();
+                session.Flush();
+            }
         }
     }
 
     public T Get<T>(Guid id) where T : IContainSagaData
     {
         using (var sessionFactory = NHibernateSessionFactory.Create())
-        using (var session = sessionFactory.OpenSession())
         {
-            var data = persister.Get<T>(id, new TestSessionProvider(session), new ContextBag()).GetAwaiter().GetResult();
+            using (var session = sessionFactory.OpenSession())
+            {
+                var data = persister.Get<T>(id, new TestSessionProvider(session), new ContextBag()).GetAwaiter().GetResult();
 
-            //Make sure all lazy properties are fetched before returning result
-            ObjectFetcher.Traverse(data, typeof(T));
+                //Make sure all lazy properties are fetched before returning result
+                ObjectFetcher.Traverse(data, typeof(T));
 
-            return data;
+                return data;
+            }
         }
     }
 
     public T GetByCorrelationProperty<T>(string correlationPropertyName, object correlationPropertyValue) where T : IContainSagaData
     {
         using (var sessionFactory = NHibernateSessionFactory.Create())
-        using (var session = sessionFactory.OpenSession())
         {
-            var data = persister.Get<T>(correlationPropertyName, correlationPropertyValue, new TestSessionProvider(session), new ContextBag()).GetAwaiter().GetResult();
+            using (var session = sessionFactory.OpenSession())
+            {
+                var data = persister.Get<T>(correlationPropertyName, correlationPropertyValue, new TestSessionProvider(session), new ContextBag()).GetAwaiter().GetResult();
 
-            //Make sure all lazy properties are fetched before returning result
-            ObjectFetcher.Traverse(data, typeof(T));
+                //Make sure all lazy properties are fetched before returning result
+                ObjectFetcher.Traverse(data, typeof(T));
 
-            return data;
+                return data;
+            }
         }
     }
+
+    ISagaPersister persister;
 }

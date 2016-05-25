@@ -6,7 +6,7 @@ namespace PersistenceCompatibilityTests
 {
     public class PersisterFacade
     {
-        readonly AppDomainRunner<IRawPersister> _rawPersister;
+        AppDomainRunner<IRawPersister> _rawPersister;
 
         public PersisterFacade(AppDomainRunner<IRawPersister> rawPersister)
         {
