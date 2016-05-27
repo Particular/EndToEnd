@@ -5,7 +5,7 @@
     using System.Linq;
     using DataDefinitions;
     using NUnit.Framework;
-
+    using Common;
     [TestFixture]
     public class UpdatingSagaTests
     {
@@ -13,7 +13,7 @@
         public void OneTimeSetup()
         {
             persisterProvider = new PersisterProvider();
-            persisterProvider.Initialize(NHibernatePackageVersions);
+            persisterProvider.Initialize("NServiceBus.NHibernate.Tests", "NServiceBus.NHibernate", NHibernatePackageVersions);    
         }
 
         [OneTimeTearDown]
@@ -125,10 +125,11 @@
             Assert.AreEqual("updated", readData.Composite.Value);
         }
 
-        static string[] NHibernatePackageVersions => new[] { "4.5", "5.0", "6.2", "7.0" };
-
         static object[][] GenerateTestCases()
         {
+            var nuget = new NugetHelper();
+            NHibernatePackageVersions = nuget.GetPossibleVersionsFor("NServiceBus.NHibernate", "4.5.0");
+
             var cases = from va in NHibernatePackageVersions
                         from vb in NHibernatePackageVersions
                         select new object[] { va, vb };
@@ -136,6 +137,7 @@
             return cases.ToArray();
         }
 
+        private static IEnumerable<string> NHibernatePackageVersions;
         PersisterProvider persisterProvider;
     }
 }
