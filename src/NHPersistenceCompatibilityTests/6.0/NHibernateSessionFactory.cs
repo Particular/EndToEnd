@@ -8,28 +8,23 @@
 
     public class NHibernateSessionFactory
     {
-        static NHibernateSessionFactory()
-        {
-            SessionFactory = Init();
-        }
-
-        static ISessionFactory Init()
+        public static ISessionFactory Create()
         {
             var configuration = new NHibernate.Cfg.Configuration().AddProperties(NHibernateConnectionInfo.Settings);
             var modelMapper = new SagaModelMapper(new[]
             {
-                typeof(TestSagaDataWithList),
+                typeof(TestSagaData),
                 typeof(TestSagaDataWithComposite),
-                typeof(TestSagaData)
+                typeof(TestSagaDataWithList)
             });
 
             configuration.AddMapping(modelMapper.Compile());
 
             new SchemaUpdate(configuration).Execute(false, true);
 
-            return configuration.BuildSessionFactory();
-        }
+            var sessionFactory = configuration.BuildSessionFactory();
 
-        public static ISessionFactory SessionFactory { get; }
+            return sessionFactory;
+        }
     }
 }

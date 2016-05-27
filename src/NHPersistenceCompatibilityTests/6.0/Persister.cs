@@ -9,7 +9,7 @@ public class Persister
     public void Save<T>(T data, string correlationPropertyName = null, string correlationPropertyValue = null)
         where T : IContainSagaData
     {
-        using (var sessionFactory = NHibernateSessionFactory.SessionFactory)
+        using (var sessionFactory = NHibernateSessionFactory.Create())
         using (var sessionProvider = new TestSessionProvider(sessionFactory))
         {
             var persister = new SagaPersister(sessionProvider);
@@ -20,7 +20,7 @@ public class Persister
 
     public T Get<T>(Guid id) where T : IContainSagaData
     {
-        using (var sessionFactory = NHibernateSessionFactory.SessionFactory)
+        using (var sessionFactory = NHibernateSessionFactory.Create())
         using (var sessionProvider = new TestSessionProvider(sessionFactory))
         {
             var persister = new SagaPersister(sessionProvider);
@@ -36,7 +36,7 @@ public class Persister
 
     public T GetByCorrelationProperty<T>(string correlationPropertyName, object correlationPropertyValue) where T : IContainSagaData
     {
-        using (var sessionFactory = NHibernateSessionFactory.SessionFactory)
+        using (var sessionFactory = NHibernateSessionFactory.Create())
         using (var sessionProvider = new TestSessionProvider(sessionFactory))
         {
             var persister = (ISagaPersister)new SagaPersister(sessionProvider);
