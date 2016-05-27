@@ -34,6 +34,22 @@ public class Persister
         }
     }
 
+    public T GetByCorrelationProperty<T>(string correlationPropertyName, object correlationPropertyValue) where T : IContainSagaData
+    {
+        using (var sessionFactory = NHibernateSessionFactory.SessionFactory)
+        using (var sessionProvider = new TestSessionProvider(sessionFactory))
+        {
+            var persister = (ISagaPersister)new SagaPersister(sessionProvider);
+
+            var data = persister.Get<T>(correlationPropertyName, correlationPropertyValue);
+
+            //Make sure all lazy properties are fetched before returning result
+            ObjectFetcher.Traverse(data, typeof(T));
+
+            return data;
+        }
+    }
+
     static class Fetcher
     {
         public static void Traverse(object instance, Type instanceType)

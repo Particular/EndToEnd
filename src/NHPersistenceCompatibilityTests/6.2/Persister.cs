@@ -63,6 +63,4 @@ public class Persister
             return data;
         }
     }
-
-   
 }
