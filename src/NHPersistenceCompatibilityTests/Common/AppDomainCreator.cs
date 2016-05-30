@@ -36,7 +36,7 @@ namespace Common
             };
         }
 
-        private void InstallCorrectNugetVersion(DirectoryInfo startupDir, string packageName, string version)
+        void InstallCorrectNugetVersion(DirectoryInfo startupDir, string packageName, string version)
         {
             var downloadNugetLocation = Path.Combine(startupDir.FullName, "..", packageName + version);
 

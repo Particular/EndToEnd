@@ -4,7 +4,7 @@ namespace Common
 {
     public class NHibernateConnectionInfo
     {
-        public const string Dialect = "NHibernate.Dialect.MsSql2012Dialect";
+        const string Dialect = "NHibernate.Dialect.MsSql2012Dialect";
         public const string ConnectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=persistencetests;Integrated Security=True";
 
         public static IDictionary<string, string> Settings = new Dictionary<string, string>

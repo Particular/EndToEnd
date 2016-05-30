@@ -137,7 +137,7 @@
             return cases.ToArray();
         }
 
-        private static IEnumerable<string> NHibernatePackageVersions;
+        static IEnumerable<string> NHibernatePackageVersions;
         PersisterProvider persisterProvider;
     }
 }
