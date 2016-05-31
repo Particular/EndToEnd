@@ -133,14 +133,4 @@ namespace Categories
             }
         }
     }
-
-    [SetUpFixture]
-    public class TestSessionInitializer
-    {
-        [SetUp]
-        public void Setup()
-        {
-            Base.SessionId = DateTime.UtcNow.Ticks.ToString();
-        }
-    }
 }
