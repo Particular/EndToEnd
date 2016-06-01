@@ -11,6 +11,11 @@ namespace Tests.Tools
         PermutationDirectoryResolver resolver;
         string sessionId;
 
+        static TestEnvironment()
+        {
+            System.Environment.CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+        }
+
         public TestEnvironment(string sessionId)
         {
             resolver = new PermutationDirectoryResolver(".");
