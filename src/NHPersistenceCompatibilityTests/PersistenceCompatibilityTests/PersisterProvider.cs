@@ -10,6 +10,8 @@ namespace PersistenceCompatibilityTests
     {
         public void Initialize(string testAssemblyName, string packageName, IEnumerable<string> packageVersions)
         {
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
             appDomainDescriptors = new List<AppDomainDescriptor>();
             cachedPersisterFacades = new Dictionary<string, PersisterFacade>();
 
