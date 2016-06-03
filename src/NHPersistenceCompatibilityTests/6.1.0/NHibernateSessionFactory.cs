@@ -6,7 +6,7 @@
     using NHibernate.Tool.hbm2ddl;
     using NServiceBus.SagaPersisters.NHibernate.AutoPersistence;
 
-    public class NHibernateSessionFactory 
+    public class NHibernateSessionFactory
     {
         public static ISessionFactory Create()
         {
