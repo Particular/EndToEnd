@@ -21,6 +21,6 @@ class SenderSideProfile : IProfile, INeedContext
         var routing = cfg.UnicastRouting();
         var endpoint = new EndpointName(Context.EndpointName);
         var instances = machines.Select(x => new EndpointInstance(endpoint).AtMachine(x)).ToArray();
-        routing.Mapping.Physical.Add(endpoint, instances);
+        routing.Mapping.Physical.Add(instances);
     }
 }

@@ -6,7 +6,7 @@ using NServiceBus.Persistence.RavenDB;
 
 static class RavenDBPersistenceExtensions
 {
-    public static PersistenceExtentions<RavenDBPersistence> SetConnectionStringName(this PersistenceExtentions<RavenDBPersistence> cfg, string name)
+    public static PersistenceExtensions<RavenDBPersistence> SetConnectionStringName(this PersistenceExtensions<RavenDBPersistence> cfg, string name)
     {
         var value = ConfigurationManager.ConnectionStrings[name];
 
@@ -15,7 +15,7 @@ static class RavenDBPersistenceExtensions
         return SetConnectionString(cfg, value.ConnectionString);
     }
 
-    public static PersistenceExtentions<RavenDBPersistence> SetConnectionString(this PersistenceExtentions<RavenDBPersistence> cfg, string connectionstring)
+    public static PersistenceExtensions<RavenDBPersistence> SetConnectionString(this PersistenceExtensions<RavenDBPersistence> cfg, string connectionstring)
     {
         var builder = new DbConnectionStringBuilder { ConnectionString = connectionstring };
 
