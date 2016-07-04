@@ -11,13 +11,15 @@ namespace ServiceControlCompatibilityTests
 
         public string TransportName => "Msmq";
 
+        public void Initialize() { }
+
         public void ApplyTo(Configuration configuration)
         {
             var settings = configuration.AppSettings.Settings;
             settings.Set(SettingsList.TransportType, TransportTypeName);
         }
 
-        public void ConfigureEndpoint(EndpointConfiguration endpointConfig)
+        public void ConfigureEndpoint(string endpointName, EndpointConfiguration endpointConfig)
         {
             endpointConfig.UseTransport<MsmqTransport>();
 

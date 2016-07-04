@@ -18,5 +18,6 @@
         public static SettingInfo AuditLogQueue = new SettingInfo { Name = "ServiceBus/AuditLogQueue" };
         public static SettingInfo AuditRetentionPeriod = new SettingInfo { Name = "ServiceControl/AuditRetentionPeriod", SupportedFrom = new Version(1, 12, 1) };
         public static SettingInfo ErrorRetentionPeriod = new SettingInfo { Name = "ServiceControl/ErrorRetentionPeriod", SupportedFrom = new Version(1, 12, 1) };
+        public static SettingInfo EnableDTC = new SettingInfo { Name = "ServiceControl/EnableDTC", SupportedFrom = new Version(1, 19, 0) };
     }
 }

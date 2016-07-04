@@ -33,7 +33,7 @@ namespace ServiceControlCompatibilityTests
             config.SendFailedMessagesTo("error");
             config.AuditProcessedMessagesTo("audit");
 
-            transportDetails.ConfigureEndpoint(config);
+            transportDetails.ConfigureEndpoint(endpointDetails.Name, config);
 
             return new EndpointProxy(endpointDetails.Name, await Endpoint.Create(config));
         }

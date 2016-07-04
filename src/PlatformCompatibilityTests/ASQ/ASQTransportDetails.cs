@@ -14,6 +14,8 @@ namespace ServiceControlCompatibilityTests
 
         public string TransportName => "AzureStorageQueue";
 
+        public void Initialize() { }
+
         public void ApplyTo(Configuration configuration)
         {
             configuration.ConnectionStrings.ConnectionStrings.Set("NServiceBus/Transport", connectionString);
@@ -21,7 +23,7 @@ namespace ServiceControlCompatibilityTests
             settings.Set(SettingsList.TransportType, TransportTypeName);
         }
 
-        public void ConfigureEndpoint(EndpointConfiguration endpointConfig)
+        public void ConfigureEndpoint(string endpointName, EndpointConfiguration endpointConfig)
         {
             endpointConfig.UseTransport<AzureStorageQueueTransport>()
                 .ConnectionString(connectionString);

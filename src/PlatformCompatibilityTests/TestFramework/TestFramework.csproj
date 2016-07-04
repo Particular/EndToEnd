@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationSectionExtensions.cs" />
+    <Compile Include="IAcceptEndpointMapping.cs" />
     <Compile Include="ITransportDetails.cs" />
     <Compile Include="SettingInfo.cs" />
     <Compile Include="SettingsList.cs" />

@@ -15,6 +15,8 @@ namespace ServiceControlCompatibilityTests
 
         public string TransportName => "AzureServiceBus";
 
+        public void Initialize() { }
+
         public void ApplyTo(Configuration configuration)
         {
             configuration.ConnectionStrings.ConnectionStrings.Set("NServiceBus/Transport", connectionString);
@@ -22,12 +24,13 @@ namespace ServiceControlCompatibilityTests
             settings.Set(SettingsList.TransportType, TransportTypeName);
         }
 
-        public void ConfigureEndpoint(EndpointConfiguration endpointConfig)
+        public void ConfigureEndpoint(string endpointName, EndpointConfiguration endpointConfig)
         {
             endpointConfig.UseTransport<AzureServiceBusTransport>()
                 .ConnectionString(connectionString)
                 .UseTopology<ForwardingTopology>();
         }
+
 
         string connectionString;
     }

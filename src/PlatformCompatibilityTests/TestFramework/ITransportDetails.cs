@@ -7,6 +7,7 @@ namespace ServiceControlCompatibilityTests
     {
         string TransportName { get; }
         void ApplyTo(Configuration configuration);
-        void ConfigureEndpoint(EndpointConfiguration endpointConfig);
+        void ConfigureEndpoint(string endpointName, EndpointConfiguration endpointConfig);
+        void Initialize();
     }
 }

@@ -15,14 +15,27 @@
             { typeof(RabbitMQTransportDetails), () => new RabbitMQTransportDetails("host=localhost") },
             { typeof(ASBForwardingTopologyTransportDetails), () => new ASBForwardingTopologyTransportDetails(Environment.GetEnvironmentVariable("AzureServiceBus.ConnectionString")) },
             { typeof(ASQTransportDetails), () => new ASQTransportDetails(Environment.GetEnvironmentVariable("AzureStorageQueueTransport.ConnectionString")) },
+            {
+                typeof(MultiInstanceSqlTransportDetails), () => 
+                    new MultiInstanceSqlTransportDetails("Data Source=.\\SQLEXPRESS;Initial Catalog=nservicebus;Integrated Security=True")
+                        .WithServer(ServerA, $"Data Source=.\\SQLEXPRESS;Initial Catalog={ServerA};Integrated Security=True")
+                        .WithServer(ServerB, $"Data Source=.\\SQLEXPRESS;Initial Catalog={ServerB};Integrated Security=True")
+            }
         };
 
-        protected IEndpointFactory StartUp(string testName, Type transportDetailsType)
+        protected IEndpointFactory StartUp(string testName, Type transportDetailsType, Action<IDictionary<string, string>> fillInEndpointMappings = null)
         {
             var testId = $"{testName}_{transportDetailsType.Name.Replace("TransportDetails", "")}";
             Console.WriteLine($"Starting test {testId}");
-            //Console.WriteLine($"Creating test for {transportDetailsType.Name}");
             var transportDetails = ActivateInstanceOfTransportDetail(transportDetailsType);
+
+            var endpointMappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            fillInEndpointMappings?.Invoke(endpointMappings);
+
+            (transportDetails as IAcceptEndpointMapping)?.AcceptEndpointMapping(endpointMappings);
+
+            transportDetails.Initialize();
+            
             serviceControl = StartServiceControl(testId, transportDetails);
 
             var endpointFactory = new EndpointFactory(transportDetails);
@@ -78,5 +91,8 @@
 
         ServiceControlInstance serviceControl;
         protected ServiceControlApi ServiceControl => serviceControl.Api;
+
+        protected const string ServerA = "ServerA";
+        protected const string ServerB = "ServerB";
     }
 }

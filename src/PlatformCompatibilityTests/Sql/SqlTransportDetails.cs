@@ -14,14 +14,16 @@ namespace ServiceControlCompatibilityTests
 
         public string TransportName => "SQLServer";
 
-        public void ApplyTo(Configuration configuration)
+        public virtual void Initialize() { }
+
+        public virtual void ApplyTo(Configuration configuration)
         {
             configuration.ConnectionStrings.ConnectionStrings.Set("NServiceBus/Transport", connectionString);
             var settings = configuration.AppSettings.Settings;
             settings.Set(SettingsList.TransportType, TransportTypeName);
         }
 
-        public void ConfigureEndpoint(EndpointConfiguration endpointConfig)
+        public virtual void ConfigureEndpoint(string endpointName, EndpointConfiguration endpointConfig)
         {
             endpointConfig.UseTransport<SqlServerTransport>()
                 .ConnectionString(connectionString);
@@ -29,6 +31,6 @@ namespace ServiceControlCompatibilityTests
             endpointConfig.PurgeOnStartup(true);
         }
 
-        string connectionString;
+        protected string connectionString;
     }
 }

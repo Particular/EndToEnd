@@ -12,7 +12,11 @@ namespace ServiceControlCompatibilityTests
         [Timeout(300000)]
         public Task When_successfully_retry_a_failed_message_with_reply_it_gets_routed_back_to_sender(Type transportDetailsDType)
         {
-            var endpointFactory = StartUp("Retry-with-Reply", transportDetailsDType);
+            var endpointFactory = StartUp("Retry-with-Reply", transportDetailsDType, mapping =>
+            {
+                mapping[SenderEndpointName] = ServerA;
+                mapping[ResponderEndpointName] = ServerB;
+            });
             return RunReplyTest(endpointFactory);
         }
 
@@ -20,8 +24,8 @@ namespace ServiceControlCompatibilityTests
         {
             var testContext = new TestContext();
 
-            var sender = await endpointFactory.CreateEndpoint(new EndpointDetails("Sender").With<TestResponseHandler>().With(testContext));
-            var responder = await endpointFactory.CreateEndpoint(new EndpointDetails("Responder").With<TestRequestHandler>().With(testContext));
+            var sender = await endpointFactory.CreateEndpoint(new EndpointDetails(SenderEndpointName).With<TestResponseHandler>().With(testContext));
+            var responder = await endpointFactory.CreateEndpoint(new EndpointDetails(ResponderEndpointName).With<TestRequestHandler>().With(testContext));
 
             testContext.ShouldFail = true;
             var failingMessageId = await sender.Send(responder, new TestRequest());
@@ -33,6 +37,9 @@ namespace ServiceControlCompatibilityTests
 
             Assert.IsTrue(handled, "Did not process the retry successfully within the time limit");
         }
+
+        const string SenderEndpointName = "Sender";
+        const string ResponderEndpointName = "Responder";
 
         class TestRequest : IMessage
         {
