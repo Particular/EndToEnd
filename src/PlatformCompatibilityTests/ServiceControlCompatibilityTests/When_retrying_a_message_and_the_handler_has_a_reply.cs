@@ -10,14 +10,14 @@ namespace ServiceControlCompatibilityTests
     {
         [TestCaseSource(nameof(AllTransports))]
         [Timeout(300000)]
-        public Task When_successfully_retry_a_failed_message_with_reply_it_gets_routed_back_to_sender(Type transportDetailsDType)
+        public async Task When_successfully_retry_a_failed_message_with_reply_it_gets_routed_back_to_sender(Type transportDetailsDType)
         {
-            var endpointFactory = StartUp("Retry-with-Reply", transportDetailsDType, mapping =>
+            var endpointFactory = await StartUp("Retry-with-Reply", transportDetailsDType, mapping =>
             {
                 mapping[SenderEndpointName] = ServerA;
                 mapping[ResponderEndpointName] = ServerB;
             });
-            return RunReplyTest(endpointFactory);
+            await RunReplyTest(endpointFactory);
         }
 
         async Task RunReplyTest(IEndpointFactory endpointFactory)

@@ -4,6 +4,8 @@ using NServiceBus.AzureServiceBus;
 
 namespace ServiceControlCompatibilityTests
 {
+    using System.Threading.Tasks;
+
     public class ASBForwardingTopologyTransportDetails : ITransportDetails
     {
         const string TransportTypeName = "NServiceBus.AzureServiceBusTransport, NServiceBus.Azure.Transports.WindowsAzureServiceBus";
@@ -15,7 +17,10 @@ namespace ServiceControlCompatibilityTests
 
         public string TransportName => "AzureServiceBus";
 
-        public void Initialize() { }
+        public Task Initialize()
+        {
+            return Task.FromResult(0);
+        }
 
         public void ApplyTo(Configuration configuration)
         {

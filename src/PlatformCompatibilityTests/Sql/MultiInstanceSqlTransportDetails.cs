@@ -24,10 +24,11 @@
             return this;
         }
 
-        public override void Initialize()
+        public override async Task Initialize()
         {
             Console.WriteLine("Creating databases");
-            Task.WhenAll(_connectionStringMapping.Values.Select(EnsureDatabaseExists));
+            await Task.WhenAll(_connectionStringMapping.Values.Select(EnsureDatabaseExists)).ConfigureAwait(false);
+            Console.WriteLine("Databases created");
         }
 
         static async Task EnsureDatabaseExists(string connectionString)

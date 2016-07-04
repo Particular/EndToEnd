@@ -10,14 +10,14 @@
     {
         [TestCaseSource(nameof(AllTransports))]
         [Timeout(300000)]
-        public Task Can_successfully_retry_a_failed_message(Type transportDetailType)
+        public async Task Can_successfully_retry_a_failed_message(Type transportDetailType)
         {
-            var endpointFactory = StartUp("Retry", transportDetailType, map =>
+            var endpointFactory = await StartUp("Retry", transportDetailType, map =>
             {
                 map[SenderEndpointName] = ServerA;
                 map[ProcessorEndpointName] = ServerB;
             });
-            return RunTest(endpointFactory);
+            await RunTest(endpointFactory);
         }
 
         async Task RunTest(IEndpointFactory endpointFactory)

@@ -6,6 +6,8 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Threading.Tasks;
+
     abstract class SqlScTest
     {
         Dictionary<Type, Func<ITransportDetails>> transportDetailActivations = new Dictionary<Type, Func<ITransportDetails>>
@@ -23,7 +25,7 @@
             }
         };
 
-        protected IEndpointFactory StartUp(string testName, Type transportDetailsType, Action<IDictionary<string, string>> fillInEndpointMappings = null)
+        protected async Task<IEndpointFactory> StartUp(string testName, Type transportDetailsType, Action<IDictionary<string, string>> fillInEndpointMappings = null)
         {
             var testId = $"{testName}_{transportDetailsType.Name.Replace("TransportDetails", "")}";
             Console.WriteLine($"Starting test {testId}");
@@ -34,7 +36,7 @@
 
             (transportDetails as IAcceptEndpointMapping)?.AcceptEndpointMapping(endpointMappings);
 
-            transportDetails.Initialize();
+            await transportDetails.Initialize();
             
             serviceControl = StartServiceControl(testId, transportDetails);
 

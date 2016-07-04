@@ -3,6 +3,8 @@ using NServiceBus;
 
 namespace ServiceControlCompatibilityTests
 {
+    using System.Threading.Tasks;
+
     // Todo: Potentially move this out to a separate project
     // so we don't take a hard dependency on NServiceBus.SqlServer
     class MsmqTransportDetails : ITransportDetails
@@ -11,7 +13,10 @@ namespace ServiceControlCompatibilityTests
 
         public string TransportName => "Msmq";
 
-        public void Initialize() { }
+        public Task Initialize()
+        {
+            return Task.FromResult(0);
+        }
 
         public void ApplyTo(Configuration configuration)
         {

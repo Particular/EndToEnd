@@ -3,6 +3,8 @@ using NServiceBus;
 
 namespace ServiceControlCompatibilityTests
 {
+    using System.Threading.Tasks;
+
     public class RabbitMQTransportDetails : ITransportDetails
     {
         const string TransportTypeName = "NServiceBus.RabbitMQTransport, NServiceBus.Transports.RabbitMQ";
@@ -14,7 +16,10 @@ namespace ServiceControlCompatibilityTests
 
         public string TransportName => "RabbitMQ";
 
-        public void Initialize() { }
+        public Task Initialize()
+        {
+            return Task.FromResult(0);
+        }
 
         public void ApplyTo(Configuration configuration)
         {

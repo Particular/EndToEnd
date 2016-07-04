@@ -3,6 +3,8 @@ using NServiceBus;
 
 namespace ServiceControlCompatibilityTests
 {
+    using System.Threading.Tasks;
+
     public class SqlTransportDetails : ITransportDetails
     {
         const string TransportTypeName = "NServiceBus.SqlServerTransport, NServiceBus.Transports.SQLServer";
@@ -14,7 +16,10 @@ namespace ServiceControlCompatibilityTests
 
         public string TransportName => "SQLServer";
 
-        public virtual void Initialize() { }
+        public virtual Task Initialize()
+        {
+            return Task.FromResult(0);
+        }
 
         public virtual void ApplyTo(Configuration configuration)
         {

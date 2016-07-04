@@ -3,6 +3,8 @@ using NServiceBus;
 
 namespace ServiceControlCompatibilityTests
 {
+    using System.Threading.Tasks;
+
     public class ASQTransportDetails : ITransportDetails
     {
         const string TransportTypeName = "NServiceBus.AzureStorageQueueTransport, NServiceBus.Azure.Transports.WindowsAzureStorageQueues";
@@ -14,7 +16,10 @@ namespace ServiceControlCompatibilityTests
 
         public string TransportName => "AzureStorageQueue";
 
-        public void Initialize() { }
+        public Task Initialize()
+        {
+            return Task.FromResult(0);
+        }
 
         public void ApplyTo(Configuration configuration)
         {
