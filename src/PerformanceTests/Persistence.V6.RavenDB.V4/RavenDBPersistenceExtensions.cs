@@ -3,6 +3,8 @@ using System.Configuration;
 using System.Data.Common;
 using NServiceBus;
 using NServiceBus.Persistence.RavenDB;
+using Raven.Client.Document;
+using Raven.Client.Document.DTC;
 
 static class RavenDBPersistenceExtensions
 {
@@ -19,15 +21,20 @@ static class RavenDBPersistenceExtensions
     {
         var builder = new DbConnectionStringBuilder { ConnectionString = connectionstring };
 
-        var cp = new ConnectionParameters();
+        //var cp = new ConnectionParameters();
 
-        if (builder.ContainsKey("url")) cp.Url = builder["url"] as string;
-        if (builder.ContainsKey("database")) cp.DatabaseName = builder["database"] as string;
-        if (builder.ContainsKey("defaultdatabase")) cp.DatabaseName = builder["defaultdatabase"] as string;
-        if (builder.ContainsKey("apikey")) cp.ApiKey = builder["apikey"] as string;
-        if (builder.ContainsKey("domain")) cp.Credentials = new System.Net.NetworkCredential(builder["user"] as string, builder["password"] as string, builder["domain"] as string);
-        else if (builder.ContainsKey("password")) cp.Credentials = new System.Net.NetworkCredential(builder["user"] as string, builder["password"] as string);
+        var store = new DocumentStore();
 
-        return cfg.SetDefaultDocumentStore(cp);
+        if(builder.ContainsKey("url")) store.Url = builder[ "url" ] as string;
+        if(builder.ContainsKey("database")) store.DefaultDatabase = builder[ "database" ] as string;
+        if(builder.ContainsKey("defaultdatabase")) store.DefaultDatabase = builder[ "defaultdatabase" ] as string;
+        if(builder.ContainsKey("apikey")) store.ApiKey = builder[ "apikey" ] as string;
+        if(builder.ContainsKey("domain")) store.Credentials = new System.Net.NetworkCredential(builder[ "user" ] as string, builder[ "password" ] as string, builder[ "domain" ] as string);
+        else if(builder.ContainsKey("password")) store.Credentials = new System.Net.NetworkCredential(builder[ "user" ] as string, builder[ "password" ] as string);
+
+        store.TransactionRecoveryStorage = new LocalDirectoryTransactionRecoveryStorage(@"c:\temp\raven-dtc");
+        store.Initialize();
+
+        return cfg.SetDefaultDocumentStore(store);
     }
 }
