@@ -47,7 +47,8 @@ namespace SqlServerV3
                 });
 
             endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings));
-            
+            endpointConfiguration.MakeInstanceUniquelyAddressable("A");
+
             messageStore = new MessageStore();
             callbackResultStore = new CallbackResultStore();
             subscriptionStore = new SubscriptionStore();

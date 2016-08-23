@@ -36,6 +36,7 @@
                 .ConnectionString(RabbitConnectionStringBuilder.Build());
 
             endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings));
+            endpointConfiguration.MakeInstanceUniquelyAddressable("A");
 
             if (endpointDefinition.RoutingTopology == Topology.Direct)
             {
