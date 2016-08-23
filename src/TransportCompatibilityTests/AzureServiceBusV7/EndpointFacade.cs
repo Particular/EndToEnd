@@ -3,8 +3,6 @@
     using System;
     using System.Threading.Tasks;
     using NServiceBus;
-    using NServiceBus.AzureServiceBus;
-    using NServiceBus.AzureServiceBus.Addressing;
     using TransportCompatibilityTests.Common;
     using TransportCompatibilityTests.Common.AzureServiceBus;
     using TransportCompatibilityTests.Common.Messages;
@@ -27,14 +25,12 @@
             endpointConfiguration.UsePersistence<InMemoryPersistence>();
             endpointConfiguration.UseTransport<AzureServiceBusTransport>()
                 .UseTopology<EndpointOrientedTopology>()
-                .RegisterPublisherForType("source", typeof(TestEvent))
+                .RegisterPublisher(typeof(TestEvent), "source")
                 .ConnectionString(AzureServiceBusConnectionStringBuilder.Build)
                 .Sanitization().UseStrategy<ValidateAndHashIfNeeded>();
 
             // TODO: remove when core v6 & asb V7 package are updated
             endpointConfiguration.UseSerialization<JsonSerializer>(); 
-            // Needed for callbacks package to work
-            endpointConfiguration.ScaleOut().InstanceDiscriminator(Guid.NewGuid().ToString("N"));
 
             endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings));
 
