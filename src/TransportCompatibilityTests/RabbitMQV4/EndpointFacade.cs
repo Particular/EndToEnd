@@ -34,7 +34,7 @@
             endpointConfiguration.EnableInstallers();
             var transportExtensions = endpointConfiguration.UseTransport<RabbitMQTransport>()
                 .ConnectionString(RabbitConnectionStringBuilder.Build());
-            endpointConfiguration.ScaleOut().InstanceDiscriminator("A");
+
             endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings));
 
             if (endpointDefinition.RoutingTopology == Topology.Direct)
