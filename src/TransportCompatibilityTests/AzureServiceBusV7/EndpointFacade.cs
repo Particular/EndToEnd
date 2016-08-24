@@ -33,7 +33,7 @@
             endpointConfiguration.UseSerialization<JsonSerializer>(); 
 
             endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings));
-            endpointConfiguration.MakeInstanceUniquelyAddressable(Guid.NewGuid() + "N");
+            endpointConfiguration.MakeInstanceUniquelyAddressable(Guid.NewGuid() + "A");
 
             messageStore = new MessageStore();
             callbackResultStore = new CallbackResultStore();
