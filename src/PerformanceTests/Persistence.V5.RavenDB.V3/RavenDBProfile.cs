@@ -26,9 +26,10 @@ class RavenDBProfile : IProfile, INeedContext
     {
         var store = new DocumentStore
         {
-            DefaultDatabase = Context.EndpointName,
-            ConnectionStringName = "RavenDB"
+            DefaultDatabase = Context.EndpointName
         };
+
+        store.ParseConnectionString(ConfigurationHelper.GetConnectionString("RavenDB"));
 
         // Calculate a ResourceManagerId unique to this endpoint using just LocalAddress
         // Not suitable for side-by-side installations!
