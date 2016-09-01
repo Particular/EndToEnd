@@ -75,7 +75,7 @@ namespace Host
         {
             var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Real-Time Protection");
 
-            if (0 == (int)key.GetValue("DisableRealtimeMonitoring", 1))
+            if (key != null && 0 == (int)key.GetValue("DisableRealtimeMonitoring", 1))
             {
                 Log.Warn("Windows Defender is running, consider disabling real-time protection!");
                 Thread.Sleep(3000);
@@ -144,15 +144,22 @@ namespace Host
 
         static void CheckPowerPlan()
         {
-            var highperformance = new Guid("8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c");
-            var id = Powerplan.GetActive();
-
-            Log.InfoFormat("Powerplan: {0}", id);
-
-            if (id != highperformance)
+            try
             {
-                Log.WarnFormat("Power option not set to High Performance, consider setting it to high performance!");
-                Thread.Sleep(3000);
+                var highperformance = new Guid("8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c");
+                var id = Powerplan.GetActive();
+
+                Log.InfoFormat("Powerplan: {0}", id);
+
+                if (id != highperformance)
+                {
+                    Log.WarnFormat("Power option not set to High Performance, consider setting it to high performance!");
+                    Thread.Sleep(3000);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("Powerplan check failed, ignoring", ex);
             }
         }
     }
