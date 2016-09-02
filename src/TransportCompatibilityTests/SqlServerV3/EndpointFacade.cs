@@ -7,7 +7,7 @@ using TransportCompatibilityTests.Common.Messages;
 
 namespace SqlServerV3
 {
-    using System.Linq;
+    using NHibernate.Util;
     using NServiceBus.Persistence;
     using NServiceBus.Transport.SQLServer;
     using TransportCompatibilityTests.Common.SqlServer;
@@ -39,12 +39,13 @@ namespace SqlServerV3
                     .DefaultSchema(endpointDefinition.Schema);
             }
 
-            endpointConfiguration.UseTransport<SqlServerTransport>().UseSpecificSchema(qn =>
+            endpointDefinition.Mappings.ForEach(mm =>
+            {
+                if (string.IsNullOrEmpty(mm.Schema) == false)
                 {
-                    var mapping = endpointDefinition.Mappings.FirstOrDefault(mm => mm.TransportAddress == qn);
-
-                    return mapping?.Schema;
-                });
+                    endpointConfiguration.UseTransport<SqlServerTransport>().UseSchemaForQueue(mm.TransportAddress, mm.Schema);
+                }
+            });
 
             endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings));
             endpointConfiguration.MakeInstanceUniquelyAddressable("A");
