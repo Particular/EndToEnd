@@ -11,31 +11,31 @@ abstract class LoopRunner : BaseRunner
 
     Task loopTask;
 
-    static CountdownEvent countdownEvent { get; set; }
+    static AsyncCountdownEvent countdownEvent;
     static long count;
     static long latencySum;
 
-    CancellationTokenSource stopLoop { get; set; }
-    int BatchSize { get; set; } = 16;
+    CancellationToken stopLoopCancellationToken;
+    CancellationTokenSource stopLoopCancellationTokenSource;
+    int BatchSize = 16;
+
     protected abstract Task SendMessage(ISession session);
 
-    protected override async Task Start(ISession session)
+    protected override Task Start(ISession session)
     {
-        stopLoop = new CancellationTokenSource();
-        loopTask = await Task.Factory.StartNew(() => Loop(session), TaskCreationOptions.LongRunning).ConfigureAwait(false);
+        stopLoopCancellationTokenSource = new CancellationTokenSource();
+        stopLoopCancellationToken = stopLoopCancellationTokenSource.Token;
+        loopTask = Task.Run(() => Loop(session), CancellationToken.None);
+        return Task.FromResult(0);
     }
 
     protected override Task Stop()
     {
-        using (stopLoop)
+        using (stopLoopCancellationTokenSource)
         {
-            stopLoop.Cancel();
-            using (loopTask)
-            {
-                loopTask.Wait();
-            }
+            stopLoopCancellationTokenSource.Cancel();
+            return loopTask;
         }
-        return Task.FromResult(0);
     }
 
     async Task Loop(ISession session)
@@ -43,14 +43,13 @@ abstract class LoopRunner : BaseRunner
         try
         {
             Log.Warn("Sleeping 3,000ms for the instance to purge the queue and process subscriptions. Loop requires the queue to be empty.");
-            await Task.Delay(3000).ConfigureAwait(false);
+            await Task.Delay(3000, CancellationToken.None).ConfigureAwait(false);
+
             Log.Info("Starting");
             var start = Stopwatch.StartNew();
-            countdownEvent = new CountdownEvent(BatchSize);
+            countdownEvent = new AsyncCountdownEvent(BatchSize);
 
-            var cancellationToken = stopLoop.Token;
-
-            while (!Shutdown)
+            while (!stopLoopCancellationToken.IsCancellationRequested)
             {
                 try
                 {
@@ -68,7 +67,7 @@ abstract class LoopRunner : BaseRunner
                         Log.InfoFormat("Batch size increased to {0}", BatchSize);
                     }
                     Console.Write("2");
-                    countdownEvent.Wait(cancellationToken);
+                    await countdownEvent.WaitAsync(stopLoopCancellationToken).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException)
                 {

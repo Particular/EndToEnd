@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyScanner.cs" />
+    <Compile Include="AsyncCountdownEvent.cs" />
     <Compile Include="ConcurrencyLevelConverter.cs" />
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="DeterministicUuid.cs" />
