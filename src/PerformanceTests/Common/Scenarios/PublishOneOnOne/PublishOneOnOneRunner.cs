@@ -1,15 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using NLog.Fluent;
 using NServiceBus;
 using NServiceBus.Config;
 using NServiceBus.Logging;
 
 /// <summary>
 /// Does a continious test where a configured set of messages are 'seeded' on the
-/// queue. For each message that is received one message will be send. This means
-/// that the sending of the message is part of the receiving context and thus
-/// part of the same transaction.
+/// queue. For each message that is received one message will be published. This
+/// means that the sending of the message is part of the receiving context and
+/// thus part of the same transaction.
 /// 
 /// Then the test is stopped the handler stops forwarding the message. The test
 /// waits until no new messages are received.
