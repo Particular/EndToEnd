@@ -9,8 +9,8 @@ using NServiceBus.Logging;
 /// means that the sending of the message is part of the receiving context and
 /// thus part of the same transaction.
 /// 
-/// Then the test is stopped the handler stops forwarding the message. The test
-/// waits until no new messages are received.
+/// When the test is stopped, the handler stops forwarding the message. The test
+/// continues until no new messages are received.
 /// </summary>
 partial class PublishOneOnOneRunner : BaseRunner, IConfigureUnicastBus
 {
