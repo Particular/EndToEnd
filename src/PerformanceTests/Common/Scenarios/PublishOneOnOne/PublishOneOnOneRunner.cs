@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Config;
 using NServiceBus.Logging;
@@ -16,19 +15,18 @@ using NServiceBus.Logging;
 partial class PublishOneOnOneRunner : BaseRunner, IConfigureUnicastBus
 {
     readonly ILog Log = LogManager.GetLogger(nameof(PublishOneOnOneRunner));
-    const int seedSize = 100;
 
     protected override async Task Start(ISession session)
     {
-        var start = Stopwatch.StartNew();
-
-        do
+        Log.Warn("Sleeping 3,000ms for the instance to purge the queue and process subscriptions. Loop requires the queue to be empty.");
+        await Task.Delay(3000).ConfigureAwait(false);
+        var maxConcurrencyLevel = ConcurrencyLevelConverter.Convert(Permutation.ConcurrencyLevel);
+        var seedSize = maxConcurrencyLevel * 2;
+        Log.InfoFormat("Seeding {0} messages based on concurrency level of {1}.", seedSize, maxConcurrencyLevel);
+        await TaskHelper.ParallelFor(seedSize, () => session.Publish(new Event
         {
-            await TaskHelper.ParallelFor(seedSize, () => session.Publish(new Event
-            {
-                Data = Data
-            }));
-        } while (start.ElapsedMilliseconds < 2500);
+            Data = Data
+        })).ConfigureAwait(false);
     }
 
     protected override async Task Stop()
@@ -41,7 +39,8 @@ partial class PublishOneOnOneRunner : BaseRunner, IConfigureUnicastBus
         do
         {
             current = Handler.Count;
-            await Task.Delay(100);
+            Log.Debug("Delaying to detect receive activity...");
+            await Task.Delay(100).ConfigureAwait(false);
         } while (Handler.Count > current);
     }
 
