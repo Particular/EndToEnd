@@ -52,6 +52,8 @@ abstract class LoopRunner : BaseRunner
 
             var cancellationToken = stopLoop.Token;
 
+            var po = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
+
             while (!Shutdown)
             {
                 try
@@ -60,7 +62,7 @@ abstract class LoopRunner : BaseRunner
                     countdownEvent.Reset(BatchSize);
                     var batchDuration = Stopwatch.StartNew();
 
-                    await TaskHelper.ParallelFor(BatchSize, () => SendMessage(session)).ConfigureAwait(false);
+                    Parallel.For((long)0, BatchSize, po, i => { SendMessage(session).ConfigureAwait(false).GetAwaiter().GetResult(); });
 
                     count += BatchSize;
 
