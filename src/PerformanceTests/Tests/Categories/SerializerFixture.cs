@@ -6,7 +6,7 @@ using Variables;
 namespace Categories
 {
 
-    [TestFixture(Description = "Serializer differences", Category = "Performance")]
+    [TestFixture(Description = "Serializer differences", Category = "Serializer")]
     public class SerializerFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]

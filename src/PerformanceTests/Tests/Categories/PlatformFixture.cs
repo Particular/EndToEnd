@@ -6,7 +6,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "Platform x86/x64, gc client/server", Category = "Performance")]
+    [TestFixture(Description = "Platform x86/x64, gc client/server", Category = "Platform")]
     public class PlatformFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]

@@ -5,7 +5,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "Distributor distribution", Category = "Performance")]
+    [TestFixture(Description = "Distributor distribution", Category = "Distributor")]
     [Explicit]
     public class DistributorFixture : Base
     {

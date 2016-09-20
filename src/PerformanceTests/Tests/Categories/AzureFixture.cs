@@ -7,7 +7,7 @@ namespace Tests.Categories
     using Permutations;
     using Variables;
 
-    [TestFixture(Description = "Persisters", Category = "Performance"), Explicit]
+    [TestFixture(Description = "Persisters", Category = "Azure"), Explicit]
     public class AzureFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]

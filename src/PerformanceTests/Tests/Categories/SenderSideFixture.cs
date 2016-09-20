@@ -5,7 +5,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "Sender-side distribution", Category = "Performance")]
+    [TestFixture(Description = "Sender-side distribution", Category = "SenderSide")]
     [Explicit]
     public class SenderSideFixture : Base
     {
