@@ -11,9 +11,12 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
 
     public void Configure(EndpointConfiguration endpointConfiguration)
     {
+
         var transport = endpointConfiguration
-            .UseTransport<AzureServiceBusTransport>()
-            ;
+            .UseTransport<AzureServiceBusTransport>();
+
+        var concurrencyLevel = ConcurrencyLevelConverter.Convert(Permutation.ConcurrencyLevel);
+        transport.MessageReceivers().PrefetchCount(concurrencyLevel * 3);
 
         transport
             .UseTopology<ForwardingTopology>()
