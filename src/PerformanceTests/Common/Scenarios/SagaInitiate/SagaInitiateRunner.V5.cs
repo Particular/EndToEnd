@@ -1,26 +1,27 @@
 ﻿#if Version5
+using System;
 using NServiceBus.Saga;
 
 partial class SagaInitiateRunner
 {
-    public class TheSaga : Saga<SagaData>,
+    public class TheSaga : Saga<SagaCreateData>,
         IAmStartedByMessages<Command>
     {
-        protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaData> mapper)
+        protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaCreateData> mapper)
         {
-            mapper.ConfigureMapping<Command>(m => m.Identifier).ToSaga(s => s.UniqueIdentifier);
+            mapper.ConfigureMapping<Command>(m => m.Identifier).ToSaga(s => s.Identifier);
         }
 
         public void Handle(Command message)
         {
-            Data.UniqueIdentifier = message.Identifier;
+            Data.Identifier = message.Identifier;
         }
     }
 
-    public class SagaData : ContainSagaData
+    public class SagaCreateData : ContainSagaData
     {
         [Unique]
-        public virtual int UniqueIdentifier { get; set; }
+        public virtual Guid Identifier { get; set; }
     }
 }
 #endif

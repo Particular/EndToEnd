@@ -1,24 +1,17 @@
-﻿using System.Threading;
+﻿using System;
 using System.Threading.Tasks;
 using Common.Scenarios;
 using NServiceBus;
 
 partial class SagaInitiateRunner : BaseRunner, ICreateSeedData
 {
-    int messageId;
-
     public Task SendMessage(ISession session)
     {
-        return session.SendLocal(new Command(Interlocked.Increment(ref messageId)));
+        return session.SendLocal(new Command { Identifier = Guid.NewGuid() });
     }
 
     public class Command : ICommand
     {
-        public Command(int id)
-        {
-            Identifier = id;
-        }
-
-        public int Identifier { get; set; }
+        public Guid Identifier { get; set; }
     }
 }
