@@ -12,6 +12,8 @@ using Raven.Client.Document.DTC;
 
 class RavenDBProfile : IProfile, INeedContext, ISetup
 {
+    static readonly string ConnectionString = ConfigurationHelper.GetConnectionString("RavenDB");
+
     ILog Log = LogManager.GetLogger(nameof(RavenDBProfile));
 
     public IContext Context { private get; set; }
@@ -30,7 +32,7 @@ class RavenDBProfile : IProfile, INeedContext, ISetup
             DefaultDatabase = Context.EndpointName
         };
 
-        store.ParseConnectionString(ConfigurationHelper.GetConnectionString("RavenDB"));
+        store.ParseConnectionString(ConnectionString);
 
         // Calculate a ResourceManagerId unique to this endpoint using just LocalAddress
         // Not suitable for side-by-side installations!
@@ -65,11 +67,9 @@ class RavenDBProfile : IProfile, INeedContext, ISetup
     {
         try
         {
-            using (var store = new DocumentStore()
+            using (var store = new DocumentStore())
             {
-                ConnectionStringName = "RavenDB"
-            })
-            {
+                store.ParseConnectionString(ConnectionString);
                 store.Initialize();
                 store.DatabaseCommands.GlobalAdmin.DeleteDatabase("PerformanceTest", true);
             }
