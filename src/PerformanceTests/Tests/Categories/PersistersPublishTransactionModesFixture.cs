@@ -18,7 +18,7 @@ namespace Categories
             return PermutationGenerator.Generate(new Permutations
             {
                 Transports = new[] { Transport.MSMQ },
-                Persisters = new [] { Persistence.Azure, Persistence.InMemory, Persistence.NHibernate, Persistence.NHibernate_Azure, Persistence.RavenDB, },
+                Persisters = new [] { Persistence.Azure, Persistence.NHibernate, Persistence.NHibernate_Azure, Persistence.RavenDB, },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
                 TransactionMode = new[] { TransactionMode.Atomic, TransactionMode.Transactional, }
