@@ -15,12 +15,6 @@ namespace Categories
             base.GatedPublishRunner(permutation);
         }
 
-        [TestCaseSource(nameof(CreatePermutations))]
-        public override void SagaInitiateRunner(Permutation permutation)
-        {
-            base.SagaInitiateRunner(permutation);
-        }
-
         static IEnumerable<Permutation> CreatePermutations()
         {
             return PermutationGenerator.Generate(new Permutations
