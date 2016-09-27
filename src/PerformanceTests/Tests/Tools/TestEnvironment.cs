@@ -1,6 +1,8 @@
+
 namespace Tests.Tools
 {
     using System.IO;
+    using System.Threading;
     using System.Xml.Linq;
     using System.Xml.XPath;
     using Tests.Permutations;
@@ -75,16 +77,41 @@ namespace Tests.Tools
 
         void CopyAssembliesToStarupDir(DirectoryInfo destination, string[] baseFiles, FileInfo[] overrides)
         {
+            var maxRetryErrors = 100;
             foreach (var file in baseFiles)
             {
                 var dst = Path.Combine(destination.FullName, Path.GetFileName(file));
-                Clone(file, dst);
+                do
+                {
+                    try
+                    {
+                        Clone(file, dst);
+                        break;
+                    }
+                    catch
+                    {
+                        if (--maxRetryErrors < 0) throw;
+                        Thread.Sleep(100);
+                    }
+                } while (true);
             }
 
             foreach (var @override in overrides)
             {
                 var dst = Path.Combine(destination.FullName, @override.Name);
-                Clone(@override.FullName, dst);
+                do
+                {
+                    try
+                    {
+                        Clone(@override.FullName, dst);
+                        break;
+                    }
+                    catch
+                    {
+                        if (--maxRetryErrors < 0) throw;
+                        Thread.Sleep(100);
+                    }
+                } while (true);
             }
         }
 
@@ -109,7 +136,12 @@ namespace Tests.Tools
         static void Clone(string src, string dst)
         {
             src = Path.GetFullPath(src);
-            if (File.Exists(dst)) return;
+            if (File.Exists(dst))
+            {
+                var equalTimestamps = File.GetLastAccessTimeUtc(dst) == File.GetLastWriteTimeUtc(src);
+                if (equalTimestamps) return;
+                File.Delete(dst);
+            }
             if (!SymbolicLink.Create(src, dst)) File.Copy(src, dst);
             File.SetLastWriteTimeUtc(dst, File.GetLastWriteTimeUtc(src));
         }
