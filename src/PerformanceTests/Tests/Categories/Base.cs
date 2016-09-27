@@ -109,7 +109,12 @@ namespace Categories
 
             using (var p = Process.Start(pi))
             {
-                p.WaitForExit();
+                var maxDurationInSeconds = 150;
+                if (!p.WaitForExit(maxDurationInSeconds * 1000))
+                {
+                    p.Kill();
+                    Assert.Fail($"Killed process because execution took more then {maxDurationInSeconds} seconds.");
+                }
                 if (p.ExitCode == (int)ReturnCodes.NotSupported)
                 {
                     Assert.Inconclusive("Not supported");
