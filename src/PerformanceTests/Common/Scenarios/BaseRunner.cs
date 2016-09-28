@@ -164,6 +164,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         var configuration = CreateConfiguration();
         configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
         configuration.CustomConfigurationSource(this);
+        configuration.DefineCriticalErrorAction(OnCriticalError);
 
         if (SendOnly)
         {
@@ -205,6 +206,21 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
         return finalInternalListToScan.ToList();
     }
+
+    void OnCriticalError(string errorMessage, Exception exception)
+    {
+        try
+        {
+            Log.Fatal("OnCriticalError", exception);
+            NLog.LogManager.Shutdown();
+            Session.Close();
+        }
+        finally
+        {
+            Environment.FailFast("NServiceBus critical error", exception);
+        }
+    }
+
 #else
     async Task CreateOrPurgeQueues()
     {
@@ -245,11 +261,9 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     {
         var configuration = new Configuration(EndpointName);
         configuration.EnableInstallers();
-
         configuration.ExcludeTypes(GetTypesToExclude().ToArray());
-
         configuration.ApplyProfiles(this);
-
+        configuration.DefineCriticalErrorAction(OnCriticalError);
         return configuration;
     }
 
@@ -257,6 +271,21 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     {
         return GetTypesToExclude(Assembly.GetAssembly(this.GetType()).GetTypes());
     }
+
+    async Task OnCriticalError(ICriticalErrorContext context)
+    {
+        try
+        {
+            Log.Fatal("OnCriticalError", context.Exception);
+            NLog.LogManager.Shutdown();
+            await context.Stop();
+        }
+        finally
+        {
+            Environment.FailFast("NServiceBus critical error", context.Exception);
+        }
+    }
+
 #endif
 
     IEnumerable<Type> GetTypesToExclude(IEnumerable<Type> allTypes)
