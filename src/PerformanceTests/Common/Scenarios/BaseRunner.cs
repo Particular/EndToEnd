@@ -212,11 +212,11 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         try
         {
             Log.Fatal("OnCriticalError", exception);
-            NLog.LogManager.Shutdown();
             Session.Close();
         }
         finally
         {
+            NLog.LogManager.Shutdown();
             Environment.FailFast("NServiceBus critical error", exception);
         }
     }
@@ -277,11 +277,11 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         try
         {
             Log.Fatal("OnCriticalError", context.Exception);
-            NLog.LogManager.Shutdown();
             await context.Stop();
         }
         finally
         {
+            NLog.LogManager.Shutdown();
             Environment.FailFast("NServiceBus critical error", context.Exception);
         }
     }
