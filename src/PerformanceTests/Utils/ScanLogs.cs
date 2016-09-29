@@ -62,6 +62,8 @@ public class ScanLogs
         return items;
     }
 
+    const string Delimiter = "\t";
+    static bool Align = false;
 
 
     public static string ToCsvString(string path)
@@ -75,11 +77,11 @@ public class ScanLogs
         foreach (var k in keys)
         {
             var l = items
-                .Select(x => x[k])
+                .Select(x => x.ContainsKey(k) ? x[k] : "NA")
                 .Max(x => x.Length);
 
             l = Math.Max(l, k.Length);
-            var f = "{0," + l + "};";
+            var f = "{0," + l + "}" + Delimiter;
             sb.AppendFormat(CultureInfo.InvariantCulture, f, k);
         }
         sb.AppendLine();
@@ -89,14 +91,23 @@ public class ScanLogs
             foreach (var k in keys)
             {
                 var l = items
-                    .Select(x => x[k])
+                    .Select(x => x.ContainsKey(k) ? x[k] : "NA")
                     .Max(x => x.Length);
 
                 l = Math.Max(l, k.Length);
 
-                var v = i[k];
-                var f = "{0," + l + "};";
-                sb.AppendFormat(CultureInfo.InvariantCulture, f, v);
+                var v = i.ContainsKey(k) ? i[k] : "NA";
+
+                if (Align)
+                {
+                    var f = "{0," + l + "}" + Delimiter;
+                    sb.AppendFormat(CultureInfo.InvariantCulture, f, v);
+                }
+                else
+                {
+                    var f = "{0}" + Delimiter;
+                    sb.AppendFormat(CultureInfo.InvariantCulture, f, v);
+                }
             }
             sb.AppendLine();
         }
