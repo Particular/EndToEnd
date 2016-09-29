@@ -82,6 +82,7 @@
     <Compile Include="Categories\SqlTransportFixture.cs" />
     <Compile Include="Categories\TestSessionInitializer.cs" />
     <Compile Include="Categories\TransactionModesFixture.cs" />
+    <Compile Include="Categories\ConcurrencyFixture.cs" />
     <Compile Include="Categories\TransportsFixture.cs" />
     <Compile Include="Categories\ResourceUtilizationFixture.cs" />
     <Compile Include="Categories\SenderSideFixture.cs" />
