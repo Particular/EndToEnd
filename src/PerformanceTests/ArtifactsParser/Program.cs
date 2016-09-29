@@ -8,6 +8,11 @@ namespace ArtifactsParser
     {
         static void Main(string[] args)
         {
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Please specify artifact path as commandline argument\n\n\tArtifactParser.exe <path to artifacsts>");
+                return;
+            }
             var path = args[0];
             var csv = ScanLogs.ToCsvString(path);
             var dst = Path.Combine(path, "report.csv");
