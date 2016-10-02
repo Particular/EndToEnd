@@ -34,6 +34,11 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     protected static bool Shutdown { private set; get; }
     protected readonly BatchHelper.IBatchHelper BatchHelper = global::BatchHelper.Instance;
 
+    bool SuppressException(Exception ex)
+    {
+        return ex is ObjectDisposedException;
+    }
+
     public async Task Execute(Permutation permutation, string endpointName)
     {
         Permutation = permutation;
@@ -42,13 +47,28 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         InitData();
         MaxConcurrencyLevel = ConcurrencyLevelConverter.Convert(Permutation.ConcurrencyLevel);
 
-        await CreateOrPurgeQueues().ConfigureAwait(false); // Workaround for pubsub to self with purge on startup
+        try
+        {
+            await CreateOrPurgeQueues().ConfigureAwait(false); // Workaround for pubsub to self with purge on startup
+        }
+        catch (Exception ex) when (SuppressException(ex))
+        {
+            Log.Warn("Suppressing", ex);
+        }
+
 
         var seedCreator = this as ICreateSeedData;
         if (seedCreator != null)
         {
             Log.InfoFormat("Create seed data...");
-            await CreateSeedData(seedCreator).ConfigureAwait(false);
+            try
+            {
+                await CreateSeedData(seedCreator).ConfigureAwait(false);
+            }
+            catch (Exception ex) when(SuppressException(ex))
+            {
+                Log.Warn("Suppressing", ex);
+            }
         }
 
         Log.InfoFormat("Create receiving endpoint...");
@@ -83,7 +103,14 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         }
         finally
         {
-            await Session.Close().ConfigureAwait(false);
+            try
+            {
+                await Session.Close().ConfigureAwait(false);
+            }
+            catch (Exception ex) when (SuppressException(ex))
+            {
+                Log.Warn("Suppressing", ex);
+            }
         }
     }
 
