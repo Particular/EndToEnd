@@ -93,7 +93,22 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             Log.InfoFormat("Run: {0}", runDuration);
 
             Statistics.Instance.Reset(GetType().Name);
-            await Task.Delay(runDuration).ConfigureAwait(false);
+
+            var interval = TimeSpan.FromSeconds(1.5);
+            var current = Statistics.Instance.NumberOfMessages;
+            var stopTimestamp = DateTime.UtcNow.Add(runDuration);
+            bool expired, activity;
+            var remaining = stopTimestamp - DateTime.UtcNow;
+            do
+            {
+                Log.InfoFormat("Waiting until run duration expires in {0} or no activity (last count = {1:N0})", remaining, current);
+                await Task.Delay(remaining > interval ? interval : remaining).ConfigureAwait(false);
+                remaining = stopTimestamp - DateTime.UtcNow;
+                activity = current < (current = Statistics.Instance.NumberOfMessages);
+                expired = remaining.Ticks < 0;
+            } while (activity && !expired);
+            if (!activity) Log.Info("No more incoming messages.");
+            if (expired) Log.Info("Maximum run duration expired.");
 
             Shutdown = true;
             Log.Info("Stopping...");
