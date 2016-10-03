@@ -14,6 +14,8 @@ using NServiceBus.Logging;
 using Tests.Permutations;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Scenarios;
@@ -22,6 +24,9 @@ using Variables;
 public abstract class BaseRunner : IConfigurationSource, IContext
 {
     readonly ILog Log = LogManager.GetLogger("BaseRunner");
+
+    string SeedReceiveRatioPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Perftests", Permutation.Category, Permutation.Description, Permutation.Tests[0], Permutation.Id, "SeedDurationFactor.txt");
+    double seedAvg;
 
     public Permutation Permutation { get; private set; }
     public string EndpointName { get; private set; }
@@ -56,16 +61,16 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             Log.Warn("Suppressing", ex);
         }
 
-
         var seedCreator = this as ICreateSeedData;
         if (seedCreator != null)
         {
             Log.InfoFormat("Create seed data...");
             try
             {
+                ReadPermutationSeedDurationFactor();
                 await CreateSeedData(seedCreator).ConfigureAwait(false);
             }
-            catch (Exception ex) when(SuppressException(ex))
+            catch (Exception ex) when (SuppressException(ex))
             {
                 Log.Warn("Suppressing", ex);
             }
@@ -101,7 +106,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             var remaining = stopTimestamp - DateTime.UtcNow;
             do
             {
-                Log.InfoFormat("Waiting until run duration expires in {0} or no activity (last count = {1:N0})", remaining, current);
+                Log.InfoFormat("Waiting until run duration expires in {0:N1}s or no activity (last count = {1:N0})", remaining.TotalSeconds, current);
                 await Task.Delay(remaining > interval ? interval : remaining).ConfigureAwait(false);
                 remaining = stopTimestamp - DateTime.UtcNow;
                 activity = current < (current = Statistics.Instance.NumberOfMessages);
@@ -110,11 +115,13 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             if (!activity) Log.Info("No more incoming messages.");
             if (expired) Log.Info("Maximum run duration expired.");
 
+            Statistics.Instance.Dump();
+            WritePermutationSeedDurationFactor();
+
             Shutdown = true;
             Log.Info("Stopping...");
             await Stop().ConfigureAwait(false);
             Log.Info("Stopped");
-            Statistics.Instance.Dump();
         }
         finally
         {
@@ -176,9 +183,9 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             );
 
             var elapsed = start.Elapsed;
-            var avg = count / elapsed.TotalSeconds;
-            Log.InfoFormat("Done seeding, seeded {0:N0} messages, {1:N1} msg/s", count, avg);
-            LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedThroughputAvg", avg, "msg/s");
+            seedAvg = count / elapsed.TotalSeconds;
+            Log.InfoFormat("Done seeding, seeded {0:N0} messages, {1:N1} msg/s", count, seedAvg);
+            LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedThroughputAvg", seedAvg, "msg/s");
             LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedCount", count, "#");
             LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedDuration", elapsed.TotalMilliseconds, "ms");
         }
@@ -239,7 +246,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
     List<Type> GetTypesToInclude()
     {
-        var location = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         var asm = new NServiceBus.Hosting.Helpers.AssemblyScanner(location).GetScannableAssemblies();
 
         var allTypes = (from a in asm.Assemblies
@@ -409,5 +416,30 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
         var diff = current - startCount;
         Log.InfoFormat("Drained {0} message(s)", diff);
+    }
+
+    void ReadPermutationSeedDurationFactor()
+    {
+        var fi = new FileInfo(SeedReceiveRatioPath);
+        if (!fi.Exists) return;
+        Log.InfoFormat("Reading seed/receive ration from '{0}'.", fi);
+        //Convert.ToDouble(ConfigurationManager.AppSettings["SeedDurationFactor"], CultureInfo.InvariantCulture)
+        var lines = File.ReadAllLines(fi.FullName);
+        var ratio = lines.Select(l => double.Parse(l, CultureInfo.InvariantCulture)).Average();
+        ratio = Math.Min(0.95, Math.Max(0.05, ratio));
+        Log.InfoFormat("Set SeedDurationFactor to {0:N}.", ratio);
+        Settings.SeedDuration = TimeSpan.FromSeconds((Settings.RunDuration + Settings.WarmupDuration).TotalSeconds * ratio);
+    }
+
+    void WritePermutationSeedDurationFactor()
+    {
+        var i = Statistics.Instance;
+        var receivedAvg = i.Throughput;
+        var seedReceiveRatio = receivedAvg / (seedAvg + receivedAvg);
+        Log.InfoFormat("SeedDurationFactor ratio: {0:N} ({1:N}/{2:N})", seedReceiveRatio, seedAvg, receivedAvg);
+        var fi = new FileInfo(SeedReceiveRatioPath);
+        Log.InfoFormat("Writing SeedDurationFactor ratio to '{0}'.", fi);
+        fi.Directory.Create();
+        File.AppendAllText(fi.FullName, seedReceiveRatio.ToString(CultureInfo.InvariantCulture) + Environment.NewLine);
     }
 }
