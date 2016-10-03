@@ -24,6 +24,10 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
             .Sanitization().UseStrategy<ValidateAndHashIfNeeded>()
             ;
 
+        transport.MessagingFactories().BatchFlushInterval(TimeSpan.FromMilliseconds(50));
+        transport.MessagingFactories().NumberOfMessagingFactoriesPerNamespace(Math.Max(5, concurrencyLevel / 32));
+        transport.Queues().EnablePartitioning(true);
+
         if (Permutation.TransactionMode != TransactionMode.Default
             && Permutation.TransactionMode != TransactionMode.None
             && Permutation.TransactionMode != TransactionMode.Receive
@@ -31,5 +35,7 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
             ) throw new NotSupportedException("TransactionMode: " + Permutation.TransactionMode);
 
         if (Permutation.TransactionMode != TransactionMode.Default) transport.Transactions(Permutation.GetTransactionMode());
+
+
     }
 }
