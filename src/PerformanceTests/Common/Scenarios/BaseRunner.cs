@@ -152,9 +152,23 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     async Task CreateSeedData(ICreateSeedData instance)
     {
         Log.Info("Creating or purging queues...");
-        await CreateOrPurgeQueues().ConfigureAwait(false);
+        try
+        {
+            await CreateOrPurgeQueues().ConfigureAwait(false);
+        }
+        catch (Exception ex) when (SuppressException(ex))
+        {
+            Log.WarnFormat("Suppress", ex);
+        }
         Log.Info("Creating send only endpoint...");
-        await CreateSendOnlyEndpoint().ConfigureAwait(false);
+        try
+        {
+            await CreateSendOnlyEndpoint().ConfigureAwait(false);
+        }
+        catch (Exception ex) when (SuppressException(ex))
+        {
+            Log.WarnFormat("Suppress", ex);
+        }
 
         try
         {
@@ -434,6 +448,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         Log.InfoFormat("Reading seed/receive ration from '{0}'.", fi);
         //Convert.ToDouble(ConfigurationManager.AppSettings["SeedDurationFactor"], CultureInfo.InvariantCulture)
         var lines = File.ReadAllLines(fi.FullName);
+
         var ratio = lines.Select(l => double.Parse(l, CultureInfo.InvariantCulture)).Average();
         ratio = Math.Min(SeedDurationMax, Math.Max(SeedDurationMin, ratio));
         Log.InfoFormat("Set SeedDurationFactor to {0:N}.", ratio);
@@ -445,6 +460,9 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         var i = Statistics.Instance;
         var receivedAvg = i.Throughput;
         var seedReceiveRatio = receivedAvg / (seedAvg + receivedAvg);
+
+        if (double.IsNaN(seedReceiveRatio)) return;
+
         Log.InfoFormat("SeedDurationFactor ratio: {0:N} ({1:N}/{2:N})", seedReceiveRatio, seedAvg, receivedAvg);
         var fi = new FileInfo(SeedReceiveRatioPath);
         Log.InfoFormat("Writing SeedDurationFactor ratio to '{0}'.", fi);
