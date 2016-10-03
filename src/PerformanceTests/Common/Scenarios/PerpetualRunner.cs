@@ -22,7 +22,7 @@ abstract class PerpetualRunner : BaseRunner
         {
             if (start.ElapsedMilliseconds > duration)
             {
-                Log.Warn("Seed window ({0:N0}ms) expired!");
+                Log.WarnFormat("Seed window ({0:N0}ms) expired!", duration);
                 break;
             }
             var remaining = seedSize - count;
