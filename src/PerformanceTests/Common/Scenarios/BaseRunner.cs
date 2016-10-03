@@ -23,6 +23,9 @@ using Variables;
 
 public abstract class BaseRunner : IConfigurationSource, IContext
 {
+    const double SeedDurationMax = 0.80;
+    const double SeedDurationMin = 0.05;
+
     readonly ILog Log = LogManager.GetLogger("BaseRunner");
 
     string SeedReceiveRatioPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Perftests", Permutation.Category, Permutation.Description, Permutation.Tests[0], Permutation.Id, "SeedDurationFactor.txt");
@@ -196,12 +199,14 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     }
 
 #if Version5
-    Task CreateOrPurgeQueues()
+    async Task CreateOrPurgeQueues()
     {
         var configuration = CreateConfiguration();
         if (IsPurgingSupported) configuration.PurgeOnStartup(true);
-        using (Bus.Create(configuration).Start()) { }
-        return Task.FromResult(0);
+        using (Bus.Create(configuration).Start())
+        {
+            await DrainMessages().ConfigureAwait(false); ;
+        }
     }
 
     Task CreateSendOnlyEndpoint()
@@ -286,6 +291,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         var configuration = CreateConfiguration();
         if (IsPurgingSupported) configuration.PurgeOnStartup(true);
         var instance = await Endpoint.Start(configuration).ConfigureAwait(false);
+        await DrainMessages().ConfigureAwait(false);
         await instance.Stop().ConfigureAwait(false);
     }
 
@@ -403,19 +409,22 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
     protected async Task DrainMessages()
     {
-        var startCount = Statistics.Instance.NumberOfMessages;
+	const int DrainPollInterval = 1500;
+        NServiceBus.Performance.StatisticsBehavior.Shortcut = true;
+        var startCount = NServiceBus.Performance.StatisticsBehavior.ShortcutCount;
         long current;
 
         Log.Info("Draining queue...");
         do
         {
-            current = Statistics.Instance.NumberOfMessages;
-            Log.Debug("Delaying to detect receive activity...");
-            await Task.Delay(1000).ConfigureAwait(false);
-        } while (Statistics.Instance.NumberOfMessages > current);
+            current = NServiceBus.Performance.StatisticsBehavior.ShortcutCount;
+            Log.DebugFormat("Delaying to detect receive activity, last count is {0}...", current);
+            await Task.Delay(DrainPollInterval).ConfigureAwait(false);
+        } while (NServiceBus.Performance.StatisticsBehavior.ShortcutCount > current);
 
         var diff = current - startCount;
-        Log.InfoFormat("Drained {0} message(s)", diff);
+        Log.InfoFormat("Drained {0:N0} message(s)", diff);
+        NServiceBus.Performance.StatisticsBehavior.Shortcut = false;
     }
 
     void ReadPermutationSeedDurationFactor()
@@ -426,7 +435,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         //Convert.ToDouble(ConfigurationManager.AppSettings["SeedDurationFactor"], CultureInfo.InvariantCulture)
         var lines = File.ReadAllLines(fi.FullName);
         var ratio = lines.Select(l => double.Parse(l, CultureInfo.InvariantCulture)).Average();
-        ratio = Math.Min(0.95, Math.Max(0.05, ratio));
+        ratio = Math.Min(SeedDurationMax, Math.Max(SeedDurationMin, ratio));
         Log.InfoFormat("Set SeedDurationFactor to {0:N}.", ratio);
         Settings.SeedDuration = TimeSpan.FromSeconds((Settings.RunDuration + Settings.WarmupDuration).TotalSeconds * ratio);
     }
