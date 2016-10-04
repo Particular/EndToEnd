@@ -4,6 +4,7 @@ using Configuration = NServiceBus.EndpointConfiguration;
 using Configuration = NServiceBus.BusConfiguration;
 #endif
 using System;
+using System.Collections.Concurrent;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
@@ -30,6 +31,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
     string SeedReceiveRatioPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Perftests", Permutation.Category, Permutation.Description, Permutation.Tests[0], Permutation.Id, "SeedDurationFactor.txt");
     double seedAvg;
+    long seedCount;
 
     public Permutation Permutation { get; private set; }
     public string EndpointName { get; private set; }
@@ -78,6 +80,11 @@ public abstract class BaseRunner : IConfigurationSource, IContext
                 Log.Warn("Suppressing", ex);
             }
         }
+        else
+        {
+            seedCount = Int64.MaxValue;
+            Interlocked.Exchange(ref NServiceBus.Performance.StatisticsBehavior.ShortcutCount, 0);
+        }
 
         Log.InfoFormat("Create receiving endpoint...");
         await CreateEndpoint().ConfigureAwait(false);
@@ -103,16 +110,17 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             Statistics.Instance.Reset(GetType().Name);
 
             var interval = TimeSpan.FromSeconds(1.5);
-            var current = Statistics.Instance.NumberOfMessages;
+            var current = NServiceBus.Performance.StatisticsBehavior.ShortcutCount;
             var stopTimestamp = DateTime.UtcNow.Add(runDuration);
             bool expired, activity;
             var remaining = stopTimestamp - DateTime.UtcNow;
             do
             {
-                Log.InfoFormat("Waiting until run duration expires in {0:N1}s or no activity (last count = {1:N0})", remaining.TotalSeconds, current);
+                Log.InfoFormat("Waiting until run duration expires in {0,5:N1}s or all messages received ({1,7:N0} of {2,7:N0} / {3,4:N1}%)", remaining.TotalSeconds, current, seedCount, current * 100.0 / seedCount);
                 await Task.Delay(remaining > interval ? interval : remaining).ConfigureAwait(false);
                 remaining = stopTimestamp - DateTime.UtcNow;
-                activity = current < (current = Statistics.Instance.NumberOfMessages);
+                current = NServiceBus.Performance.StatisticsBehavior.ShortcutCount;
+                activity = seedCount > current;
                 expired = remaining.Ticks < 0;
             } while (activity && !expired);
             if (!activity) Log.Info("No more incoming messages.");
@@ -178,6 +186,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
             var count = 0L;
             var start = Stopwatch.StartNew();
+            var expires = DateTime.UtcNow.Add(Settings.SeedDuration);
 
             const int minimumBatchSeedDuration = 2500;
             var batchSize = 512;
@@ -187,18 +196,35 @@ public abstract class BaseRunner : IConfigurationSource, IContext
                 b =>
               {
                   var currentBatchSize = batchSize;
+
+                  if (expires < DateTime.UtcNow || currentBatchSize <= 0)
+                  {
+                      Log.DebugFormat("Expired ({0}) or batch size ({1:N0})", expires, currentBatchSize);
+                      return;
+                  }
+
                   var sw = Stopwatch.StartNew();
                   BatchHelper.Batch(currentBatchSize, i => instance.SendMessage(Session)).ConfigureAwait(false).GetAwaiter().GetResult();
                   Interlocked.Add(ref count, currentBatchSize);
                   var duration = sw.ElapsedMilliseconds;
-                  if (duration < minimumBatchSeedDuration)
+
+                  var now = DateTime.UtcNow;
+                  var remaining = expires - now;
+
+                  if (remaining.TotalMilliseconds < duration)
+                  {
+                      batchSize = (int)(currentBatchSize * (remaining.TotalMilliseconds / duration));
+                      Log.InfoFormat("Batchsize set to {0:N0} because ending", batchSize);
+                  }
+                  else if (duration < minimumBatchSeedDuration && (2 * duration) < remaining.TotalMilliseconds)
                   {
                       batchSize = currentBatchSize * 2; // Last writer wins
-                      Log.InfoFormat("Increasing seed batch size to {0:N0} as sending took {1:N0}ms which is less then {2:N0}ms", batchSize, duration, minimumBatchSeedDuration);
+                      Log.InfoFormat("Increasing seed batch size to {0,4:N0} as sending took {1,5:N0}ms which is less then {2:N0}ms", batchSize, duration, minimumBatchSeedDuration);
                   }
               }
             );
 
+            seedCount = count;
             var elapsed = start.Elapsed;
             seedAvg = count / elapsed.TotalSeconds;
             Log.InfoFormat("Done seeding, seeded {0:N0} messages, {1:N1} msg/s", count, seedAvg);
@@ -219,7 +245,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         if (IsPurgingSupported) configuration.PurgeOnStartup(true);
         using (Bus.Create(configuration).Start())
         {
-            await DrainMessages().ConfigureAwait(false); ;
+            await DrainMessages().ConfigureAwait(false);
         }
     }
 
@@ -423,10 +449,11 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
     protected async Task DrainMessages()
     {
-	const int DrainPollInterval = 1500;
+        const int DrainPollInterval = 1500;
         NServiceBus.Performance.StatisticsBehavior.Shortcut = true;
         var startCount = NServiceBus.Performance.StatisticsBehavior.ShortcutCount;
         long current;
+        var start = Stopwatch.StartNew();
 
         Log.Info("Draining queue...");
         do
@@ -437,7 +464,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         } while (NServiceBus.Performance.StatisticsBehavior.ShortcutCount > current);
 
         var diff = current - startCount;
-        Log.InfoFormat("Drained {0:N0} message(s)", diff);
+        Log.InfoFormat("Drained {0:N0} message(s) in {0:N0}ms", diff, start.ElapsedMilliseconds);
         NServiceBus.Performance.StatisticsBehavior.Shortcut = false;
     }
 

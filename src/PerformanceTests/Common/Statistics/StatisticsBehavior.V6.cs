@@ -11,16 +11,17 @@ namespace NServiceBus.Performance
         internal static bool Shortcut = false;
         internal static long ShortcutCount;
         private readonly Implementation provider;
-        public StatisticsBehavior(Implementation provider)
+
+public StatisticsBehavior(Implementation provider)
         {
             this.provider = provider;
         }
 
         public override async Task Invoke(ITransportReceiveContext context, Func<Task> next)
         {
+            Interlocked.Increment(ref ShortcutCount);
             if (Shortcut)
             {
-                Interlocked.Increment(ref ShortcutCount);
                 return;
             }
             var start = provider.Timestamp();
