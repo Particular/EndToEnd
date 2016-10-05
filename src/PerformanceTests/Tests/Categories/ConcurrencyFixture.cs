@@ -22,9 +22,9 @@ namespace Categories
                 Transports = (Transport[])Enum.GetValues(typeof(Transport)),
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
-                TransactionMode = new[] { TransactionMode.Receive, },
+                TransactionMode = (TransactionMode[])Enum.GetValues(typeof(TransactionMode)),
                 ConcurrencyLevels = (ConcurrencyLevel[])Enum.GetValues(typeof(ConcurrencyLevel)),
-            });
+            }, p => p.TransactionMode != TransactionMode.Default);
         }
     }
 }
