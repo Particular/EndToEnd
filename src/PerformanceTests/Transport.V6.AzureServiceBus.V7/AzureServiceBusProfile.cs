@@ -16,7 +16,11 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
             .UseTransport<AzureServiceBusTransport>();
 
         var concurrencyLevel = ConcurrencyLevelConverter.Convert(Permutation.ConcurrencyLevel);
-        transport.MessageReceivers().PrefetchCount(concurrencyLevel * Permutation.PrefetchMultiplier);
+
+        if (Permutation.TransactionMode == TransactionMode.Atomic)
+            transport.MessageReceivers().PrefetchCount(0);
+        else
+            transport.MessageReceivers().PrefetchCount(concurrencyLevel * Permutation.PrefetchMultiplier);
 
         transport
             .UseTopology<ForwardingTopology>()
@@ -25,7 +29,7 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
             ;
 
         transport.MessagingFactories().BatchFlushInterval(TimeSpan.FromMilliseconds(50));
-        transport.MessagingFactories().NumberOfMessagingFactoriesPerNamespace(Math.Max(5, concurrencyLevel / 32));
+        transport.MessagingFactories().NumberOfMessagingFactoriesPerNamespace(Math.Max(5, concurrencyLevel / 8));
         transport.Queues().EnablePartitioning(true);
 
         if (Permutation.TransactionMode != TransactionMode.Default
