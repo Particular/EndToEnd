@@ -4,6 +4,7 @@ namespace Variables
     {
         InMemory,
         NHibernate_Azure,
+        NHibernate_RDS,
         NHibernate,
         RavenDB,
         RavenDB_Embedded,
