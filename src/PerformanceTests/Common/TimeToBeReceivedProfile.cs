@@ -13,7 +13,7 @@ using Variables;
 class TimeToBeReceivedProfile : IProfile, INeedPermutation
 {
     readonly ILog Log = LogManager.GetLogger(nameof(TimeToBeReceivedProfile));
-    readonly TimeSpan TTBR = TimeSpan.FromMinutes(1);
+    readonly TimeSpan TTBR = Settings.RunDuration;
     public Permutation Permutation { private get; set; }
 
     public void Configure(Cfg cfg)
