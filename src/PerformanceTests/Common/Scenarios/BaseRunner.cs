@@ -121,19 +121,19 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             var interval = TimeSpan.FromSeconds(1.5);
             var current = NServiceBus.Performance.StatisticsBehavior.ShortcutCount;
             var stopTimestamp = DateTime.UtcNow.Add(runDuration);
-            bool expired, activity;
-            var remaining = stopTimestamp - DateTime.UtcNow;
+            bool isExpired, hasIncomingMessages;
+            var remainingTime = stopTimestamp - DateTime.UtcNow;
             do
             {
-                Log.InfoFormat("Waiting until run duration expires in {0,5:N1}s or all messages received ({1,7:N0} of {2,7:N0} / {3,4:N1}%)", remaining.TotalSeconds, current, seedCount, current * 100.0 / seedCount);
-                await Task.Delay(remaining > interval ? interval : remaining).ConfigureAwait(false);
-                remaining = stopTimestamp - DateTime.UtcNow;
+                Log.InfoFormat("Waiting until run duration expires in {0,5:N1}s or all messages received ({1,7:N0} of {2,7:N0} / {3,4:N1}%)", remainingTime.TotalSeconds, current, seedCount, current * 100.0 / seedCount);
+                await Task.Delay(remainingTime > interval ? interval : remainingTime).ConfigureAwait(false);
+                remainingTime = stopTimestamp - DateTime.UtcNow;
                 current = NServiceBus.Performance.StatisticsBehavior.ShortcutCount;
-                activity = seedCount > current;
-                expired = remaining.Ticks < 0;
-            } while (activity && !expired);
-            if (!activity) Log.Info("No more incoming messages.");
-            if (expired) Log.Info("Maximum run duration expired.");
+                hasIncomingMessages = seedCount > current;
+                isExpired = remainingTime.Ticks < 0;
+            } while (hasIncomingMessages && !isExpired);
+            if (!hasIncomingMessages) Log.Info("No more incoming messages.");
+            if (isExpired) Log.Info("Maximum run duration expired.");
 
             Statistics.Instance.Dump();
             WritePermutationSeedDurationFactor();
