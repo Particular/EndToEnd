@@ -4,7 +4,6 @@ using Configuration = NServiceBus.EndpointConfiguration;
 using Configuration = NServiceBus.BusConfiguration;
 #endif
 using System;
-using System.Collections.Concurrent;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
@@ -29,7 +28,14 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
     readonly ILog Log = LogManager.GetLogger("BaseRunner");
 
-    string SeedReceiveRatioPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Perftests", Permutation.Category, Permutation.Description, Permutation.Tests[0], Permutation.Id, "SeedDurationFactor.txt");
+    string SeedReceiveRatioPath => Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "Perftests",
+        Permutation.Category,
+        Permutation.Description,
+        Permutation.Tests[0],
+        Permutation.Id,
+        "SeedDurationFactor.txt");
     double seedAvg;
     long seedCount;
 
@@ -44,6 +50,9 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     protected static bool Shutdown { private set; get; }
     protected readonly BatchHelper.IBatchHelper BatchHelper = global::BatchHelper.Instance;
 
+    /// <summary>
+    /// Suppressing ObjectDisposedException failures to workaround https://github.com/Particular/NServiceBus.AzureServiceBus/issues/337
+    /// </summary>
     bool SuppressException(Exception ex)
     {
         return ex is ObjectDisposedException;
@@ -328,11 +337,22 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 #else
     async Task CreateOrPurgeQueues()
     {
+        IEndpointInstance instance = null;
+
         var configuration = CreateConfiguration();
         if (IsPurgingSupported) configuration.PurgeOnStartup(true);
-        var instance = await Endpoint.Start(configuration).ConfigureAwait(false);
-        await DrainMessages().ConfigureAwait(false);
-        await instance.Stop().ConfigureAwait(false);
+        try
+        {
+            instance = await Endpoint.Start(configuration).ConfigureAwait(false);
+            await DrainMessages().ConfigureAwait(false);
+        }
+        finally
+        {
+            if (instance != null)
+            {
+                await instance.Stop().ConfigureAwait(false);
+            }
+        }
     }
 
     async Task CreateSendOnlyEndpoint()
