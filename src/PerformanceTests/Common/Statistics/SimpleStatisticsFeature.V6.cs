@@ -7,7 +7,6 @@ using System.Threading;
 
 namespace NServiceBus.Performance
 {
-    using System.Linq;
     using System.Threading.Tasks;
     using Features;
     using Logging;
@@ -16,14 +15,13 @@ namespace NServiceBus.Performance
     {
         private static readonly string SettingKey = "NServiceBus/SimpleStatistics";
 
+        public SimpleStatisticsFeature()
+        {
+            EnableByDefault();
+        }
+
         protected override void Setup(FeatureConfigurationContext context)
         {
-            var settings = ConfigurationManager.AppSettings;
-            bool enable;
-
-            if (settings.AllKeys.Contains(SettingKey) && bool.TryParse(settings[SettingKey], out enable) && !enable) return;
-
-            EnableByDefault();
             var task = new StartupTask
             {
                 Collector = new Collector()

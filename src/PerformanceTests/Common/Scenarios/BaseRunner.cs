@@ -167,7 +167,6 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     Task CreateEndpoint()
     {
         var configuration = CreateConfiguration();
-        configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
         configuration.CustomConfigurationSource(this);
         configuration.DefineCriticalErrorAction(OnCriticalError);
 
