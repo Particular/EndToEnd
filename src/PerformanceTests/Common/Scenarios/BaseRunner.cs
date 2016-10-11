@@ -75,11 +75,11 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             Statistics.Instance.Reset(GetType().Name);
             await Task.Delay(runDuration).ConfigureAwait(false);
 
+            Statistics.Instance.Dump();
             Shutdown = true;
             Log.Info("Stopping...");
             await Stop().ConfigureAwait(false);
             Log.Info("Stopped");
-            Statistics.Instance.Dump();
         }
         finally
         {
