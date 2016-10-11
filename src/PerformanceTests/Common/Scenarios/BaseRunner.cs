@@ -51,6 +51,9 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             await CreateSeedData(seedCreator).ConfigureAwait(false);
         }
 
+
+        Statistics.Instance.Reset(GetType().Name);
+
         Log.InfoFormat("Create receiving endpoint...");
         await CreateEndpoint().ConfigureAwait(false);
 
@@ -72,7 +75,6 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
             Log.InfoFormat("Run: {0}", runDuration);
 
-            Statistics.Instance.Reset(GetType().Name);
             await Task.Delay(runDuration).ConfigureAwait(false);
 
             Statistics.Instance.Dump();
