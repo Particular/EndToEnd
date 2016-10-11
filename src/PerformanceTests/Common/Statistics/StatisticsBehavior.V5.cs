@@ -1,5 +1,6 @@
 #if Version5
 using System;
+using System.Threading;
 using NServiceBus.Pipeline;
 using NServiceBus.Pipeline.Contexts;
 
@@ -7,7 +8,10 @@ namespace NServiceBus.Performance
 {
     public class StatisticsBehavior : IBehavior<IncomingContext>
     {
+        internal static bool Shortcut = false;
+        internal static long ShortcutCount;
         readonly Implementation provider;
+
         public StatisticsBehavior(Implementation provider)
         {
             this.provider = provider;
@@ -15,6 +19,11 @@ namespace NServiceBus.Performance
 
         public void Invoke(IncomingContext context, Action next)
         {
+            Interlocked.Increment(ref ShortcutCount);
+            if (Shortcut)
+            {
+                return;
+            }
             var start = provider.Timestamp();
             try
             {

@@ -1,21 +1,29 @@
 #if Version6
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using NServiceBus.Pipeline;
 
 namespace NServiceBus.Performance
 {
-    using System.Threading.Tasks;
-
     public class StatisticsBehavior : Behavior<ITransportReceiveContext>
     {
+        internal static bool Shortcut = false;
+        internal static long ShortcutCount;
         private readonly Implementation provider;
-        public StatisticsBehavior(Implementation provider)
+
+public StatisticsBehavior(Implementation provider)
         {
             this.provider = provider;
         }
 
         public override async Task Invoke(ITransportReceiveContext context, Func<Task> next)
         {
+            Interlocked.Increment(ref ShortcutCount);
+            if (Shortcut)
+            {
+                return;
+            }
             var start = provider.Timestamp();
             try
             {

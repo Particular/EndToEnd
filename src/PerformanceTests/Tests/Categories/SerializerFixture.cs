@@ -6,7 +6,7 @@ using Variables;
 namespace Categories
 {
 
-    [TestFixture(Description = "Serializer differences", Category = "Performance"), Explicit]
+    [TestFixture(Description = "Serializer differences", Category = "Performance")]
     public class SerializerFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
@@ -20,9 +20,10 @@ namespace Categories
             return PermutationGenerator.Generate(new Permutations
             {
                 Transports = new[] { Transport.MSMQ },
-                Serializers = new[] { Serialization.Json, Serialization.Xml  },
-                MessageSizes = new [] {MessageSize.Tiny },
+                Serializers = new[] { Serialization.Json, Serialization.Xml },
+                MessageSizes = new[] { MessageSize.Tiny },
                 OutboxModes = new[] { Outbox.Off, },
+                TransactionMode = new[] { TransactionMode.None, }
             });
         }
     }
