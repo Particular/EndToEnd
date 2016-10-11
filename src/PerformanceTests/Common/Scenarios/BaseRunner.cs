@@ -48,6 +48,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         if (seedCreator != null)
         {
             Log.InfoFormat("Create seed data...");
+            ReadPermutationSeedDurationFactor();
             await CreateSeedData(seedCreator).ConfigureAwait(false);
         }
 
@@ -74,6 +75,9 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
             Statistics.Instance.Reset(GetType().Name);
             await Task.Delay(runDuration).ConfigureAwait(false);
+
+            Statistics.Instance.Dump();
+            WritePermutationSeedDurationFactor();
 
             Shutdown = true;
             Log.Info("Stopping...");
@@ -139,6 +143,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedThroughputAvg", avg, "msg/s");
             LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedCount", count, "#");
             LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedDuration", elapsed.TotalMilliseconds, "ms");
+            seedAvg = avg;
         }
         finally
         {
@@ -367,5 +372,48 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
         var diff = current - startCount;
         Log.InfoFormat("Drained {0} message(s)", diff);
+    }
+
+    const double SeedDurationMax = 0.80;
+    const double SeedDurationMin = 0.05;
+    double seedAvg;
+
+    string SeedReceiveRatioPath => System.IO.Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "Perftests",
+        Permutation.Category,
+        Permutation.Description,
+        Permutation.Tests[0],
+        Permutation.Id,
+        "SeedDurationFactor.txt");
+
+
+    void ReadPermutationSeedDurationFactor()
+    {
+        var fi = new System.IO.FileInfo(SeedReceiveRatioPath);
+        if (!fi.Exists) return;
+        Log.InfoFormat("Reading seed/receive ration from '{0}'.", fi);
+        //Convert.ToDouble(ConfigurationManager.AppSettings["SeedDurationFactor"], CultureInfo.InvariantCulture)
+        var lines = System.IO.File.ReadAllLines(fi.FullName);
+
+        var ratio = lines.Select(l => double.Parse(l, System.Globalization.CultureInfo.InvariantCulture)).Average();
+        ratio = Math.Min(SeedDurationMax, Math.Max(SeedDurationMin, ratio));
+        Log.InfoFormat("Set SeedDurationFactor to {0:N}.", ratio);
+        Settings.SeedDuration = TimeSpan.FromSeconds((Settings.RunDuration + Settings.WarmupDuration).TotalSeconds * ratio);
+    }
+
+    void WritePermutationSeedDurationFactor()
+    {
+        var i = Statistics.Instance;
+        var receivedAvg = i.Throughput;
+        var seedReceiveRatio = receivedAvg / (seedAvg + receivedAvg);
+
+        if (double.IsNaN(seedReceiveRatio)) return;
+
+        Log.InfoFormat("SeedDurationFactor ratio: {0:N} ({1:N}/{2:N})", seedReceiveRatio, seedAvg, receivedAvg);
+        var fi = new System.IO.FileInfo(SeedReceiveRatioPath);
+        Log.InfoFormat("Writing SeedDurationFactor ratio to '{0}'.", fi);
+        fi.Directory.Create();
+        System.IO.File.AppendAllText(fi.FullName, seedReceiveRatio.ToString(System.Globalization.CultureInfo.InvariantCulture) + Environment.NewLine);
     }
 }

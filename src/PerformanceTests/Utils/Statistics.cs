@@ -29,7 +29,7 @@ public class Statistics : IDisposable
 
     public long NumberOfMessages => numberOfMessages;
     public long NumberOfRetries => numberOfRetries;
-
+    public double Throughput { get; private set; }
 
     ~Statistics()
     {
@@ -112,9 +112,9 @@ public class Statistics : IDisposable
         LogStats("ReceiveFirstLastDuration", durationSeconds, "s");
         LogStats("NumberOfMessages", NumberOfMessages, "#");
 
-        var throughput = NumberOfMessages / durationSeconds;
+        Throughput = NumberOfMessages / durationSeconds;
 
-        LogStats("Throughput", throughput, "msg/s");
+        LogStats("Throughput", Throughput, "msg/s");
 
         LogStats("NumberOfRetries", NumberOfRetries, "#");
 
