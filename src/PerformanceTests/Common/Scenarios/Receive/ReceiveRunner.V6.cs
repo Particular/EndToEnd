@@ -11,6 +11,7 @@ partial class ReceiveRunner
     {
         public Task Handle(Command message, IMessageHandlerContext ctx)
         {
+            Signal();
             return Task.FromResult(0);
         }
     }

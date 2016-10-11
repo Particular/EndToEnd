@@ -12,6 +12,7 @@ partial class ReceiveRunner
 
         public void Handle(Command message)
         {
+            Signal();
         }
     }
 }
