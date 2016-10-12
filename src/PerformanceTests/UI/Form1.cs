@@ -49,8 +49,10 @@ namespace UI
 
             var descriptor = env.CreateTestEnvironments(permutation);
 
-
+            txtPath.Text = GetRelativePath(new FileInfo(descriptor.ProjectAssemblyPath).DirectoryName, Environment.CurrentDirectory);
+            txtLogFile.Text = Path.Combine(txtPath.Text, "trace.log");
             Launch(descriptor, sessionId, TimeSpan.Parse(txtRun.Text), TimeSpan.Parse(txtWarmup.Text));
+
         }
 
         void Launch(TestDescriptor descriptor, string sessionId, TimeSpan run, TimeSpan warmup)
@@ -74,6 +76,32 @@ namespace UI
             };
 
             Process.Start(pi);
+        }
+
+        private void btnLaunchPerfmon_Click(object sender, EventArgs e)
+        {
+            Process.Start("perfmon");
+        }
+
+        string GetRelativePath(string filespec, string folder)
+        {
+            Uri pathUri = new Uri(filespec);
+            // Folders must end in a slash
+            if (!folder.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                folder += Path.DirectorySeparatorChar;
+            }
+            Uri folderUri = new Uri(folder);
+            return Uri.UnescapeDataString(folderUri.MakeRelativeUri(pathUri).ToString().Replace('/', Path.DirectorySeparatorChar));
+        }
+
+        private void txtPath_Click(object sender, EventArgs e)
+        {
+            Process.Start(txtPath.Text);
+        }
+        private void txtLogFile_Click(object sender, EventArgs e)
+        {
+            Process.Start(txtLogFile.Text);
         }
     }
 }

@@ -90,6 +90,10 @@
             this.radioButton43 = new System.Windows.Forms.RadioButton();
             this.radioButton40 = new System.Windows.Forms.RadioButton();
             this.radioButton41 = new System.Windows.Forms.RadioButton();
+            this.btnLaunchPerfmon = new System.Windows.Forms.Button();
+            this.txtLogFile = new System.Windows.Forms.TextBox();
+            this.btnOpenFolder = new System.Windows.Forms.Button();
+            this.btnOpenLog = new System.Windows.Forms.Button();
             this.gpTransports.SuspendLayout();
             this.gpPlatform.SuspendLayout();
             this.gpVersion.SuspendLayout();
@@ -655,10 +659,11 @@
             // 
             // txtPath
             // 
-            this.txtPath.Location = new System.Drawing.Point(11, 588);
+            this.txtPath.Location = new System.Drawing.Point(99, 590);
             this.txtPath.Name = "txtPath";
-            this.txtPath.Size = new System.Drawing.Size(471, 20);
+            this.txtPath.Size = new System.Drawing.Size(383, 20);
             this.txtPath.TabIndex = 21;
+            this.txtPath.Click += new System.EventHandler(this.txtPath_Click);
             // 
             // groupBox1
             // 
@@ -762,11 +767,53 @@
             this.radioButton41.Text = "None";
             this.radioButton41.UseVisualStyleBackColor = true;
             // 
+            // btnLaunchPerfmon
+            // 
+            this.btnLaunchPerfmon.Location = new System.Drawing.Point(283, 513);
+            this.btnLaunchPerfmon.Name = "btnLaunchPerfmon";
+            this.btnLaunchPerfmon.Size = new System.Drawing.Size(119, 23);
+            this.btnLaunchPerfmon.TabIndex = 23;
+            this.btnLaunchPerfmon.Text = "Launch perfmon";
+            this.btnLaunchPerfmon.UseVisualStyleBackColor = true;
+            this.btnLaunchPerfmon.Click += new System.EventHandler(this.btnLaunchPerfmon_Click);
+            // 
+            // txtLogFile
+            // 
+            this.txtLogFile.Location = new System.Drawing.Point(99, 616);
+            this.txtLogFile.Name = "txtLogFile";
+            this.txtLogFile.Size = new System.Drawing.Size(383, 20);
+            this.txtLogFile.TabIndex = 24;
+            this.txtLogFile.Click += new System.EventHandler(this.txtLogFile_Click);
+            // 
+            // btnOpenFolder
+            // 
+            this.btnOpenFolder.Location = new System.Drawing.Point(12, 588);
+            this.btnOpenFolder.Name = "btnOpenFolder";
+            this.btnOpenFolder.Size = new System.Drawing.Size(81, 23);
+            this.btnOpenFolder.TabIndex = 25;
+            this.btnOpenFolder.Text = "Open Folder";
+            this.btnOpenFolder.UseVisualStyleBackColor = true;
+            this.btnOpenFolder.Click += new System.EventHandler(this.txtPath_Click);
+            // 
+            // btnOpenLog
+            // 
+            this.btnOpenLog.Location = new System.Drawing.Point(12, 614);
+            this.btnOpenLog.Name = "btnOpenLog";
+            this.btnOpenLog.Size = new System.Drawing.Size(81, 23);
+            this.btnOpenLog.TabIndex = 26;
+            this.btnOpenLog.Text = "Open Log";
+            this.btnOpenLog.UseVisualStyleBackColor = true;
+            this.btnOpenLog.Click += new System.EventHandler(this.txtLogFile_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(494, 616);
+            this.ClientSize = new System.Drawing.Size(494, 649);
+            this.Controls.Add(this.btnOpenLog);
+            this.Controls.Add(this.btnOpenFolder);
+            this.Controls.Add(this.txtLogFile);
+            this.Controls.Add(this.btnLaunchPerfmon);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtPath);
@@ -876,6 +923,10 @@
         private System.Windows.Forms.RadioButton radioButton43;
         private System.Windows.Forms.RadioButton radioButton40;
         private System.Windows.Forms.RadioButton radioButton41;
+        private System.Windows.Forms.Button btnLaunchPerfmon;
+        private System.Windows.Forms.TextBox txtLogFile;
+        private System.Windows.Forms.Button btnOpenFolder;
+        private System.Windows.Forms.Button btnOpenLog;
     }
 }
 
