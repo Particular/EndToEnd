@@ -56,7 +56,7 @@ This template file is copied to two projects during the pre build when they do n
 
 Launching the front-end will give you an easy way to launch a permutation.
 
-![image](https://cloud.githubusercontent.com/assets/152998/19306905/1ed4603e-9078-11e6-9d03-fb769b76a4bd.png)
+![image](https://cloud.githubusercontent.com/assets/152998/19308669/274c5506-9081-11e6-87eb-b739a71f7d1e.png)
 
 Just select the permutation values that you want to use, verify the durations and launch it.
 
