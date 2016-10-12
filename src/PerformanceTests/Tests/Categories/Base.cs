@@ -89,12 +89,12 @@ namespace Categories
         static void LaunchAndWait(Permutation permutation)
         {
             var processId = DebugAttacher.GetCurrentVisualStudioProcessId();
-            var processIdArgument = processId >= 0 ? $" --processId={processId}" : String.Empty;
+            var processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
             var sessionIdArgument = $" --sessionId={SessionId}";
 
             var exe = new FileInfo(permutation.Exe);
 
-            var arguments = String.Format("{0} {1} {2}",
+            var arguments = string.Format("{0} {1} {2}",
                 PermutationParser.ToArgs(permutation),
                 processIdArgument,
                 sessionIdArgument
