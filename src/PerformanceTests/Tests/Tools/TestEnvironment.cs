@@ -1,12 +1,17 @@
 
 namespace Tests.Tools
 {
+    using System;
+    using System.Configuration;
+    using System.Diagnostics;
     using System.IO;
     using System.Threading;
     using System.Xml.Linq;
     using System.Xml.XPath;
+    using NUnit.Framework;
     using Tests.Permutations;
     using Variables;
+    using VisualStudioDebugHelper;
 
     public class TestEnvironment
     {
@@ -15,7 +20,7 @@ namespace Tests.Tools
 
         static TestEnvironment()
         {
-            System.Environment.CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public TestEnvironment(string sessionId)
@@ -60,6 +65,7 @@ namespace Tests.Tools
 
             GenerateBat(descriptor);
             UpdateAppConfig(descriptor);
+            DeleteOtherPlatformHost(permutation);
 
             return descriptor;
         }
@@ -67,7 +73,7 @@ namespace Tests.Tools
         void GenerateBat(TestDescriptor value)
         {
             var args = PermutationParser.ToArgs(value.Permutation);
-            var sessionIdArgument = string.Format(" --sessionId={0}", sessionId);
+            var sessionIdArgument = String.Format(" --sessionId={0}", sessionId);
             var exe = new FileInfo(value.ProjectAssemblyPath);
 
             var batFile = Path.Combine(exe.DirectoryName, "start.bat");
@@ -152,11 +158,26 @@ namespace Tests.Tools
                 "@",
                 permutation.Category,
                 permutation.Fixture,
-                string.Join("_", permutation.Tests),
+                String.Join("_", permutation.Tests),
                 permutation.Code.Replace(" ", "-")
                 );
 
             return new DirectoryInfo(path);
+        }
+
+        static void DeleteOtherPlatformHost(Permutation permutation)
+        {
+            var x64 = new FileInfo(permutation.Exe.Replace("x86.exe", "x64.exe"));
+            var x86 = new FileInfo(permutation.Exe.Replace("x64.exe", "x86.exe"));
+
+            if (permutation.Platform == Platform.x86)
+            {
+                x64.Delete();
+            }
+            else
+            {
+                x86.Delete();
+            }
         }
     }
 }

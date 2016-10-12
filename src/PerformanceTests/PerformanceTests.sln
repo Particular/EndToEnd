@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Distribution.V6.SenderSide"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtifactsParser", "ArtifactsParser\ArtifactsParser.csproj", "{1EE3C2EE-7A98-4F57-90CD-11CDE828E0F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{D23EEF72-00EB-4E62-955C-CEEFE21426B0}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Common\Common.Data.projitems*{10d11044-c92c-42ad-830e-57012ff4f039}*SharedItemsImports = 4
@@ -239,6 +241,12 @@ Global
 		{1EE3C2EE-7A98-4F57-90CD-11CDE828E0F4}.Local|Any CPU.Build.0 = Release|Any CPU
 		{1EE3C2EE-7A98-4F57-90CD-11CDE828E0F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE3C2EE-7A98-4F57-90CD-11CDE828E0F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D23EEF72-00EB-4E62-955C-CEEFE21426B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D23EEF72-00EB-4E62-955C-CEEFE21426B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D23EEF72-00EB-4E62-955C-CEEFE21426B0}.Local|Any CPU.ActiveCfg = Release|Any CPU
+		{D23EEF72-00EB-4E62-955C-CEEFE21426B0}.Local|Any CPU.Build.0 = Release|Any CPU
+		{D23EEF72-00EB-4E62-955C-CEEFE21426B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D23EEF72-00EB-4E62-955C-CEEFE21426B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
