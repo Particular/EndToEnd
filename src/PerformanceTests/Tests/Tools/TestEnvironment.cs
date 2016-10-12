@@ -2,16 +2,12 @@
 namespace Tests.Tools
 {
     using System;
-    using System.Configuration;
-    using System.Diagnostics;
     using System.IO;
     using System.Threading;
     using System.Xml.Linq;
     using System.Xml.XPath;
-    using NUnit.Framework;
     using Tests.Permutations;
     using Variables;
-    using VisualStudioDebugHelper;
 
     public class TestEnvironment
     {
@@ -73,7 +69,7 @@ namespace Tests.Tools
         void GenerateBat(TestDescriptor value)
         {
             var args = PermutationParser.ToArgs(value.Permutation);
-            var sessionIdArgument = String.Format(" --sessionId={0}", sessionId);
+            var sessionIdArgument = string.Format(" --sessionId={0}", sessionId);
             var exe = new FileInfo(value.ProjectAssemblyPath);
 
             var batFile = Path.Combine(exe.DirectoryName, "start.bat");
@@ -158,7 +154,7 @@ namespace Tests.Tools
                 "@",
                 permutation.Category,
                 permutation.Fixture,
-                String.Join("_", permutation.Tests),
+                string.Join("_", permutation.Tests),
                 permutation.Code.Replace(" ", "-")
                 );
 

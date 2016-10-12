@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
@@ -79,19 +73,7 @@ namespace UI
                 WorkingDirectory = exe.DirectoryName,
             };
 
-            using (var p = Process.Start(pi))
-            {
-                //if (!p.WaitForExit((int)MaxDuration.TotalMilliseconds))
-                //{
-                //    p.Kill();
-                //    Assert.Fail($"Killed process because execution took more then {MaxDuration}.");
-                //}
-                //if (p.ExitCode == (int)ReturnCodes.NotSupported)
-                //{
-                //    Assert.Inconclusive("Not supported");
-                //}
-                //Assert.AreEqual((int)ReturnCodes.OK, p.ExitCode, "Execution failed.");
-            }
+            Process.Start(pi);
         }
     }
 }
