@@ -80,7 +80,7 @@ namespace UI
 
         private void btnLaunchPerfmon_Click(object sender, EventArgs e)
         {
-            Process.Start("perfmon");
+            Process.Start("iexplore.exe", Path.GetFullPath("perfmon.htm"));
         }
 
         string GetRelativePath(string filespec, string folder)
