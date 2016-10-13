@@ -6,6 +6,7 @@ namespace Variables
         NHibernate_Azure,
         NHibernate,
         RavenDB,
+        RavenDB_Embedded,
         //MSMQ,
         Azure
     }

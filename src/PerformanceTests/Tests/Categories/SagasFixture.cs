@@ -31,10 +31,10 @@ namespace Categories
             return PermutationGenerator.Generate(new Permutations
             {
                 Transports = new[] { Transport.MSMQ },
-                Persisters = new[] { Persistence.Azure, Persistence.NHibernate, Persistence.RavenDB, },
+                Persisters = new[] { Persistence.Azure, Persistence.NHibernate, Persistence.RavenDB, Persistence.RavenDB_Embedded },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
-                ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential, ConcurrencyLevel.EnvCores04x, },
+                ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential, ConcurrencyLevel.EnvCores02x, },
                 TransactionMode = new[] { TransactionMode.Atomic, TransactionMode.Transactional, }
             },
             p => p.Persister == Persistence.Azure && p.TransactionMode != TransactionMode.Transactional || p.Persister != Persistence.Azure

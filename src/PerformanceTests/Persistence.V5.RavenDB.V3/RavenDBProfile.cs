@@ -9,6 +9,8 @@ using Raven.Abstractions.Connection;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Document.DTC;
+using Raven.Client.Embedded;
+using Variables;
 
 class RavenDBProfile : IProfile, INeedContext, ISetup
 {
@@ -27,29 +29,61 @@ class RavenDBProfile : IProfile, INeedContext, ISetup
 
     IDocumentStore CreateDocumentStore()
     {
-        var store = new DocumentStore
-        {
-            DefaultDatabase = Context.EndpointName
-        };
-
-        store.ParseConnectionString(ConnectionString);
-
         // Calculate a ResourceManagerId unique to this endpoint using just LocalAddress
         // Not suitable for side-by-side installations!
         var resourceManagerId = DeterministicGuidBuilder(Context.EndpointName);
 
-        // Calculate a DTC transaction recovery storage path including the ResourceManagerId
-        var programDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-        var txRecoveryPath = Path.Combine(programDataPath, "NServiceBus.RavenDB", Context.EndpointName);
+        if (Context.Permutation.Persister == Persistence.RavenDB)
+        {
+            var store = new DocumentStore
+            {
+                DefaultDatabase = Context.EndpointName
+            };
 
-        store.ResourceManagerId = resourceManagerId;
-        store.TransactionRecoveryStorage = new LocalDirectoryTransactionRecoveryStorage(txRecoveryPath);
+            store.ParseConnectionString(ConnectionString);
 
-        Log.InfoFormat("ResourceManagerId = {0}", resourceManagerId);
-        Log.InfoFormat("TransactionRecoveryStorage = {0}", txRecoveryPath);
+            // Calculate a DTC transaction recovery storage path including the ResourceManagerId
+            var programDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var txRecoveryPath = Path.Combine(programDataPath, "NServiceBus.RavenDB", Context.EndpointName);
 
-        return store;
+            store.ResourceManagerId = resourceManagerId;
+            store.TransactionRecoveryStorage = new LocalDirectoryTransactionRecoveryStorage(txRecoveryPath);
+
+            Log.InfoFormat("ResourceManagerId = {0}", resourceManagerId);
+            Log.InfoFormat("TransactionRecoveryStorage = {0}", txRecoveryPath);
+
+            return store;
+        }
+        else
+        {
+            if (instance != null) return instance;
+
+            var store = new EmbeddableDocumentStore
+            {
+                DataDirectory = @"d:\temp\perftest\data\ravendb",
+                DefaultDatabase = "PerfTests.V5",
+                ResourceManagerId = resourceManagerId,
+                EnlistInDistributedTransactions = Context.Permutation.TransactionMode == TransactionMode.Transactional,
+                //  TransactionRecoveryStorage = new LocalDirectoryTransactionRecoveryStorage(txRecoveryPath)
+            };
+
+            store.Initialize();
+
+            var configuration = store.Configuration;
+            configuration.Settings.Add("Raven/Esent/CacheSizeMax", "256");
+            configuration.Settings.Add("Raven/Esent/MaxVerPages", "32");
+            configuration.Settings.Add("Raven/MemoryCacheLimitMegabytes", "512");
+            configuration.Settings.Add("Raven/MaxNumberOfItemsToIndexInSingleBatch", "4096");
+            configuration.Settings.Add("Raven/MaxNumberOfItemsToPreFetchForIndexing", "4096");
+            configuration.Settings.Add("Raven/InitialNumberOfItemsToIndexInSingleBatch", "64");
+
+            return instance = store;
+        }
     }
+
+    static IDocumentStore instance;
+
+
 
     static Guid DeterministicGuidBuilder(string input)
     {
