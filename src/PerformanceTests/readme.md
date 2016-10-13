@@ -27,6 +27,9 @@ Table of contents
 - Making sure that connection string to MS SQL DB is correct
 - Creating empty database manually before first run
 
+# Performance counters
+
+The NServiceBus performance counters](https://docs.particular.net/nservicebus/operations/performance-counters) are used. Sometimes these get corrupted and can be fixed by running [Install-NServiceBusPerformanceCounters in Powershell](https://docs.particular.net/nservicebus/operations/performance-counters#installing-counters).
 
 # Dependencies
 
