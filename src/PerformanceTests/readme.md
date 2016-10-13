@@ -29,7 +29,7 @@ Table of contents
 
 # Performance counters
 
-The NServiceBus performance counters](https://docs.particular.net/nservicebus/operations/performance-counters) are used. Sometimes these get corrupted and can be fixed by running [Install-NServiceBusPerformanceCounters in Powershell](https://docs.particular.net/nservicebus/operations/performance-counters#installing-counters).
+The [NServiceBus performance counters](https://docs.particular.net/nservicebus/operations/performance-counters) are used. Sometimes these get corrupted and can be fixed by running [Install-NServiceBusPerformanceCounters in Powershell](https://docs.particular.net/nservicebus/operations/performance-counters#installing-counters).
 
 # Dependencies
 
