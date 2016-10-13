@@ -4,6 +4,7 @@ namespace Variables
     {
         MSMQ,
         RabbitMQ,
+        RabbitMQ_Next,
         AzureStorageQueues,
         AzureServiceBus,
         SQLServer_Azure,

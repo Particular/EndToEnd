@@ -94,6 +94,7 @@
             this.txtLogFile = new System.Windows.Forms.TextBox();
             this.btnOpenFolder = new System.Windows.Forms.Button();
             this.btnOpenLog = new System.Windows.Forms.Button();
+            this.radioButton44 = new System.Windows.Forms.RadioButton();
             this.gpTransports.SuspendLayout();
             this.gpPlatform.SuspendLayout();
             this.gpVersion.SuspendLayout();
@@ -110,6 +111,7 @@
             // 
             // gpTransports
             // 
+            this.gpTransports.Controls.Add(this.radioButton44);
             this.gpTransports.Controls.Add(this.radioButton5);
             this.gpTransports.Controls.Add(this.radioButton4);
             this.gpTransports.Controls.Add(this.radioButton3);
@@ -117,7 +119,7 @@
             this.gpTransports.Controls.Add(this.radioButton1);
             this.gpTransports.Location = new System.Drawing.Point(12, 12);
             this.gpTransports.Name = "gpTransports";
-            this.gpTransports.Size = new System.Drawing.Size(154, 145);
+            this.gpTransports.Size = new System.Drawing.Size(154, 161);
             this.gpTransports.TabIndex = 13;
             this.gpTransports.TabStop = false;
             this.gpTransports.Text = "Transport";
@@ -312,7 +314,7 @@
             this.gpPersistence.Controls.Add(this.radioButton14);
             this.gpPersistence.Controls.Add(this.radioButton13);
             this.gpPersistence.Controls.Add(this.radioButton12);
-            this.gpPersistence.Location = new System.Drawing.Point(12, 163);
+            this.gpPersistence.Location = new System.Drawing.Point(12, 179);
             this.gpPersistence.Name = "gpPersistence";
             this.gpPersistence.Size = new System.Drawing.Size(154, 118);
             this.gpPersistence.TabIndex = 18;
@@ -538,7 +540,7 @@
             this.gpConcurrency.Controls.Add(this.radioButton32);
             this.gpConcurrency.Controls.Add(this.radioButton33);
             this.gpConcurrency.Controls.Add(this.radioButton34);
-            this.gpConcurrency.Location = new System.Drawing.Point(12, 287);
+            this.gpConcurrency.Location = new System.Drawing.Point(12, 303);
             this.gpConcurrency.Name = "gpConcurrency";
             this.gpConcurrency.Size = new System.Drawing.Size(154, 266);
             this.gpConcurrency.TabIndex = 14;
@@ -649,9 +651,11 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 559);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(12, 579);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(472, 23);
+            this.button1.Size = new System.Drawing.Size(487, 23);
             this.button1.TabIndex = 20;
             this.button1.Text = "Generate and Launch";
             this.button1.UseVisualStyleBackColor = true;
@@ -659,9 +663,11 @@
             // 
             // txtPath
             // 
-            this.txtPath.Location = new System.Drawing.Point(99, 590);
+            this.txtPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPath.Location = new System.Drawing.Point(99, 610);
             this.txtPath.Name = "txtPath";
-            this.txtPath.Size = new System.Drawing.Size(383, 20);
+            this.txtPath.Size = new System.Drawing.Size(398, 20);
             this.txtPath.TabIndex = 21;
             this.txtPath.Click += new System.EventHandler(this.txtPath_Click);
             // 
@@ -769,7 +775,8 @@
             // 
             // btnLaunchPerfmon
             // 
-            this.btnLaunchPerfmon.Location = new System.Drawing.Point(283, 513);
+            this.btnLaunchPerfmon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLaunchPerfmon.Location = new System.Drawing.Point(378, 550);
             this.btnLaunchPerfmon.Name = "btnLaunchPerfmon";
             this.btnLaunchPerfmon.Size = new System.Drawing.Size(119, 23);
             this.btnLaunchPerfmon.TabIndex = 23;
@@ -779,15 +786,18 @@
             // 
             // txtLogFile
             // 
-            this.txtLogFile.Location = new System.Drawing.Point(99, 616);
+            this.txtLogFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtLogFile.Location = new System.Drawing.Point(99, 636);
             this.txtLogFile.Name = "txtLogFile";
-            this.txtLogFile.Size = new System.Drawing.Size(383, 20);
+            this.txtLogFile.Size = new System.Drawing.Size(398, 20);
             this.txtLogFile.TabIndex = 24;
             this.txtLogFile.Click += new System.EventHandler(this.txtLogFile_Click);
             // 
             // btnOpenFolder
             // 
-            this.btnOpenFolder.Location = new System.Drawing.Point(12, 588);
+            this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnOpenFolder.Location = new System.Drawing.Point(12, 608);
             this.btnOpenFolder.Name = "btnOpenFolder";
             this.btnOpenFolder.Size = new System.Drawing.Size(81, 23);
             this.btnOpenFolder.TabIndex = 25;
@@ -797,7 +807,8 @@
             // 
             // btnOpenLog
             // 
-            this.btnOpenLog.Location = new System.Drawing.Point(12, 614);
+            this.btnOpenLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnOpenLog.Location = new System.Drawing.Point(12, 634);
             this.btnOpenLog.Name = "btnOpenLog";
             this.btnOpenLog.Size = new System.Drawing.Size(81, 23);
             this.btnOpenLog.TabIndex = 26;
@@ -805,11 +816,21 @@
             this.btnOpenLog.UseVisualStyleBackColor = true;
             this.btnOpenLog.Click += new System.EventHandler(this.txtLogFile_Click);
             // 
+            // radioButton44
+            // 
+            this.radioButton44.AutoSize = true;
+            this.radioButton44.Location = new System.Drawing.Point(6, 134);
+            this.radioButton44.Name = "radioButton44";
+            this.radioButton44.Size = new System.Drawing.Size(101, 17);
+            this.radioButton44.TabIndex = 5;
+            this.radioButton44.Text = "RabbitMQ_Next";
+            this.radioButton44.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(494, 649);
+            this.ClientSize = new System.Drawing.Size(509, 669);
             this.Controls.Add(this.btnOpenLog);
             this.Controls.Add(this.btnOpenFolder);
             this.Controls.Add(this.txtLogFile);
@@ -927,6 +948,7 @@
         private System.Windows.Forms.TextBox txtLogFile;
         private System.Windows.Forms.Button btnOpenFolder;
         private System.Windows.Forms.Button btnOpenLog;
+        private System.Windows.Forms.RadioButton radioButton44;
     }
 }
 
