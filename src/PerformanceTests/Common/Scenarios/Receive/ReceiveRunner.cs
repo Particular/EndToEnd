@@ -43,7 +43,7 @@ partial class ReceiveRunner : BaseRunner, ICreateSeedData
     {
         var start = DateTime.UtcNow;
         await countdownEvent.WaitAsync().ConfigureAwait(false);
-        Log.InfoFormat("All messages received in {0}s!", (DateTime.UtcNow - start).TotalSeconds);
+        Log.InfoFormat("All messages received in {0:N}s!", (DateTime.UtcNow - start).TotalSeconds);
     }
 
     protected override Task Setup()
