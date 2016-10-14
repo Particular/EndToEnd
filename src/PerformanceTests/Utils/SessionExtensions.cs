@@ -14,7 +14,7 @@ public static class SessionExtensions
         }
         catch (Exception ex)
         {
-            Log.Warn(ex, "CloseWithSuppress");
+            Log.Warn(ex, "CloseWithSuppress ({0}): {1}", ex.GetType(), ex.Message.Replace(Environment.NewLine,"; "));
         }
     }
 }
