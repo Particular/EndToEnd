@@ -79,6 +79,7 @@
     <Compile Include="Categories\Base.cs" />
     <Compile Include="Categories\OutboxVsDtcFixture.cs" />
     <Compile Include="Categories\PersistersFixture.cs" />
+    <Compile Include="Categories\SqlFixture.cs" />
     <Compile Include="Categories\SqlTransportFixture.cs" />
     <Compile Include="Categories\TestSessionInitializer.cs" />
     <Compile Include="Categories\TransactionModesFixture.cs" />
