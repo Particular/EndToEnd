@@ -1,5 +1,7 @@
 ﻿using System;
 using NServiceBus;
+using NServiceBus.Config;
+using NServiceBus.Config.ConfigurationSource;
 using NServiceBus.Logging;
 using NServiceBus.Settings;
 using Tests.Permutations;
@@ -12,6 +14,8 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
 
     public Permutation Permutation { private get; set; }
 
+    static AzureServiceBusQueueConfig Config;
+
     public void Configure(BusConfiguration busConfiguration)
     {
         busConfiguration.ScaleOut().UseSingleBrokerQueue();
@@ -21,6 +25,16 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
             .ConnectionString(connectionstring);
 
         InitTransactionMode(busConfiguration.Transactions());
+
+        var concurrencyLevel = ConcurrencyLevelConverter.Convert(Permutation.ConcurrencyLevel);
+
+        Config = new AzureServiceBusQueueConfig
+        {
+            EnablePartitioning = true,
+            ConnectionString = connectionstring,
+            BatchSize = Permutation.PrefetchMultiplier * concurrencyLevel,
+            SupportOrdering = false,
+        };
     }
 
     void InitTransactionMode(TransactionSettings transactionSettings)
@@ -43,6 +57,14 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
             case TransactionMode.Transactional:
             default:
                 throw new NotSupportedException("TransactionMode: " + mode);
+        }
+    }
+
+    class ConfigAzureServiceBusQueueConfig : IProvideConfiguration<AzureServiceBusQueueConfig>
+    {
+        public AzureServiceBusQueueConfig GetConfiguration()
+        {
+            return Config;
         }
     }
 }

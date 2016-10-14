@@ -96,6 +96,7 @@
     <Compile Include="ResourceHelper.cs" />
     <Compile Include="ReturnCodes.cs" />
     <Compile Include="ScanLogs.cs" />
+    <Compile Include="SessionExtensions.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SqlHelper.cs" />
     <Compile Include="Statistics.cs" />
