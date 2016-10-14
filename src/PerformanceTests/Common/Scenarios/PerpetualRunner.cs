@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using NServiceBus.Logging;
 
@@ -38,4 +39,11 @@ abstract class PerpetualRunner : BaseRunner
     }
 
     protected abstract Task Seed(int i, ISession session);
+
+    protected override async Task Wait(Task baseTask)
+    {
+        Log.InfoFormat("Warmup: {0}, until {1}", Settings.WarmupDuration, DateTime.Now + Settings.WarmupDuration);
+        await Task.Delay(Settings.WarmupDuration).ConfigureAwait(false);
+        await baseTask.ConfigureAwait(false);
+    }
 }
