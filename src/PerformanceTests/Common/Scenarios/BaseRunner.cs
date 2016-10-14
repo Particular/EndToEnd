@@ -72,7 +72,6 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             Log.Info("Stopping...");
             await Stop().ConfigureAwait(false);
             Log.Info("Stopped");
-            Statistics.Dump();
         }
         finally
         {
