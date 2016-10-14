@@ -65,7 +65,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             await Start(Session).ConfigureAwait(false);
             Log.Info("Started");
 
-            await Wait().ConfigureAwait(false);
+            await Wait(WaitUntilRunDurationExpires()).ConfigureAwait(false);
 
             Statistics.Dump();
             Shutdown = true;
@@ -372,14 +372,20 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         }
     }
 
-    protected virtual Task Wait()
+    protected virtual Task Wait(Task baseTask)
     {
-        Log.InfoFormat("Run: Duration {0}, until {1}", Settings.RunDuration, DateTime.UtcNow + Settings.RunDuration);
-        return Task.Delay(Settings.RunDuration);
+        return baseTask;
     }
 
     protected virtual Task Setup()
     {
         return Task.FromResult(0);
+    }
+
+    async Task WaitUntilRunDurationExpires()
+    {
+        Log.InfoFormat("Run: Duration {0}, until {1}", Settings.RunDuration, DateTime.Now + Settings.RunDuration);
+        await Task.Delay(Settings.RunDuration).ConfigureAwait(false);
+        Log.Info("Run duration expired.");
     }
 }

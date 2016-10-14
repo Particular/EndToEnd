@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Common.Scenarios;
 using NServiceBus;
@@ -33,15 +34,16 @@ partial class ReceiveRunner : BaseRunner, ICreateSeedData
         countdownEvent.Signal();
     }
 
-    protected override Task Wait()
+    protected override Task Wait(Task baseTask)
     {
-        return Task.WhenAny(base.Wait(), WaitForCountDown());
+        return Task.WhenAny(baseTask, WaitForCountDown());
     }
 
     async Task WaitForCountDown()
     {
+        var start = DateTime.UtcNow;
         await countdownEvent.WaitAsync().ConfigureAwait(false);
-        Log.Info("All messages received!");
+        Log.InfoFormat("All messages received in {0}s!", (DateTime.UtcNow - start).TotalSeconds);
     }
 
     protected override Task Setup()
