@@ -38,6 +38,7 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
         transport.MessagingFactories().NumberOfMessagingFactoriesPerNamespace(numberOfFactoriesAndClients);
         transport.NumberOfClientsPerEntity(numberOfFactoriesAndClients);
         transport.Queues().EnablePartitioning(true);
+        transport.Topics().EnablePartitioning(true);
 
         if (Permutation.TransactionMode != TransactionMode.Default
             && Permutation.TransactionMode != TransactionMode.None
