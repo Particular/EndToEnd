@@ -13,14 +13,14 @@ using Variables;
 class TimeToBeReceivedProfile : IProfile, INeedPermutation
 {
     readonly ILog Log = LogManager.GetLogger(nameof(TimeToBeReceivedProfile));
-    readonly TimeSpan TTBR = Settings.RunDuration;
+    readonly TimeSpan TTBR = Settings.RunDuration + TimeSpan.FromMinutes(5); // Max clock offset allowed is 5 minutes
     public Permutation Permutation { private get; set; }
 
     public void Configure(Cfg cfg)
     {
-        if (Permutation.Transport == Transport.MSMQ)
+        if (Permutation.Transport == Transport.MSMQ && Permutation.TransactionMode != TransactionMode.None)
         {
-            Log.WarnFormat("TimeToBeReceived NOT set to '{0}' for transactional MSMQ!", TTBR);
+            Log.WarnFormat("TimeToBeReceived NOT set to '{0}' for transactional MSMQ as TransactionMode is not None!", TTBR);
             return;
         }
 
