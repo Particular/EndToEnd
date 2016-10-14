@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using System.Linq;
 
 namespace NServiceBus.Performance
 {
@@ -15,13 +14,13 @@ namespace NServiceBus.Performance
     {
         static readonly string SettingKey = "NServiceBus/SimpleStatistics";
 
+        public SimpleStatisticsFeature()
+        {
+            EnableByDefault();
+        }
+
         protected override void Setup(FeatureConfigurationContext context)
         {
-            var settings = ConfigurationManager.AppSettings;
-            bool enable;
-            if (settings.AllKeys.Contains(SettingKey) && bool.TryParse(settings[SettingKey], out enable) && !enable) return;
-
-            EnableByDefault();
             context.Container.ConfigureComponent<Collector>(DependencyLifecycle.SingleInstance);
             RegisterStartupTask<StartupTask>();
 

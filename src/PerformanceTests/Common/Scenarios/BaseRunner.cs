@@ -42,7 +42,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         InitData();
         MaxConcurrencyLevel = ConcurrencyLevelConverter.Convert(Permutation.ConcurrencyLevel);
 
-        await CreateOrPurgeQueues().ConfigureAwait(false); // Workaround for pubsub to self with purge on startup
+        await CreateOrPurgeAndDrainQueues().ConfigureAwait(false); // Workaround for pubsub to self with purge on startup
 
         var seedCreator = this as ICreateSeedData;
         if (seedCreator != null)
@@ -75,11 +75,11 @@ public abstract class BaseRunner : IConfigurationSource, IContext
             Statistics.Instance.Reset(GetType().Name);
             await Task.Delay(runDuration).ConfigureAwait(false);
 
+            Statistics.Instance.Dump();
             Shutdown = true;
             Log.Info("Stopping...");
             await Stop().ConfigureAwait(false);
             Log.Info("Stopped");
-            Statistics.Instance.Dump();
         }
         finally
         {
@@ -94,13 +94,13 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
     protected virtual Task Stop()
     {
-        return DrainMessages();
+        return Task.FromResult(0);
     }
 
     async Task CreateSeedData(ICreateSeedData instance)
     {
         Log.Info("Creating or purging queues...");
-        await CreateOrPurgeQueues().ConfigureAwait(false);
+        await CreateOrPurgeAndDrainQueues().ConfigureAwait(false);
         Log.Info("Creating send only endpoint...");
         await CreateSendOnlyEndpoint().ConfigureAwait(false);
 
@@ -147,12 +147,13 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     }
 
 #if Version5
-    Task CreateOrPurgeQueues()
+    async Task CreateOrPurgeAndDrainQueues()
     {
         var configuration = CreateConfiguration();
         if (IsPurgingSupported) configuration.PurgeOnStartup(true);
         var instance = Bus.Create(configuration).Start();
-        return new Session(instance).CloseWithSuppress();
+        await DrainMessages().ConfigureAwait(false);
+        await new Session(instance).CloseWithSuppress().ConfigureAwait(false);
     }
 
     Task CreateSendOnlyEndpoint()
@@ -166,7 +167,6 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     Task CreateEndpoint()
     {
         var configuration = CreateConfiguration();
-        configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
         configuration.CustomConfigurationSource(this);
         configuration.DefineCriticalErrorAction(OnCriticalError);
 
@@ -232,11 +232,12 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     }
 
 #else
-    async Task CreateOrPurgeQueues()
+    async Task CreateOrPurgeAndDrainQueues()
     {
         var configuration = CreateConfiguration();
         if (IsPurgingSupported) configuration.PurgeOnStartup(true);
         var instance = await Endpoint.Start(configuration).ConfigureAwait(false);
+        await DrainMessages().ConfigureAwait(false);
         await new Session(instance).CloseWithSuppress().ConfigureAwait(false);
     }
 
@@ -251,7 +252,6 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     async Task CreateEndpoint()
     {
         var configuration = CreateConfiguration();
-        configuration.EnableFeature<NServiceBus.Performance.SimpleStatisticsFeature>();
         configuration.CustomConfigurationSource(this);
 
         if (SendOnly)
@@ -352,20 +352,30 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         while (condition()) yield return i++;
     }
 
-    protected async Task DrainMessages()
+    async Task DrainMessages()
     {
-        var startCount = Statistics.Instance.NumberOfMessages;
-        long current;
-
-        Log.Info("Draining queue...");
-        do
+        try
         {
-            current = Statistics.Instance.NumberOfMessages;
-            Log.Debug("Delaying to detect receive activity...");
-            await Task.Delay(1000).ConfigureAwait(false);
-        } while (Statistics.Instance.NumberOfMessages > current);
+            const int DrainPollInterval = 1500;
+            var startCount = ShortcutBehavior.Count;
+            long current;
+            var start = Stopwatch.StartNew();
+            ShortcutBehavior.Shortcut = true;
 
-        var diff = current - startCount;
-        Log.InfoFormat("Drained {0} message(s)", diff);
+            Log.Info("Draining queue...");
+            do
+            {
+                current = ShortcutBehavior.Count;
+                Log.DebugFormat("Delaying to detect receive activity, last count is {0}...", current);
+                await Task.Delay(DrainPollInterval).ConfigureAwait(false);
+            } while (ShortcutBehavior.Count > current);
+
+            var diff = current - startCount;
+            Log.InfoFormat("Drained {0:N0} message(s) in {1:N0}ms", diff, start.ElapsedMilliseconds);
+        }
+        finally
+        {
+            ShortcutBehavior.Shortcut = false;
+        }
     }
 }
