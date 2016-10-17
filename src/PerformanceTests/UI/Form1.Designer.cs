@@ -94,6 +94,10 @@
             this.txtLogFile = new System.Windows.Forms.TextBox();
             this.btnOpenFolder = new System.Windows.Forms.Button();
             this.btnOpenLog = new System.Windows.Forms.Button();
+            this.radioButton44 = new System.Windows.Forms.RadioButton();
+            this.radioButton45 = new System.Windows.Forms.RadioButton();
+            this.radioButton46 = new System.Windows.Forms.RadioButton();
+            this.radioButton47 = new System.Windows.Forms.RadioButton();
             this.gpTransports.SuspendLayout();
             this.gpPlatform.SuspendLayout();
             this.gpVersion.SuspendLayout();
@@ -110,6 +114,10 @@
             // 
             // gpTransports
             // 
+            this.gpTransports.Controls.Add(this.radioButton47);
+            this.gpTransports.Controls.Add(this.radioButton46);
+            this.gpTransports.Controls.Add(this.radioButton45);
+            this.gpTransports.Controls.Add(this.radioButton44);
             this.gpTransports.Controls.Add(this.radioButton5);
             this.gpTransports.Controls.Add(this.radioButton4);
             this.gpTransports.Controls.Add(this.radioButton3);
@@ -117,7 +125,7 @@
             this.gpTransports.Controls.Add(this.radioButton1);
             this.gpTransports.Location = new System.Drawing.Point(12, 12);
             this.gpTransports.Name = "gpTransports";
-            this.gpTransports.Size = new System.Drawing.Size(154, 145);
+            this.gpTransports.Size = new System.Drawing.Size(154, 227);
             this.gpTransports.TabIndex = 13;
             this.gpTransports.TabStop = false;
             this.gpTransports.Text = "Transport";
@@ -125,7 +133,7 @@
             // radioButton5
             // 
             this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(6, 111);
+            this.radioButton5.Location = new System.Drawing.Point(6, 180);
             this.radioButton5.Name = "radioButton5";
             this.radioButton5.Size = new System.Drawing.Size(106, 17);
             this.radioButton5.TabIndex = 4;
@@ -135,7 +143,7 @@
             // radioButton4
             // 
             this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(6, 88);
+            this.radioButton4.Location = new System.Drawing.Point(6, 157);
             this.radioButton4.Name = "radioButton4";
             this.radioButton4.Size = new System.Drawing.Size(126, 17);
             this.radioButton4.TabIndex = 3;
@@ -145,7 +153,7 @@
             // radioButton3
             // 
             this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(6, 42);
+            this.radioButton3.Location = new System.Drawing.Point(6, 88);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(73, 17);
             this.radioButton3.TabIndex = 2;
@@ -156,11 +164,10 @@
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(6, 65);
+            this.radioButton2.Location = new System.Drawing.Point(6, 111);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(58, 17);
             this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
             this.radioButton2.Text = "MSMQ";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
@@ -312,7 +319,7 @@
             this.gpPersistence.Controls.Add(this.radioButton14);
             this.gpPersistence.Controls.Add(this.radioButton13);
             this.gpPersistence.Controls.Add(this.radioButton12);
-            this.gpPersistence.Location = new System.Drawing.Point(12, 163);
+            this.gpPersistence.Location = new System.Drawing.Point(12, 245);
             this.gpPersistence.Name = "gpPersistence";
             this.gpPersistence.Size = new System.Drawing.Size(154, 118);
             this.gpPersistence.TabIndex = 18;
@@ -538,7 +545,7 @@
             this.gpConcurrency.Controls.Add(this.radioButton32);
             this.gpConcurrency.Controls.Add(this.radioButton33);
             this.gpConcurrency.Controls.Add(this.radioButton34);
-            this.gpConcurrency.Location = new System.Drawing.Point(12, 287);
+            this.gpConcurrency.Location = new System.Drawing.Point(12, 369);
             this.gpConcurrency.Name = "gpConcurrency";
             this.gpConcurrency.Size = new System.Drawing.Size(154, 266);
             this.gpConcurrency.TabIndex = 14;
@@ -649,9 +656,11 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 559);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(12, 643);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(472, 23);
+            this.button1.Size = new System.Drawing.Size(492, 23);
             this.button1.TabIndex = 20;
             this.button1.Text = "Generate and Launch";
             this.button1.UseVisualStyleBackColor = true;
@@ -659,9 +668,11 @@
             // 
             // txtPath
             // 
-            this.txtPath.Location = new System.Drawing.Point(99, 590);
+            this.txtPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPath.Location = new System.Drawing.Point(99, 674);
             this.txtPath.Name = "txtPath";
-            this.txtPath.Size = new System.Drawing.Size(383, 20);
+            this.txtPath.Size = new System.Drawing.Size(403, 20);
             this.txtPath.TabIndex = 21;
             this.txtPath.Click += new System.EventHandler(this.txtPath_Click);
             // 
@@ -769,7 +780,8 @@
             // 
             // btnLaunchPerfmon
             // 
-            this.btnLaunchPerfmon.Location = new System.Drawing.Point(283, 513);
+            this.btnLaunchPerfmon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLaunchPerfmon.Location = new System.Drawing.Point(383, 614);
             this.btnLaunchPerfmon.Name = "btnLaunchPerfmon";
             this.btnLaunchPerfmon.Size = new System.Drawing.Size(119, 23);
             this.btnLaunchPerfmon.TabIndex = 23;
@@ -779,15 +791,18 @@
             // 
             // txtLogFile
             // 
-            this.txtLogFile.Location = new System.Drawing.Point(99, 616);
+            this.txtLogFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtLogFile.Location = new System.Drawing.Point(99, 700);
             this.txtLogFile.Name = "txtLogFile";
-            this.txtLogFile.Size = new System.Drawing.Size(383, 20);
+            this.txtLogFile.Size = new System.Drawing.Size(403, 20);
             this.txtLogFile.TabIndex = 24;
             this.txtLogFile.Click += new System.EventHandler(this.txtLogFile_Click);
             // 
             // btnOpenFolder
             // 
-            this.btnOpenFolder.Location = new System.Drawing.Point(12, 588);
+            this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnOpenFolder.Location = new System.Drawing.Point(12, 672);
             this.btnOpenFolder.Name = "btnOpenFolder";
             this.btnOpenFolder.Size = new System.Drawing.Size(81, 23);
             this.btnOpenFolder.TabIndex = 25;
@@ -797,7 +812,8 @@
             // 
             // btnOpenLog
             // 
-            this.btnOpenLog.Location = new System.Drawing.Point(12, 614);
+            this.btnOpenLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnOpenLog.Location = new System.Drawing.Point(12, 698);
             this.btnOpenLog.Name = "btnOpenLog";
             this.btnOpenLog.Size = new System.Drawing.Size(81, 23);
             this.btnOpenLog.TabIndex = 26;
@@ -805,11 +821,51 @@
             this.btnOpenLog.UseVisualStyleBackColor = true;
             this.btnOpenLog.Click += new System.EventHandler(this.txtLogFile_Click);
             // 
+            // radioButton44
+            // 
+            this.radioButton44.AutoSize = true;
+            this.radioButton44.Location = new System.Drawing.Point(6, 203);
+            this.radioButton44.Name = "radioButton44";
+            this.radioButton44.Size = new System.Drawing.Size(143, 17);
+            this.radioButton44.TabIndex = 5;
+            this.radioButton44.Text = "AzureServiceBus_AMQP";
+            this.radioButton44.UseVisualStyleBackColor = true;
+            // 
+            // radioButton45
+            // 
+            this.radioButton45.AutoSize = true;
+            this.radioButton45.Location = new System.Drawing.Point(6, 134);
+            this.radioButton45.Name = "radioButton45";
+            this.radioButton45.Size = new System.Drawing.Size(92, 17);
+            this.radioButton45.TabIndex = 6;
+            this.radioButton45.Text = "MSMQ_NoTX";
+            this.radioButton45.UseVisualStyleBackColor = true;
+            // 
+            // radioButton46
+            // 
+            this.radioButton46.AutoSize = true;
+            this.radioButton46.Location = new System.Drawing.Point(6, 42);
+            this.radioButton46.Name = "radioButton46";
+            this.radioButton46.Size = new System.Drawing.Size(106, 17);
+            this.radioButton46.TabIndex = 7;
+            this.radioButton46.Text = "SQLServer_RDS";
+            this.radioButton46.UseVisualStyleBackColor = true;
+            // 
+            // radioButton47
+            // 
+            this.radioButton47.AutoSize = true;
+            this.radioButton47.Location = new System.Drawing.Point(6, 65);
+            this.radioButton47.Name = "radioButton47";
+            this.radioButton47.Size = new System.Drawing.Size(110, 17);
+            this.radioButton47.TabIndex = 8;
+            this.radioButton47.Text = "SQLServer_Azure";
+            this.radioButton47.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(494, 649);
+            this.ClientSize = new System.Drawing.Size(514, 733);
             this.Controls.Add(this.btnOpenLog);
             this.Controls.Add(this.btnOpenFolder);
             this.Controls.Add(this.txtLogFile);
@@ -927,6 +983,10 @@
         private System.Windows.Forms.TextBox txtLogFile;
         private System.Windows.Forms.Button btnOpenFolder;
         private System.Windows.Forms.Button btnOpenLog;
+        private System.Windows.Forms.RadioButton radioButton47;
+        private System.Windows.Forms.RadioButton radioButton46;
+        private System.Windows.Forms.RadioButton radioButton45;
+        private System.Windows.Forms.RadioButton radioButton44;
     }
 }
 
