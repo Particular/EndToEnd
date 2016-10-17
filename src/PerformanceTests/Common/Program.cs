@@ -113,6 +113,19 @@ namespace Host
             log.InfoFormat("Fixture: {0}", permutation.Fixture);
             log.InfoFormat("Code: {0}", permutation.Code);
             log.InfoFormat("Id: {0}", permutation.Id);
+
+            log.InfoFormat("AuditMode: {0}", permutation.AuditMode);
+            log.InfoFormat("MessageSize: {0}", permutation.MessageSize);
+            log.InfoFormat("Version: {0}", permutation.Version);
+            log.InfoFormat("Outbox: {0}", permutation.OutboxMode);
+            log.InfoFormat("Persistence: {0}", permutation.Persister);
+            log.InfoFormat("Platform: {0}", permutation.Platform);
+            log.InfoFormat("Serializer: {0}", permutation.Serializer);
+            log.InfoFormat("Transport: {0}", permutation.Transport);
+            log.InfoFormat("GC: {0}", permutation.GarbageCollector);
+            log.InfoFormat("TransactionMode: {0}", permutation.TransactionMode);
+            log.InfoFormat("ConcurrencyLevel: {0}", permutation.ConcurrencyLevel);
+            log.InfoFormat("ScaleOut: {0}", permutation.ScaleOut);
         }
 
         static void ValidateServicePointManager(Permutation permutation)

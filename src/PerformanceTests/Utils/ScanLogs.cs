@@ -64,6 +64,7 @@ public class ScanLogs
 
     const string Delimiter = "\t";
     static bool Align = false;
+    static readonly string NA = string.Empty;
 
 
     public static string ToCsvString(string path)
@@ -77,7 +78,7 @@ public class ScanLogs
         foreach (var k in keys)
         {
             var l = items
-                .Select(x => x.ContainsKey(k) ? x[k] : "NA")
+                .Select(x => x.ContainsKey(k) ? x[k] : NA)
                 .Max(x => x.Length);
 
             l = Math.Max(l, k.Length);
@@ -91,12 +92,12 @@ public class ScanLogs
             foreach (var k in keys)
             {
                 var l = items
-                    .Select(x => x.ContainsKey(k) ? x[k] : "NA")
+                    .Select(x => x.ContainsKey(k) ? x[k] : NA)
                     .Max(x => x.Length);
 
                 l = Math.Max(l, k.Length);
 
-                var v = i.ContainsKey(k) ? i[k] : "NA";
+                var v = i.ContainsKey(k) ? i[k] : NA;
 
                 if (Align)
                 {
