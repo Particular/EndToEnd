@@ -3,6 +3,7 @@ namespace Variables
     public enum Transport
     {
         MSMQ,
+        MSMQ_NoTX,
         RabbitMQ,
         AzureStorageQueues,
         AzureServiceBus,
