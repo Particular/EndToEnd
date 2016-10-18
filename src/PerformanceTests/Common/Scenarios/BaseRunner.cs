@@ -43,7 +43,8 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         InitData();
         MaxConcurrencyLevel = ConcurrencyLevelConverter.Convert(Permutation.ConcurrencyLevel);
 
-        await CreateOrPurgeAndDrainQueues().ConfigureAwait(false); // Workaround for pubsub to self with purge on startup
+        Log.Info("Creating or purging/draining queues...");
+        await CreateOrPurgeAndDrainQueues().ConfigureAwait(false);
 
         var seedCreator = this as ICreateSeedData;
         if (seedCreator != null)
@@ -91,8 +92,6 @@ public abstract class BaseRunner : IConfigurationSource, IContext
 
     async Task CreateSeedData(ICreateSeedData instance)
     {
-        Log.Info("Creating or purging queues...");
-        await CreateOrPurgeAndDrainQueues().ConfigureAwait(false);
         Log.Info("Creating send only endpoint...");
         await CreateSendOnlyEndpoint().ConfigureAwait(false);
 
@@ -143,6 +142,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     {
         var configuration = CreateConfiguration();
         if (IsPurgingSupported) configuration.PurgeOnStartup(true);
+        ShortcutBehavior.Shortcut = true; // Required, as instance already receives messages before DrainMessages() is called!
         var instance = Bus.Create(configuration).Start();
         await DrainMessages().ConfigureAwait(false);
         await new Session(instance).CloseWithSuppress().ConfigureAwait(false);
@@ -228,6 +228,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     {
         var configuration = CreateConfiguration();
         if (IsPurgingSupported) configuration.PurgeOnStartup(true);
+        ShortcutBehavior.Shortcut = true; // Required, as instance already receives messages before DrainMessages() is called!
         var instance = await Endpoint.Start(configuration).ConfigureAwait(false);
         await DrainMessages().ConfigureAwait(false);
         await new Session(instance).CloseWithSuppress().ConfigureAwait(false);
