@@ -55,6 +55,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLoop\TaskArrayRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SerializerProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StatisticsUoW.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Statistics\Counters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Statistics\SimpleStatisticsFeature.V5.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Statistics\SimpleStatisticsFeature.V6.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Statistics\StatisticsBehavior.V5.cs" />

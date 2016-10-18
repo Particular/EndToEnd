@@ -32,6 +32,7 @@ namespace NServiceBus.Performance
             context.Container.ConfigureComponent<StatisticsBehavior>(DependencyLifecycle.SingleInstance);
             // Register the new step in the pipeline
             context.Pipeline.Register(nameof(StatisticsBehavior), typeof(StatisticsBehavior), "Logs and displays statistics.");
+            context.Pipeline.Register(nameof(StatsOut), typeof(StatsOut), "Collects out stats.");
         }
 
         internal class StartupTask : FeatureStartupTask
@@ -109,10 +110,18 @@ namespace NServiceBus.Performance
                 _reportTimer?.Dispose();
             }
 
+            readonly Counters Counters = new Counters();
+
             public long Timestamp() => Stopwatch.GetTimestamp();
+
+            public void SendInc()
+            {
+                Counters.sends.Increment();
+            }
 
             public void Inc()
             {
+                Counters.receives.Increment();
                 Interlocked.Increment(ref _total);
             }
 
@@ -131,9 +140,26 @@ namespace NServiceBus.Performance
                 Interlocked.Add(ref _duration, duration);
             }
 
+            int maxConcurrency;
+            long last;
+
             public void ConcurrencyInc()
             {
-                Interlocked.Increment(ref _concurrency);
+                var val = Interlocked.Increment(ref _concurrency);
+
+                if (maxConcurrency < val)
+                {
+                    Interlocked.Exchange(ref maxConcurrency, val);
+                    Counters.concurrency.RawValue = maxConcurrency;
+                }
+
+                var now = Stopwatch.GetTimestamp();
+
+                if (last < now)
+                {
+                    last = now + Stopwatch.Frequency;
+                    Interlocked.Exchange(ref maxConcurrency, val);
+                }
             }
 
             public void ConcurrencyDec()

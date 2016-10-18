@@ -45,6 +45,23 @@ namespace NServiceBus.Performance
             void ConcurrencyInc();
             void ConcurrencyDec();
             long Timestamp();
+            void SendInc();
+        }
+    }
+
+    public class StatsOut : IBehavior<IDispatchContext, IDispatchContext>
+    {
+        readonly StatisticsBehavior.Implementation provider;
+
+        public StatsOut(StatisticsBehavior.Implementation provider)
+        {
+            this.provider = provider;
+        }
+
+        public async Task Invoke(IDispatchContext context, Func<IDispatchContext, Task> next)
+        {
+            await next(context).ConfigureAwait(false);
+            provider.SendInc();
         }
     }
 }
