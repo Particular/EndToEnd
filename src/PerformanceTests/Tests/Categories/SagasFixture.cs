@@ -34,7 +34,7 @@ namespace Categories
                 Persisters = new[] { Persistence.Azure, Persistence.NHibernate, Persistence.RavenDB, Persistence.RavenDB_Embedded },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
-                ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential, ConcurrencyLevel.EnvCores02x, },
+                ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores, ConcurrencyLevel.EnvCores04x, ConcurrencyLevel.EnvCores64x,  },
                 TransactionMode = new[] { TransactionMode.Atomic, TransactionMode.Transactional, }
             },
             p => p.Persister == Persistence.Azure && p.TransactionMode != TransactionMode.Transactional || p.Persister != Persistence.Azure
