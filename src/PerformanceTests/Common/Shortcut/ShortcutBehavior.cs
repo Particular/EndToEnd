@@ -29,7 +29,7 @@ using NServiceBus.Pipeline.Contexts;
 
 public class ShortcutBehavior : IBehavior<IncomingContext>
 {
-    public static bool Shortcut;
+    public static volatile bool Shortcut;
     public static long Count;
 
     public void Invoke(IncomingContext context, Action next)
