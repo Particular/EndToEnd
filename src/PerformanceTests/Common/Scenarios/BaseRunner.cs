@@ -76,7 +76,9 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         }
         finally
         {
+            Log.Info("Closing...");
             await Session.CloseWithSuppress().ConfigureAwait(false);
+            Log.Info("Closed");
         }
     }
 

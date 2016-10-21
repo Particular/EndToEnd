@@ -11,7 +11,7 @@ using NServiceBus.Logging;
 partial class ReceiveRunner : BaseRunner, ICreateSeedData
 {
     static readonly ILog Log = LogManager.GetLogger(nameof(ReceiveRunner));
-    static readonly AsyncCountdownEvent countdownEvent = new AsyncCountdownEvent(0);
+    static readonly CountdownEvent countdownEvent = new CountdownEvent(0);
     int seedCount;
 
     public class Command : ICommand
@@ -39,11 +39,12 @@ partial class ReceiveRunner : BaseRunner, ICreateSeedData
         return Task.WhenAny(baseTask, WaitForCountDown());
     }
 
-    async Task WaitForCountDown()
+    Task WaitForCountDown()
     {
         var start = DateTime.UtcNow;
-        await countdownEvent.WaitAsync().ConfigureAwait(false);
+        countdownEvent.Wait();
         Log.InfoFormat("All messages received in {0:N}s!", (DateTime.UtcNow - start).TotalSeconds);
+        return Task.FromResult(0);
     }
 
     protected override Task Setup()
