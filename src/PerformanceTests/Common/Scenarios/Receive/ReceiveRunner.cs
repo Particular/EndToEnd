@@ -39,12 +39,12 @@ partial class ReceiveRunner : BaseRunner, ICreateSeedData
         return Task.WhenAny(baseTask, WaitForCountDown());
     }
 
-    Task WaitForCountDown()
+    async Task WaitForCountDown()
     {
         var start = DateTime.UtcNow;
+        await Task.Yield();
         countdownEvent.Wait();
         Log.InfoFormat("All messages received in {0:N}s!", (DateTime.UtcNow - start).TotalSeconds);
-        return Task.FromResult(0);
     }
 
     protected override Task Setup()
