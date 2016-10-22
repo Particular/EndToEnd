@@ -31,7 +31,14 @@ partial class ReceiveRunner : BaseRunner, ICreateSeedData
 
     static void Signal()
     {
-        countdownEvent.Signal();
+        try
+        {
+            countdownEvent.Signal();
+        }
+        catch (Exception ex)
+        {
+            Log.Debug("Ignoring", ex);
+        }
     }
 
     protected override Task Wait(Task baseTask)
