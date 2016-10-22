@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using NServiceBus.Logging;
 
@@ -19,6 +20,10 @@ static class EnvironmentStats
         log.InfoFormat("WorkingSet: {0}", Environment.WorkingSet);
         log.InfoFormat("SystemPageSize: {0}", Environment.SystemPageSize);
         log.InfoFormat("HostName: {0}", Dns.GetHostName());
+        foreach (var key in Environment.GetEnvironmentVariables().Keys.OfType<string>().Where(x => x.StartsWith("PROCESSOR_")))
+        {
+            log.InfoFormat("{0}: {1}", key, Environment.GetEnvironmentVariable(key));
+        }
 
         log = LogManager.GetLogger("ServicePointManager");
         log.InfoFormat("DefaultConnectionLimit: {0}", ServicePointManager.DefaultConnectionLimit);
