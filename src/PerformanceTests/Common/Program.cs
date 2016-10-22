@@ -5,6 +5,7 @@ namespace Host
     using System.Linq;
     using System.Net;
     using System.Threading;
+    using System.Threading.Tasks;
     using Microsoft.Win32;
     using NServiceBus;
     using NServiceBus.Logging;
@@ -18,6 +19,11 @@ namespace Host
         static string endpointName = "PerformanceTest";
 
         static int Main()
+        {
+            return MainAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        static async Task<int> MainAsync()
         {
             LogManager.Use<NLogFactory>();
             NLog.LogManager.Configuration.DefaultCultureInfo = CultureInfo.InvariantCulture;
@@ -52,8 +58,7 @@ namespace Host
                     var runnableTest = permutation.Tests.Select(x => (BaseRunner)assembly.CreateInstance(x)).Single();
 
                     Log.InfoFormat("Executing scenario: {0}", runnableTest);
-                    runnableTest.Execute(permutation, endpointName)
-                        .ConfigureAwait(false).GetAwaiter().GetResult();
+                    await runnableTest.Execute(permutation, endpointName).ConfigureAwait(false);
 
                     PostChecks();
                 }
@@ -66,8 +71,12 @@ namespace Host
             catch (Exception ex)
             {
                 Log.Fatal("Main", ex);
-                NLog.LogManager.Shutdown();
                 throw;
+            }
+            finally
+            {
+                Log.Info("Fin!");
+                NLog.LogManager.Shutdown();
             }
             return (int)ReturnCodes.OK;
         }
