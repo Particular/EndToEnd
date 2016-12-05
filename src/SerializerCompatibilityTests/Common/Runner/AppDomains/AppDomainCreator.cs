@@ -4,6 +4,7 @@
     using System.IO;
     using System.Reflection;
     using Nuget;
+    using NUnit.Framework;
     using Paket;
 
     [Serializable]
@@ -13,7 +14,7 @@
         {
             var startupDir = CreateStartupDir(startupDirTemplate, package.Version, Guid.NewGuid());
 
-            var sourceAssemblyDir = package.Info.PackageName + SemVer.Parse(package.Version).Major;
+            var sourceAssemblyDir = Path.Combine(TestContext.CurrentContext.TestDirectory, package.Info.PackageName + SemVer.Parse(package.Version).Major);
             var sourceAssemblyFiles = Directory.GetFiles(sourceAssemblyDir, "*");
 
             CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, package.Files);
@@ -30,10 +31,12 @@
 
             appDomain.SetData("FriendlyName", appDomain.FriendlyName);
 
+            var projectAssemblyPath = Path.Combine(startupDir.FullName, Path.GetFileNameWithoutExtension(sourceAssemblyDir) + ".dll");
+
             return new AppDomainDescriptor
             {
                 AppDomain = appDomain,
-                ProjectAssemblyPath = Path.Combine(startupDir.FullName, sourceAssemblyDir + ".dll"),
+                ProjectAssemblyPath = projectAssemblyPath,
                 PackageVersion = package.Version
             };
         }
@@ -71,13 +74,16 @@
         static DirectoryInfo CreateStartupDir(string codeBaseDirTemplate, string version, Guid uniqueId)
         {
             var directoryName = string.Format(codeBaseDirTemplate, version, uniqueId);
+            var directoryPath = Path.Combine(TestContext.CurrentContext.TestDirectory, directoryName);
 
-            if (Directory.Exists(directoryName) == false)
+            if (Directory.Exists(directoryPath))
             {
-                return Directory.CreateDirectory(directoryName);
+                Directory.Delete(directoryPath, true);
             }
 
-            return new DirectoryInfo(directoryName);
+            Directory.CreateDirectory(directoryPath);
+
+            return new DirectoryInfo(directoryPath);
         }
     }
 

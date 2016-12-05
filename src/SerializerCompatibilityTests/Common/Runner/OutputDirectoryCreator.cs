@@ -3,30 +3,24 @@
     using System;
     using System.IO;
 
-    public class OutputDirectoryCreator
+    public static class OutputDirectoryCreator
     {
-        public string SetupOutputDirectory(string name)
+        public static string SetupOutputDirectory(string name)
         {
             var outputDirectory = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, name);
 
-            if (Directory.Exists(outputDirectory) == false)
+            if (!Directory.Exists(outputDirectory))
             {
                 Directory.CreateDirectory(outputDirectory);
             }
 
-            /*
-            var directoryInfo = new DirectoryInfo(outputDirectory);
+            //if (Directory.Exists(outputDirectory))
+            //{
+            //    Directory.Delete(outputDirectory, true);
+            //}
 
-            foreach (var fileInfo in directoryInfo.GetFiles())
-            {
-                fileInfo.Delete();
-            }
+            //Directory.CreateDirectory(outputDirectory);
 
-            foreach (var directory in directoryInfo.GetDirectories())
-            {
-                directory.Delete(true);
-            }
-            */
             return outputDirectory;
         }
     }

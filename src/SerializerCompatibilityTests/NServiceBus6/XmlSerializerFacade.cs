@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Common;
 using NServiceBus;
 using NServiceBus.MessageInterfaces.MessageMapper.Reflection;
 using NServiceBus.Serialization;
 using NServiceBus.Settings;
+using NServiceBus.Unicast.Messages;
 
 class XmlSerializerFacade : ISerializerFacade
 {
@@ -13,6 +15,8 @@ class XmlSerializerFacade : ISerializerFacade
         mapper = new MessageMapper();
         var settings = new SettingsHolder();
         var conventions = CreateTestConventions(settings);
+        // evil hack
+        settings.Set<MessageMetadataRegistry>((MessageMetadataRegistry)Activator.CreateInstance(typeof(MessageMetadataRegistry), BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { conventions}, null));
         settings.Set<Conventions>(conventions);
         settings.Set("TypesToScan", objectTypes);
 

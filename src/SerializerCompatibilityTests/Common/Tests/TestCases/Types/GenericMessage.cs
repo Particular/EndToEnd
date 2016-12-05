@@ -5,6 +5,10 @@
     [Serializable]
     public class GenericMessage<T1, T2>
     {
+        public GenericMessage()
+        {
+        }
+
         public GenericMessage(Guid sagaId, T1 data1, T2 data2)
         {
             SagaId = sagaId;

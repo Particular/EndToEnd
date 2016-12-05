@@ -25,6 +25,8 @@ class Tester : MarshalByRefObject, ISerializationTester
                 using (var writer = new FileStream(filePath, FileMode.Create))
                 {
                     memoryStream.CopyTo(writer);
+
+                    writer.Flush(true);
                 }
             }
         }
