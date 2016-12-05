@@ -7,7 +7,7 @@
     [SetUpFixture]
     public class TestsGlobal
     {
-        [SetUp]
+        [OneTimeSetUp]
         public void RunsBeforeAnyTest()
         {
             CleanupAfterPreviousRuns();
@@ -25,7 +25,7 @@
 
         static void RemoveAppDomainCodeBaseDirs()
         {
-            new DirectoryInfo(".")
+            new DirectoryInfo(TestContext.CurrentContext.TestDirectory)
                 .GetDirectories(BinDirectorySearchPattern).ToList()
                 .ForEach(d => d.Delete(true));
         }

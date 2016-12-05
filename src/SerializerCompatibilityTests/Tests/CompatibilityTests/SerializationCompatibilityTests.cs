@@ -12,7 +12,7 @@
         [OneTimeSetUp]
         public void Setup()
         {
-            outputDirectory = new OutputDirectoryCreator().SetupOutputDirectory("SerializationCompatibilityFiles");
+            outputDirectory = OutputDirectoryCreator.SetupOutputDirectory("SerializationCompatibilityFiles");
         }
 
         string CreateOutputFilePath(TestInfo testCaseInfo)

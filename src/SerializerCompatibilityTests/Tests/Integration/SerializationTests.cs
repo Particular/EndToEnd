@@ -23,7 +23,7 @@
         [SetUp]
         public void SetUp()
         {
-            var outputDirectory = new OutputDirectoryCreator().SetupOutputDirectory("TestCaseOutput");
+            var outputDirectory = OutputDirectoryCreator.SetupOutputDirectory("TestCaseOutput");
 
             filePath = Path.Combine(outputDirectory, "testcase.dat");
             nuGetPackageResolver = new NuGetPackageResolver("../..");

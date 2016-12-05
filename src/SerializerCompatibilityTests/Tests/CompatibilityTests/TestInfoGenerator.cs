@@ -10,7 +10,7 @@
 
     public class TestInfoGenerator
     {
-        public IEnumerable<TestInfo> Generate()
+        public static IEnumerable<TestInfo> Generate()
         {
             TestsGlobal.CleanupAfterPreviousRuns();
 
@@ -23,10 +23,12 @@
             var serializationCases = GenerateSerializationCases(allTestCases, packages, runners);
             var deserializationCases = GenerateDeserializationCases(allTestCases, packages, runners);
 
-            return serializationCases.Concat(deserializationCases);
+            var testCases = new List<TestInfo>(serializationCases);
+            testCases.AddRange(deserializationCases);
+            return testCases;
         }
 
-        Package[] DownloadPackages(PackageInfo[] packageInfos)
+        static Package[] DownloadPackages(PackageInfo[] packageInfos)
         {
             var resolver = new NuGetPackageResolver(PackageStore);
             var packages = new ConcurrentBag<Package>();
@@ -43,14 +45,14 @@
             return uniquePackages;
         }
 
-        Package[] RemoveVersionDuplicates(List<Package> availableNServiceBusVersions)
+        static Package[] RemoveVersionDuplicates(List<Package> availableNServiceBusVersions)
         {
             //HINT: We want to remove packageinfos which resolved to the same version number. E.g.
             //      (5.2,5.3) and (5.0,6.0) could both resolve to 5.2.8 if that's the newest version.
             return availableNServiceBusVersions.Distinct(new PackageVersionComparer()).ToArray();
         }
 
-        Dictionary<string, AppDomainRunner> CreateAppDomainRunners(Package[] packages)
+        static Dictionary<string, AppDomainRunner> CreateAppDomainRunners(Package[] packages)
         {
             var appDomainCreator = new AppDomainCreator();
             var appDomainRunners = new ConcurrentBag<AppDomainRunner>();
