@@ -185,9 +185,9 @@ Changing anything on the VM’s requires:
 
 * Running the initialize VM step
 * RDP into the VM
-* Make the changes
-* Shutdown the MV without running Sysprep
-* Create image with a new name
+* Apply the changes
+* Shutdown the VM without running Sysprep
+* Create image with a new name but do not check that the image is sysprepped
 * Run shutdown VM step
 * Update TC script with new image name
  
