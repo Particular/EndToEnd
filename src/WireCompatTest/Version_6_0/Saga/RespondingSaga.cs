@@ -9,14 +9,18 @@ namespace Common.Saga
     {
         public Task Handle(SagaRequestToRespondingMessage message, IMessageHandlerContext context)
         {
-            return context.Reply(new SagaResponseFromOtherMessage
+            Data.MessageId = message.MessageId;
+            var response = new SagaResponseFromOtherMessage
             {
                 Sender = TestRunner.EndpointName
-            });
+            };
+            return context.Reply(response);
         }
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<RespondingSagaData> mapper)
         {
+            mapper.ConfigureMapping<SagaRequestToRespondingMessage>(message => message.MessageId)
+                .ToSaga(data => data.MessageId);
         }
     }
 }

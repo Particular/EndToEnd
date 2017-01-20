@@ -8,10 +8,12 @@ public static class SagaInitiator
     {
         foreach (var endpoint in EndpointNames.All)
         {
-            await bus.SendLocal(new SagaInitiateRequestingMessage
-                {
-                    TargetEndpoint = endpoint
-                }).ConfigureAwait(false);
+            var message = new SagaInitiateRequestingMessage
+            {
+                TargetEndpoint = endpoint
+            };
+            await bus.SendLocal(message)
+                .ConfigureAwait(false);
         }
     }
 }

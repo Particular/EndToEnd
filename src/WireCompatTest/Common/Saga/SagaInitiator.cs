@@ -8,10 +8,11 @@ public static class SagaInitiator
     {
         Parallel.ForEach(EndpointNames.All, endpoint =>
         {
-            bus.SendLocal(new SagaInitiateRequestingMessage
+            var message = new SagaInitiateRequestingMessage
             {
                 TargetEndpoint = endpoint
-            });
+            };
+            bus.SendLocal(message);
         });
     }
 }

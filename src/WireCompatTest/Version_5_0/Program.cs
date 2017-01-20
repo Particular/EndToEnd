@@ -3,10 +3,11 @@ using NServiceBus;
 
 class Program
 {
-    static string endpointName = "WireCompat" + Assembly.GetExecutingAssembly().GetName().Name;
+    static string endpointName = $"WireCompat{Assembly.GetExecutingAssembly().GetName().Name}";
+
     static void Main()
     {
-        var bus = CreateBus(); 
+        var bus = CreateBus();
         TestRunner.EndpointName = endpointName;
         TestRunner.RunTests(bus);
     }
@@ -27,7 +28,11 @@ class Program
         busConfiguration.FileShareDataBus("..\\..\\..\\tempstorage");
 #pragma warning restore 618
 #endif
-        busConfiguration.RegisterComponents(c => c.ConfigureComponent<EncryptionVerifier>(DependencyLifecycle.SingleInstance));
+        busConfiguration.RegisterComponents(
+            components =>
+            {
+                components.ConfigureComponent<EncryptionVerifier>(DependencyLifecycle.SingleInstance);
+            });
         busConfiguration.EnableInstallers();
         var startableBus = Bus.Create(busConfiguration);
         return startableBus.Start();

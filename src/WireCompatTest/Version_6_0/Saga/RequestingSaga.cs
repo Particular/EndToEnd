@@ -11,6 +11,7 @@ namespace Common.Saga
     {
         public Task Handle(SagaInitiateRequestingMessage message, IMessageHandlerContext context)
         {
+            Data.MessageId = message.MessageId;
             var newMessage = new SagaRequestToRespondingMessage
             {
                 Sender = TestRunner.EndpointName
@@ -28,6 +29,8 @@ namespace Common.Saga
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<RequestingSagaData> mapper)
         {
+            mapper.ConfigureMapping<SagaInitiateRequestingMessage>(message => message.MessageId)
+                .ToSaga(data => data.MessageId);
         }
     }
 }

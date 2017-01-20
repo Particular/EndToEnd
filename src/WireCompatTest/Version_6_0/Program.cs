@@ -4,7 +4,7 @@ using NServiceBus;
 
 class Program
 {
-    static string endpointName = "WireCompat" + Assembly.GetExecutingAssembly().GetName().Name;
+    static string endpointName = $"WireCompat{Assembly.GetExecutingAssembly().GetName().Name}";
 
     static void Main()
     {
@@ -29,7 +29,11 @@ class Program
         endpointConfiguration.UseDataBus<FileShareDataBus>().BasePath("..\\..\\..\\tempstorage");
         endpointConfiguration.MakeInstanceUniquelyAddressable("1");
 
-        endpointConfiguration.RegisterComponents(c => c.ConfigureComponent<EncryptionVerifier>(DependencyLifecycle.SingleInstance));
+        endpointConfiguration.RegisterComponents(
+            components =>
+            {
+                components.ConfigureComponent<EncryptionVerifier>(DependencyLifecycle.SingleInstance);
+            });
         endpointConfiguration.EnableInstallers();
 
         return Endpoint.Start(endpointConfiguration);

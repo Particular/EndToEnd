@@ -10,6 +10,7 @@ namespace Common.Saga
         public Guid Id { get; set; }
         public string Originator { get; set; }
         public string OriginalMessageId { get; set; }
+        public Guid MessageId { get; set; }
     }
 
 #endif
@@ -20,6 +21,7 @@ namespace Common.Saga
         public Guid Id { get; set; }
         public string Originator { get; set; }
         public string OriginalMessageId { get; set; }
+        public Guid MessageId { get; set; }
     }
 
 #endif

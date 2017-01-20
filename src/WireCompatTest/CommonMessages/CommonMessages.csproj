@@ -43,8 +43,6 @@
   <ItemGroup>
     <Compile Include="DataBusResponseMessage.cs" />
     <Compile Include="DataBusSendMessage.cs" />
-    <Compile Include="GatewayResponseMessage.cs" />
-    <Compile Include="GatewaySendMessage.cs" />
     <Compile Include="SagaInitiateRequestingMessage.cs" />
     <Compile Include="SagaRequestToRespondingMessage.cs" />
     <Compile Include="SagaResponseFromOtherMessage.cs" />
