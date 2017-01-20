@@ -13,7 +13,8 @@ public class EventHandler :
     IHandleMessages<Version_5_0.Messages.MyEvent>,
     IHandleMessages<Version_5_1.Messages.MyEvent>,
     IHandleMessages<Version_5_2.Messages.MyEvent>,
-    IHandleMessages<Version_6_0.Messages.MyEvent>
+    IHandleMessages<Version_6_0.Messages.MyEvent>,
+    IHandleMessages<Version_6_1.Messages.MyEvent>
 {
     public void Handle(Version_3_3.Messages.MyEvent message)
     {
@@ -64,16 +65,23 @@ public class EventHandler :
     {
         PubSubVerifier.EventReceivedFrom.Add(message.Sender);
     }
+
     public void Handle(Version_5_1.Messages.MyEvent message)
     {
         PubSubVerifier.EventReceivedFrom.Add(message.Sender);
     }
+
     public void Handle(Version_5_2.Messages.MyEvent message)
     {
         PubSubVerifier.EventReceivedFrom.Add(message.Sender);
     }
 
     public void Handle(Version_6_0.Messages.MyEvent message)
+    {
+        PubSubVerifier.EventReceivedFrom.Add(message.Sender);
+    }
+
+    public void Handle(Version_6_1.Messages.MyEvent message)
     {
         PubSubVerifier.EventReceivedFrom.Add(message.Sender);
     }

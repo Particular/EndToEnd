@@ -1,54 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{65AF4EAB-FE04-4306-B553-4B3851C6D74B}</ProjectGuid>
+    <ProjectGuid>{BAAB8EC6-1B09-4E59-A564-A1776414276A}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Namespace</RootNamespace>
-    <AssemblyName>$(ProjectName)</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Version_6_1</RootNamespace>
+    <AssemblyName>Version_6_1</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartAction>Project</StartAction>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;Version4</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;Version6</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;Version4</DefineConstants>
+    <DefineConstants>TRACE;Version6</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceBus, Version=4.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NServiceBus.Interfaces.4.0.11\lib\net40\NServiceBus.dll</HintPath>
+    <Reference Include="NServiceBus.Callbacks, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NServiceBus.Callbacks.1.1.0\lib\net452\NServiceBus.Callbacks.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NServiceBus.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NServiceBus.4.0.11\lib\net40\NServiceBus.Core.dll</HintPath>
+    <Reference Include="NServiceBus.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NServiceBus.6.1.2\lib\net452\NServiceBus.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -58,99 +54,97 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Version_3_3\Logging.cs">
-      <Link>Logging.cs</Link>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\Common\Asserter.cs">
-      <Link>\Asserter.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\DataBus\DataBusInitiator.cs">
-      <Link>DataBus\\DataBusInitiator.cs</Link>
+      <Link>Asserter.cs</Link>
     </Compile>
     <Compile Include="..\Common\DataBus\DataBusVerifier.cs">
-      <Link>DataBus\\DataBusVerifier.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\DataBus\ResponseHandler.cs">
-      <Link>DataBus\\ResponseHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\DataBus\SendHandler.cs">
-      <Link>DataBus\\SendHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\EncryptionVerifier.cs">
-      <Link>\EncryptionVerifier.cs</Link>
+      <Link>DataBus\DataBusVerifier.cs</Link>
     </Compile>
     <Compile Include="..\Common\EndpointNames.cs">
-      <Link>\EndpointNames.cs</Link>
+      <Link>EndpointNames.cs</Link>
     </Compile>
     <Compile Include="..\Common\MessageConventions.cs">
-      <Link>\MessageConventions.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\PubSub\EventHandler.cs">
-      <Link>PubSub\\EventHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\PubSub\PubSubConfigOverride.cs">
-      <Link>PubSub\\PubSubConfigOverride.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\PubSub\PubSubInitiator.cs">
-      <Link>PubSub\\PubSubInitiator.cs</Link>
+      <Link>MessageConventions.cs</Link>
     </Compile>
     <Compile Include="..\Common\PubSub\PubSubVerifier.cs">
-      <Link>PubSub\\PubSubVerifier.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\Saga\RequestingSaga.cs">
-      <Link>Saga\\RequestingSaga.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\Saga\RequestingSagaData.cs">
-      <Link>Saga\\RequestingSagaData.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\Saga\RespondingSaga.cs">
-      <Link>Saga\\RespondingSaga.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\Saga\RespondingSagaData.cs">
-      <Link>Saga\\RespondingSagaData.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\Saga\SagaInitiator.cs">
-      <Link>Saga\\SagaInitiator.cs</Link>
+      <Link>PubSub\PubSubVerifier.cs</Link>
     </Compile>
     <Compile Include="..\Common\Saga\SagaVerifier.cs">
-      <Link>Saga\\SagaVerifier.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\SendReply\FirstHandler.cs">
-      <Link>SendReply\\FirstHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\SendReply\SecondHandler.cs">
-      <Link>SendReply\\SecondHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\SendReply\SendReplyInitiator.cs">
-      <Link>SendReply\\SendReplyInitiator.cs</Link>
+      <Link>Saga\SagaVerifier.cs</Link>
     </Compile>
     <Compile Include="..\Common\SendReply\SendReplyVerifier.cs">
-      <Link>SendReply\\SendReplyVerifier.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\SendReturn\Handler.cs">
-      <Link>SendReturn\\Handler.cs</Link>
-    </Compile>
-    <Compile Include="..\Common\SendReturn\SendReturnInitiator.cs">
-      <Link>SendReturn\\SendReturnInitiator.cs</Link>
+      <Link>SendReply\SendReplyVerifier.cs</Link>
     </Compile>
     <Compile Include="..\Common\SendReturn\SendReturnVerifier.cs">
-      <Link>SendReturn\\SendReturnVerifier.cs</Link>
+      <Link>SendReturn\SendReturnVerifier.cs</Link>
     </Compile>
-    <Compile Include="..\Common\TestRunner.cs">
-      <Link>\TestRunner.cs</Link>
+    <Compile Include="..\Version_6_0\DataBus\DataBusInitiator.cs">
+      <Link>DataBus\DataBusInitiator.cs</Link>
     </Compile>
+    <Compile Include="..\Version_6_0\DataBus\ResponseHandler.cs">
+      <Link>DataBus\ResponseHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\DataBus\SendHandler.cs">
+      <Link>DataBus\SendHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\EncryptionVerifier.cs">
+      <Link>EncryptionVerifier.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\Program.cs">
+      <Link>Program.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\PubSub\EventHandler.cs">
+      <Link>PubSub\EventHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\PubSub\PubSubConfigOverride.cs">
+      <Link>PubSub\PubSubConfigOverride.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\PubSub\PubSubInitiator.cs">
+      <Link>PubSub\PubSubInitiator.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\Saga\RequestingSaga.cs">
+      <Link>Saga\RequestingSaga.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\Saga\RequestingSagaData.cs">
+      <Link>Saga\RequestingSagaData.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\Saga\RespondingSaga.cs">
+      <Link>Saga\RespondingSaga.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\Saga\RespondingSagaData.cs">
+      <Link>Saga\RespondingSagaData.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\Saga\SagaInitiator.cs">
+      <Link>Saga\SagaInitiator.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\SendReply\FirstHandler.cs">
+      <Link>SendReply\FirstHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\SendReply\SecondHandler.cs">
+      <Link>SendReply\SecondHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\SendReply\SendReplyInitiator.cs">
+      <Link>SendReply\SendReplyInitiator.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\SendReturn\Handler.cs">
+      <Link>SendReturn\Handler.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\SendReturn\SendReturnInitiator.cs">
+      <Link>SendReturn\SendReturnInitiator.cs</Link>
+    </Compile>
+    <Compile Include="..\Version_6_0\TestRunner.cs">
+      <Link>TestRunner.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Version_6_0\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonMessages\CommonMessages.csproj">
