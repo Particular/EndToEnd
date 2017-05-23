@@ -32,9 +32,3 @@ The tests automatically retrieve all minor versions of Persistence packages with
 ### Pre-requisites for running tests locally
 - NHibernate tests - a local SQLExpress instance, with database `PersistenceTests`
 - Being able to resolve and download packages from official Nuget feed and MyGet.
-
-## Serializer compatibility tests
-More info soon...
-
-## Wire compatibility tests
-More info soon...
