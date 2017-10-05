@@ -19,7 +19,11 @@ using System.Threading.Tasks;
 using Common.Scenarios;
 using Variables;
 
-public abstract class BaseRunner : IConfigurationSource, IContext
+public abstract class BaseRunner :
+#pragma warning disable 618
+    IConfigurationSource,
+#pragma warning restore 618
+    IContext
 {
     readonly ILog Log = LogManager.GetLogger("BaseRunner");
 
@@ -266,7 +270,9 @@ public abstract class BaseRunner : IConfigurationSource, IContext
     {
         var configuration = new Configuration(EndpointName);
         configuration.EnableInstallers();
+#pragma warning disable 618
         configuration.ExcludeTypes(GetTypesToExclude().ToArray());
+#pragma warning restore 618
         configuration.ApplyProfiles(this);
         configuration.DefineCriticalErrorAction(OnCriticalError);
         return configuration;
@@ -318,8 +324,9 @@ public abstract class BaseRunner : IConfigurationSource, IContext
         IConfigureUnicastBus configureUnicastBus;
 
         //read from existing config 
+#pragma warning disable 618
         var config = (UnicastBusConfig)ConfigurationManager.GetSection(typeof(UnicastBusConfig).Name);
-        if (config != null) throw new InvalidOperationException("UnicastBUs Configuration should be in code using IConfigureUnicastBus interface.");
+        if (config != null) throw new InvalidOperationException("UnicastBus Configuration should be in code using IConfigureUnicastBus interface.");
 
         if (typeof(T) == typeof(UnicastBusConfig) && null != (configureUnicastBus = this as IConfigureUnicastBus))
         {
@@ -328,6 +335,7 @@ public abstract class BaseRunner : IConfigurationSource, IContext
                 MessageEndpointMappings = configureUnicastBus.GenerateMappings()
             } as T;
         }
+#pragma warning restore 618
 
         return ConfigurationManager.GetSection(typeof(T).Name) as T;
     }
