@@ -21,7 +21,7 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
         transport.MessageReceivers().PrefetchCount(Permutation.PrefetchMultiplier);
 
         transport
-            .UseTopology<ForwardingTopology>()
+            .UseForwardingTopology()
             .ConnectionString(connectionstring)
             .Sanitization().UseStrategy<ValidateAndHashIfNeeded>()
             ;
