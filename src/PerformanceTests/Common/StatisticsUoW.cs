@@ -12,7 +12,7 @@ public class StatisticsUoW : IManageUnitsOfWork, INeedInitialization
 {
     readonly Statistics Statistics = Statistics.Instance;
 
-#if Version6
+#if Version6 || Version7
     public System.Threading.Tasks.Task Begin()
     {
         DoBegin();
@@ -50,7 +50,7 @@ public class StatisticsUoW : IManageUnitsOfWork, INeedInitialization
         Statistics.IncMessages();
     }
 
-#if Version6
+#if Version6 || Version7
     public System.Threading.Tasks.Task End(Exception ex = null)
     {
         DoEnd(ex);
@@ -85,7 +85,7 @@ public class StatisticsUoW : IManageUnitsOfWork, INeedInitialization
     }
 #endif
 
-#if Version6
+#if Version6 || Version7
     public void Customize(EndpointConfiguration configuration)
     {
         configuration.RegisterComponents(c => c.ConfigureComponent<StatisticsUoW>(DependencyLifecycle.SingleInstance));
