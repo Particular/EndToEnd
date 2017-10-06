@@ -87,7 +87,7 @@ namespace Host
             BatchHelper.Instance = new BatchHelper.ParallelFor();
 #endif
 
-#if Version6
+#if Version6 || Version7
             BatchHelper.Instance = new BatchHelper.TaskWhenAll();
 #endif
         }

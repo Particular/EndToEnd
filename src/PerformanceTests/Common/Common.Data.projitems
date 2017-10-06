@@ -12,6 +12,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)AuditProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckGCServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckPlatform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\BaseRunner.IConfigurationSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\FakeTransport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shortcut\ShortcutBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shortcut\ShortcutFeature.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IConfigureUnicastBus.cs" />

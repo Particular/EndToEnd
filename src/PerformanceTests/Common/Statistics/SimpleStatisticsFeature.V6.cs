@@ -1,4 +1,4 @@
-#if Version6
+#if Version6 || Version7
 using System;
 using System.Configuration;
 using System.Diagnostics;

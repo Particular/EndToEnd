@@ -3,13 +3,16 @@ using Configuration = NServiceBus.EndpointConfiguration;
 #else
 using Configuration = NServiceBus.BusConfiguration;
 #endif
+#if Version7
+using NServiceBus.Configuration.AdvancedExtensibility;
+#endif
+#if Version6
+using NServiceBus.Configuration.AdvanceExtensibility;
+#endif
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using NServiceBus;
-using NServiceBus.Config;
-using NServiceBus.Config.ConfigurationSource;
 using NServiceBus.Logging;
 using Tests.Permutations;
 using System.Collections.Generic;
@@ -19,11 +22,7 @@ using System.Threading.Tasks;
 using Common.Scenarios;
 using Variables;
 
-public abstract class BaseRunner :
-#pragma warning disable 618
-    IConfigurationSource,
-#pragma warning restore 618
-    IContext
+public abstract partial class BaseRunner : IContext
 {
     readonly ILog Log = LogManager.GetLogger("BaseRunner");
 
@@ -251,7 +250,21 @@ public abstract class BaseRunner :
     async Task CreateEndpoint()
     {
         var configuration = CreateConfiguration();
-        configuration.CustomConfigurationSource(this);
+
+        var x = this as IConfigureUnicastBus;
+
+        if (x != null)
+        {
+            var routing = new RoutingSettings<FakeAbstractTransport>(configuration.GetSettings());
+
+            foreach (var m in x.GenerateMappings())
+            {
+                var isEvent = typeof(IEvent).IsAssignableFrom(m.MessageType);
+                if (isEvent) routing.RegisterPublisher(m.MessageType, m.Endpoint);
+                else routing.RouteToEndpoint(m.MessageType, m.Endpoint);
+
+            }
+        }
 
         if (SendOnly)
         {
@@ -270,9 +283,7 @@ public abstract class BaseRunner :
     {
         var configuration = new Configuration(EndpointName);
         configuration.EnableInstallers();
-#pragma warning disable 618
-        configuration.ExcludeTypes(GetTypesToExclude().ToArray());
-#pragma warning restore 618
+        configuration.AssemblyScanner().ExcludeTypes(GetTypesToExclude().ToArray());
         configuration.ApplyProfiles(this);
         configuration.DefineCriticalErrorAction(OnCriticalError);
         return configuration;
@@ -317,27 +328,6 @@ public abstract class BaseRunner :
             Log.InfoFormat("- {0}", theType.Name);
         }
         return allTypesToExclude;
-    }
-
-    public T GetConfiguration<T>() where T : class, new()
-    {
-        IConfigureUnicastBus configureUnicastBus;
-
-        //read from existing config 
-#pragma warning disable 618
-        var config = (UnicastBusConfig)ConfigurationManager.GetSection(typeof(UnicastBusConfig).Name);
-        if (config != null) throw new InvalidOperationException("UnicastBus Configuration should be in code using IConfigureUnicastBus interface.");
-
-        if (typeof(T) == typeof(UnicastBusConfig) && null != (configureUnicastBus = this as IConfigureUnicastBus))
-        {
-            return new UnicastBusConfig
-            {
-                MessageEndpointMappings = configureUnicastBus.GenerateMappings()
-            } as T;
-        }
-#pragma warning restore 618
-
-        return ConfigurationManager.GetSection(typeof(T).Name) as T;
     }
 
     void InitData()

@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using NServiceBus;
-using NServiceBus.Config;
 using NServiceBus.Logging;
 
 /// <summary>
@@ -20,7 +20,7 @@ partial class PublishOneOnOneRunner : PerpetualRunner, IConfigureUnicastBus
     {
         Log.Warn("Sleeping 3,000ms for the instance to purge the queue and process subscriptions. Loop requires the queue to be empty.");
         await Task.Delay(3000).ConfigureAwait(false);
-        await base.Start(session);
+        await base.Start(session).ConfigureAwait(false);
     }
 
     protected override Task Seed(int i, ISession session)
@@ -33,20 +33,13 @@ partial class PublishOneOnOneRunner : PerpetualRunner, IConfigureUnicastBus
         public byte[] Data { get; set; }
     }
 
-    public MessageEndpointMappingCollection GenerateMappings()
+    public IEnumerable<Mapping> GenerateMappings()
     {
-        var mappings = new MessageEndpointMappingCollection();
-
-        var messageType = typeof(Event);
-
-        mappings.Add(new MessageEndpointMapping
+        yield return new Mapping
         {
-            AssemblyName = messageType.Assembly.FullName,
-            TypeFullName = messageType.FullName,
+            MessageType = typeof(Event),
             Endpoint = EndpointName
-        });
-
-        return mappings;
+        };
     }
 
     partial class Handler

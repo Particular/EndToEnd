@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Threading.Tasks;
 using NServiceBus;
 using NServiceBus.Config;
+using System.Collections.Generic;
 
 /// <summary>
 /// Performs a continious test where a batch of messages is send via the bus without
@@ -23,27 +25,17 @@ class GatedPublishRunner : LoopRunner, IConfigureUnicastBus
         public byte[] Data { get; set; }
     }
 
-    public MessageEndpointMappingCollection GenerateMappings()
+    public IEnumerable<Mapping> GenerateMappings()
     {
-        var mappings = new MessageEndpointMappingCollection();
-
-        var messageType = typeof(Event);
-
-        Log.InfoFormat("Mapping {0} to {1}", messageType, EndpointName);
-
-        mappings.Add(new MessageEndpointMapping
+        yield return new Mapping
         {
-            AssemblyName = messageType.Assembly.FullName,
-            TypeFullName = messageType.FullName,
-            Endpoint = EndpointName
-        });
-
-        return mappings;
+            MessageType = typeof(Event),
+            Endpoint = EndpointName,
+        };
     }
 
     class Handler : Handler<Event>
     {
     }
 }
-
 
