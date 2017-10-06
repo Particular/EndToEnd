@@ -82,7 +82,7 @@
 
         protected static object[][] GenerateVersionsPairs()
         {
-            var versions = new[] { 1, 2, 3, 4 };
+            var versions = new[] { 1, 2, 3, 4, 5 };
 
             var pairs = from l in versions
                         from r in versions
