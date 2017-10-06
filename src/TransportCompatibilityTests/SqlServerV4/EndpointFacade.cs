@@ -5,11 +5,8 @@ using NServiceBus.Pipeline;
 using TransportCompatibilityTests.Common;
 using TransportCompatibilityTests.Common.Messages;
 
-namespace SqlServerV3
+namespace SqlServerV4
 {
-    using System.Linq;
-    using NHibernate.Util;
-    using NServiceBus.Persistence;
     using NServiceBus.Transport.SQLServer;
     using TransportCompatibilityTests.Common.SqlServer;
 
@@ -28,10 +25,16 @@ namespace SqlServerV3
             endpointConfiguration.Conventions().DefiningEventsAs(t => t == typeof(TestEvent));
 
             endpointConfiguration.EnableInstallers();
-            endpointConfiguration.UsePersistence<NHibernatePersistence>()
+
+
+            //TODO: NHibernate package isn't available yet
+            endpointConfiguration.UsePersistence<InMemoryPersistence>();
+            //endpointConfiguration.UsePersistence<NHibernatePersistence>()
+            //    .ConnectionString(SqlServerConnectionStringBuilder.Build());
+            var transportConfiguration = endpointConfiguration.UseTransport<SqlServerTransport>()
                 .ConnectionString(SqlServerConnectionStringBuilder.Build());
-            endpointConfiguration.UseTransport<SqlServerTransport>()
-                .ConnectionString(SqlServerConnectionStringBuilder.Build());
+
+            endpointConfiguration.SendFailedMessagesTo("error");
 
             if (!string.IsNullOrWhiteSpace(endpointDefinition.Schema))
             {
@@ -40,18 +43,24 @@ namespace SqlServerV3
                     .DefaultSchema(endpointDefinition.Schema);
             }
 
-            var allMappings = endpointDefinition.Mappings.Concat(endpointDefinition.Publishers).ToArray();
-
-            allMappings.ForEach(mm =>
+            var routing = transportConfiguration.Routing();
+            foreach (var mapping in endpointDefinition.Mappings)
             {
-                if (string.IsNullOrEmpty(mm.Schema) == false)
+                routing.RouteToEndpoint(mapping.MessageType, mapping.TransportAddress);
+                if (!string.IsNullOrEmpty(mapping.Schema))
                 {
-                    endpointConfiguration.UseTransport<SqlServerTransport>().UseSchemaForQueue(mm.TransportAddress, mm.Schema);
+                    endpointConfiguration.UseTransport<SqlServerTransport>().UseSchemaForQueue(mapping.TransportAddress, mapping.Schema);
                 }
-            });
+            }
+            foreach (var mapping in endpointDefinition.Publishers)
+            {
+                routing.RegisterPublisher(mapping.MessageType, mapping.TransportAddress);
+                if (!string.IsNullOrEmpty(mapping.Schema))
+                {
+                    endpointConfiguration.UseTransport<SqlServerTransport>().UseSchemaForQueue(mapping.TransportAddress, mapping.Schema);
+                }
+            }
 
-            endpointConfiguration.CustomConfigurationSource(
-                new CustomConfiguration(allMappings));
             endpointConfiguration.MakeInstanceUniquelyAddressable("A");
 
             messageStore = new MessageStore();
@@ -75,24 +84,24 @@ namespace SqlServerV3
 
         public void SendCommand(Guid messageId)
         {
-            endpointInstance.Send(new TestCommand {Id = messageId}).GetAwaiter().GetResult();
+            endpointInstance.Send(new TestCommand { Id = messageId }).GetAwaiter().GetResult();
         }
 
         public void SendRequest(Guid requestId)
         {
-            endpointInstance.Send(new TestRequest {RequestId = requestId}).GetAwaiter().GetResult();
+            endpointInstance.Send(new TestRequest { RequestId = requestId }).GetAwaiter().GetResult();
         }
 
         public void PublishEvent(Guid eventId)
         {
-            endpointInstance.Publish(new TestEvent {EventId = eventId}).GetAwaiter().GetResult();
+            endpointInstance.Publish(new TestEvent { EventId = eventId }).GetAwaiter().GetResult();
         }
 
         public void SendAndCallbackForInt(int value)
         {
             Task.Run(async () =>
             {
-                var result = await endpointInstance.Request<int>(new TestIntCallback {Response = value}, new SendOptions());
+                var result = await endpointInstance.Request<int>(new TestIntCallback { Response = value }, new SendOptions());
 
                 callbackResultStore.Add(result);
             });
@@ -102,7 +111,7 @@ namespace SqlServerV3
         {
             Task.Run(async () =>
             {
-                var result = await endpointInstance.Request<CallbackEnum>(new TestEnumCallback {CallbackEnum = value}, new SendOptions());
+                var result = await endpointInstance.Request<CallbackEnum>(new TestEnumCallback { CallbackEnum = value }, new SendOptions());
 
                 callbackResultStore.Add(result);
             });

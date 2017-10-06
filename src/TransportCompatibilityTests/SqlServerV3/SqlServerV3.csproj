@@ -72,7 +72,6 @@
   <ItemGroup>
     <Compile Include="CustomConfiguration.cs" />
     <Compile Include="EndpointFacade.cs" />
-    <Compile Include="EndpointConfigurator.cs" />
     <Compile Include="Handler.cs" />
   </ItemGroup>
   <ItemGroup>

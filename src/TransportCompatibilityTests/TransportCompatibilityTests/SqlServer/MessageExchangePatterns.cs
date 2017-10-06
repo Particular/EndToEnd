@@ -88,7 +88,7 @@ namespace TransportCompatibilityTests.SqlServer
         [Test, TestCaseSource(nameof(GenerateVersionsPairs))]
         public void It_is_possible_to_publish_events(int sourceVersion, int destinationVersion)
         {
-            destinationEndpointDefinition.Mappings = new[]
+            destinationEndpointDefinition.Publishers = new[]
             {
                 new MessageMapping
                 {
@@ -177,7 +177,8 @@ namespace TransportCompatibilityTests.SqlServer
             {
                 1,
                 2,
-                3
+                3,
+                4
             };
 
             var pairs = from l in sqlTransportVersions

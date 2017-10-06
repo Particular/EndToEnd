@@ -1,6 +1,7 @@
 ﻿namespace SqlServerV1
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using NServiceBus;
     using NServiceBus.Features;
@@ -43,7 +44,9 @@
                 configure.InMemorySubscriptionStorage();
                 configure.UseTransport<SqlServer>();
 
-                var customConfiguration = new CustomConfiguration(endpointDefinition.As<SqlServerEndpointDefinition>().Mappings);
+                var sqlServerEndpointDefinition = endpointDefinition.As<SqlServerEndpointDefinition>();
+                var allMappings = sqlServerEndpointDefinition.Mappings.Concat(sqlServerEndpointDefinition.Publishers).ToArray();
+                var customConfiguration = new CustomConfiguration(allMappings);
                 configure.CustomConfigurationSource(customConfiguration);
 
                 Feature.Enable<MessageDrivenSubscriptions>();

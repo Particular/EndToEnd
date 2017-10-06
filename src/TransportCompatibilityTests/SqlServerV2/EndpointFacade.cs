@@ -42,7 +42,9 @@ namespace SqlServerV2
                     .DefaultSchema(endpointDefinition.As<SqlServerEndpointDefinition>().Schema);
             }
 
-            foreach (var mapping in endpointDefinition.As<SqlServerEndpointDefinition>().Mappings)
+            var sqlServerEndpointDefinition = endpointDefinition.As<SqlServerEndpointDefinition>();
+            var allMappings = sqlServerEndpointDefinition.Mappings.Concat(sqlServerEndpointDefinition.Publishers).ToArray();
+            foreach (var mapping in allMappings)
             {
                 var endpointConnections = new List<EndpointConnectionInfo>();
 
@@ -62,7 +64,7 @@ namespace SqlServerV2
                 }
             }
 
-            var customConfiguration = new CustomConfiguration(endpointDefinition.As<SqlServerEndpointDefinition>().Mappings);
+            var customConfiguration = new CustomConfiguration(allMappings);
             busConfiguration.CustomConfigurationSource(customConfiguration);
 
             messageStore = new MessageStore();
