@@ -6,19 +6,16 @@ using Configuration = NServiceBus.BusConfiguration;
 namespace NServiceBus5
 {
     using NServiceBus;
-    using NServiceBus.Features;
     using Tests.Permutations;
 
-    class AuditProfile : IProfile, INeedPermutation
+    class ErrorProfile : IProfile, INeedPermutation
     {
         public Permutation Permutation { private get; set; }
 
         public void Configure(Configuration cfg)
         {
-            if (Permutation.AuditMode == Variables.Audit.Off) cfg.DisableFeature<Audit>();
-
 #if Version6 || Version7
-            cfg.AuditProcessedMessagesTo(System.Configuration.ConfigurationManager.AppSettings["NServiceBus/AuditQueue"]);
+            cfg.SendFailedMessagesTo(System.Configuration.ConfigurationManager.AppSettings["NServiceBus/ErrorQueue"]);
 #endif
         }
     }
