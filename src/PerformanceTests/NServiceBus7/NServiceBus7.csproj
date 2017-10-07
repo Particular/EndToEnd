@@ -52,6 +52,9 @@
   <PropertyGroup>
     <StartupObject>Host.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\NServiceBus.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -117,6 +120,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\NServiceBus.ico">
+      <Link>NServiceBus.ico</Link>
+    </Content>
   </ItemGroup>
   <Import Project="..\Common\Common.Data.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -52,6 +52,9 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\NServiceBus.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -121,6 +124,11 @@
     <Compile Include="PermutationTransactionExtention.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="EncryptionProfile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\NServiceBus.ico">
+      <Link>NServiceBus.ico</Link>
+    </Content>
   </ItemGroup>
   <Import Project="..\Common\Common.Data.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

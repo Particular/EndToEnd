@@ -55,6 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.connectionstrings.config.template = .connectionstrings.config.template
 		cleanup.sql = cleanup.sql
+		NServiceBus.ico = NServiceBus.ico
 		readme.md = readme.md
 		routes.xsd = routes.xsd
 	EndProjectSection
