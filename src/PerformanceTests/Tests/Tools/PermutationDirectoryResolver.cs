@@ -43,6 +43,8 @@ namespace Tests.Tools
                     return "NServiceBus5";
                 case NServiceBusVersion.V6:
                     return "NServiceBus6";
+                case NServiceBusVersion.V7:
+                    return "NServiceBus7";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(version), version, null);
             }
