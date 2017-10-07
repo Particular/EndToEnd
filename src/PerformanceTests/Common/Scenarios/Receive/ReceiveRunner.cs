@@ -6,7 +6,8 @@ using NServiceBus;
 using NServiceBus.Logging;
 
 /// <summary>
-/// Does a continuous test where a pre-seeded amount of messages will be handled
+/// Seeds a large set of messages to the transport and after seeding completes,
+/// processes all the message with a NOOP handler.
 /// </summary>    
 partial class ReceiveRunner : BaseRunner, ICreateSeedData
 {
