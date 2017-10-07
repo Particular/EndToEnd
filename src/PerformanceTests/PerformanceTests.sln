@@ -75,6 +75,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus7", "NServiceBus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V7.MQMQ_v1", "Transport.V7.MQMQ_v1\Transport.V7.MQMQ_v1.csproj", "{65D68C3F-E642-4676-84A0-168EA009477A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.InMemory", "Persistence.V7.InMemory\Persistence.V7.InMemory.csproj", "{F9E0CC37-8473-423D-9C1F-3571050EA5FD}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Common\Common.Data.projitems*{10d11044-c92c-42ad-830e-57012ff4f039}*SharedItemsImports = 4
@@ -256,6 +258,12 @@ Global
 		{65D68C3F-E642-4676-84A0-168EA009477A}.Local|Any CPU.Build.0 = Release|Any CPU
 		{65D68C3F-E642-4676-84A0-168EA009477A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65D68C3F-E642-4676-84A0-168EA009477A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9E0CC37-8473-423D-9C1F-3571050EA5FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9E0CC37-8473-423D-9C1F-3571050EA5FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9E0CC37-8473-423D-9C1F-3571050EA5FD}.Local|Any CPU.ActiveCfg = Release|Any CPU
+		{F9E0CC37-8473-423D-9C1F-3571050EA5FD}.Local|Any CPU.Build.0 = Release|Any CPU
+		{F9E0CC37-8473-423D-9C1F-3571050EA5FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9E0CC37-8473-423D-9C1F-3571050EA5FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -282,6 +290,7 @@ Global
 		{E1FC8D12-8344-419F-9AE1-B1495B6DEA32} = {C2152FBA-31D2-4141-9BE1-57A938135D9F}
 		{A1FEF639-4BC1-48D8-BB7D-35E985FD404B} = {C2152FBA-31D2-4141-9BE1-57A938135D9F}
 		{65D68C3F-E642-4676-84A0-168EA009477A} = {CF9C0BCF-E877-47A2-BEF4-F0068F16F074}
+		{F9E0CC37-8473-423D-9C1F-3571050EA5FD} = {3CB57DB2-A0E9-4C56-B3D4-9051F34BD2C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {123279E2-15F8-4285-A8B5-109A33AF0FDD}
