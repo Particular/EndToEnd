@@ -6,7 +6,7 @@ abstract class SendLoop : BaseLoop
 
     protected SendLoop()
     {
-        SendOnly = true;
+        IsSendOnly = true;
     }
     protected override Task SendMessage(ISession session)
     {

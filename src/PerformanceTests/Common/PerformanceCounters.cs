@@ -6,12 +6,17 @@ using Configuration = NServiceBus.BusConfiguration;
 
 using NServiceBus;
 
-class PerformanceCounters : IProfile
+class PerformanceCounters : IProfile, INeedContext
 {
+    public IContext Context { get; set; }
+
     public void Configure(Configuration cfg)
     {
 #if Version7
-        cfg.EnableWindowsPerformanceCounters();
+        if (Context.IsSendOnly)
+        {
+            cfg.EnableWindowsPerformanceCounters();
+        }
 #else
 #pragma warning disable 618
         cfg.EnableCriticalTimePerformanceCounter();

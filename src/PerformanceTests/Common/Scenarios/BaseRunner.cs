@@ -31,7 +31,7 @@ public abstract partial class BaseRunner : IContext
     ISession Session { get; set; }
 
     protected byte[] Data { private set; get; }
-    protected bool SendOnly { get; set; }
+    public bool IsSendOnly { get; set; }
     protected int MaxConcurrencyLevel { private set; get; }
 
     protected static bool Shutdown { private set; get; }
@@ -167,7 +167,7 @@ public abstract partial class BaseRunner : IContext
         configuration.CustomConfigurationSource(this);
         configuration.DefineCriticalErrorAction(OnCriticalError);
 
-        if (SendOnly)
+        if (IsSendOnly)
         {
             Session = new Session(Bus.CreateSendOnly(configuration));
             return Task.FromResult(0);
@@ -266,7 +266,7 @@ public abstract partial class BaseRunner : IContext
             }
         }
 
-        if (SendOnly)
+        if (IsSendOnly)
         {
             configuration.SendOnly();
             Session = new Session(await Endpoint.Start(configuration).ConfigureAwait(false));
