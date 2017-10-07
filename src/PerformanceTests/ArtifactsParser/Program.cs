@@ -4,6 +4,7 @@ namespace ArtifactsParser
 {
     using System.Diagnostics;
     using System.IO;
+    using System.Net;
 
     class Program
     {
@@ -19,7 +20,7 @@ namespace ArtifactsParser
             Console.WriteLine("{0} => {1}", path, src);
 
             var csv = ScanLogs.ToCsvString(path);
-            var dst = Path.Combine(src, $"report-{DateTime.Now:yyyy-MM-dd_hhmmss}.csv");
+            var dst = Path.Combine(src, $"perftest-report.{Environment.UserName}@{Dns.GetHostName()}.{DateTime.Now:yyyyMMddThhmmss}.tsv");
             File.WriteAllText(dst, csv);
             Console.WriteLine("Parsed '{0}' recursively and written to '{1}'", src, dst);
 
