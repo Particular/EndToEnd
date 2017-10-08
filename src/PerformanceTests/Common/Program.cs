@@ -4,6 +4,7 @@ namespace Host
     using System.Globalization;
     using System.Linq;
     using System.Net;
+    using System.Runtime;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Win32;
@@ -25,6 +26,7 @@ namespace Host
 
         static async Task<int> MainAsync()
         {
+            GCSettings.LatencyMode = GCLatencyMode.Batch;
             LogManager.Use<NLogFactory>();
             NLog.LogManager.Configuration.DefaultCultureInfo = CultureInfo.InvariantCulture;
 
