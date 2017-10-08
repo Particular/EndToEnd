@@ -337,7 +337,7 @@ public abstract partial class BaseRunner : IContext
     }
 
     bool IsSeedingData => this is ICreateSeedData;
-    bool IsPurgingSupported => Permutation.Transport != Transport.AzureServiceBus;
+    bool IsPurgingSupported => (Permutation.Transport != Transport.AzureServiceBus && Permutation.Transport != Transport.AmazonSQS);
 
     static IEnumerable<int> IterateUntilFalse(Func<bool> condition)
     {
