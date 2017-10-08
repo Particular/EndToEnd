@@ -18,12 +18,12 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Versions = new[] { NServiceBusVersion.V6 },
+                Versions = new[] { NServiceBusVersion.V7 },
                 Transports = new[] { Transport.MSMQ },
                 Persisters = new[] { Persistence.RavenDB },
                 Serializers = new[] { Serialization.Json },
                 OutboxModes = new[] { Outbox.Off },
-                TransactionMode = new [] {TransactionMode.Transactional, TransactionMode.Receive, },
+                TransactionMode = new [] { TransactionMode.Receive },
                 ConcurrencyLevels = new[] {
                     ConcurrencyLevel.Sequential,
                     ConcurrencyLevel.EnvCores,
