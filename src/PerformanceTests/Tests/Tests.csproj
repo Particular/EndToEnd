@@ -82,6 +82,7 @@
     <Compile Include="Categories\PersistersFixture.cs" />
     <Compile Include="Categories\AmazonSQSFixture.cs" />
     <Compile Include="Categories\SqlFixture.cs" />
+    <Compile Include="Categories\RabbitMQFixture.cs" />
     <Compile Include="Categories\SqlTransportFixture.cs" />
     <Compile Include="Categories\TestSessionInitializer.cs" />
     <Compile Include="Categories\TransactionModesFixture.cs" />
