@@ -13,7 +13,7 @@ class PerformanceCounters : IProfile, INeedContext
     public void Configure(Configuration cfg)
     {
 #if Version7
-        if (Context.IsSendOnly)
+        if (!Context.IsSendOnly)
         {
             cfg.EnableWindowsPerformanceCounters();
         }
