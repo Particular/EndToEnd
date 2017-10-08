@@ -102,14 +102,14 @@ public abstract partial class BaseRunner : IContext
 
         try
         {
-            Log.InfoFormat("Start seeding messages for {0} seconds...", Settings.SeedDuration.TotalSeconds);
+            Log.InfoFormat("Start seeding messages for {0:N} seconds...", Settings.SeedDuration.TotalSeconds);
             var cts = new CancellationTokenSource();
             cts.CancelAfter(Settings.SeedDuration);
 
             var count = 0L;
             var start = Stopwatch.StartNew();
 
-            const int minimumBatchSeedDuration = 2500;
+            const int MinimumBatchSeedDuration = 2500;
             var batchSize = 512;
 
             Parallel.ForEach(IterateUntilFalse(() => !cts.Token.IsCancellationRequested),
@@ -121,10 +121,10 @@ public abstract partial class BaseRunner : IContext
                   BatchHelper.Batch(currentBatchSize, i => instance.SendMessage(Session)).ConfigureAwait(false).GetAwaiter().GetResult();
                   Interlocked.Add(ref count, currentBatchSize);
                   var duration = sw.ElapsedMilliseconds;
-                  if (duration < minimumBatchSeedDuration)
+                  if (duration < MinimumBatchSeedDuration)
                   {
                       batchSize = currentBatchSize * 2; // Last writer wins
-                      Log.InfoFormat("Increasing seed batch size to {0:N0} as sending took {1:N0}ms which is less then {2:N0}ms", batchSize, duration, minimumBatchSeedDuration);
+                      Log.InfoFormat("Increasing seed batch size to {0,7:N0} as sending took {1,7:N0}ms which is less then {2:N0}ms", batchSize, duration, MinimumBatchSeedDuration);
                   }
               }
             );
@@ -132,9 +132,9 @@ public abstract partial class BaseRunner : IContext
             var elapsed = start.Elapsed;
             var avg = count / elapsed.TotalSeconds;
             Log.InfoFormat("Done seeding, seeded {0:N0} messages, {1:N1} msg/s", count, avg);
-            LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedThroughputAvg", avg, "msg/s");
-            LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedCount", count, "#");
-            LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedDuration", elapsed.TotalMilliseconds, "ms");
+            LogManager.GetLogger("Statistics").InfoFormat(Statistics.StatsFormatDouble, "SeedThroughputAvg", avg, "msg/s");
+            LogManager.GetLogger("Statistics").InfoFormat(Statistics.StatsFormatInt, "SeedCount", count, "#");
+            LogManager.GetLogger("Statistics").InfoFormat(Statistics.StatsFormatDouble, "SeedDuration", elapsed.TotalMilliseconds, "ms");
         }
         finally
         {
@@ -359,7 +359,7 @@ public abstract partial class BaseRunner : IContext
             do
             {
                 current = ShortcutBehavior.Count;
-                Log.DebugFormat("Delaying to detect receive activity, last count is {0}...", current);
+                Log.DebugFormat("Delaying to detect receive activity, last count is {0:N0}...", current);
                 await Task.Delay(DrainPollInterval).ConfigureAwait(false);
             } while (ShortcutBehavior.Count > current);
 
