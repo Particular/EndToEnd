@@ -24,7 +24,8 @@ public class RavenDBProfile : IProfile, INeedContext, ISetup
     {
         cfg.UsePersistence<RavenDBPersistence>()
            .DoNotSetupDatabasePermissions()
-           .SetDefaultDocumentStore(CreateDocumentStore);
+           .SetDefaultDocumentStore(CreateDocumentStore)
+           .DisableSubscriptionVersioning();
     }
 
     public bool blaat;
