@@ -8,6 +8,7 @@ namespace Variables
         AzureServiceBus,
         SQLServer_Azure,
         SQLServer_RDS,
-        SQLServer
+        SQLServer,
+        AmazonSQS
     }
 }
