@@ -117,7 +117,7 @@ Project settings:
 Configure Slow Cheetah:
 
 * Add visual studio extension 'slow cheetah'
-* Add nuget package 'slow cheetah'
+* Add nuget package 'Microsoft.VisualStudio.SlowCheetah'
 * Make sure the project has an `App.Config`
 * Right click the `App.config`, select *Add transform* and add `Local` and `Release` tranformations
 * Copy the content from another `App.*.config` host
