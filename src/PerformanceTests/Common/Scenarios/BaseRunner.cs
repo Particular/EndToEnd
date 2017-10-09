@@ -97,8 +97,17 @@ public abstract partial class BaseRunner : IContext
 
     async Task CreateSeedData(ICreateSeedData instance)
     {
-        Log.Info("Creating send only endpoint...");
-        await CreateSendOnlyEndpoint().ConfigureAwait(false);
+        var sendOnly = IsSendOnly;
+        IsSendOnly = true; // Needed as performance counter profiles apply configuration that is not allowed on send-only endpoints.
+        try
+        {
+            Log.Info("Creating send only endpoint...");
+            await CreateSendOnlyEndpoint().ConfigureAwait(false);
+        }
+        finally
+        {
+            IsSendOnly = sendOnly;
+        }
 
         try
         {
