@@ -2,9 +2,9 @@
 
 Table of contents
 
-- [Prerequisites for running tests](#prerequisites-for-running-tests)
+- [Prerequisites](#prerequisites)
 - [Dependencies](#dependencies)
-- [Prerequisites for running tests](#connection-strings)
+- [Connection strings](#connection-strings)
 - [Run it locally](#run-it-locally)
 - [Howto prevent 'XXX Has stopped working' dialog](#howto-prevent-xxx-has-stopped-working-dialog)
 - [Run Visual Studio as administrator to save disk space](#run-visual-studio-as-administrator-to-save-disk-space)
@@ -22,10 +22,20 @@ Table of contents
 
 
 
-# Prerequisites for running tests
+# Prerequisites
 
-- Making sure that connection string to MS SQL DB is correct
-- Creating empty database manually before first run
+Tools for development and testing:
+
+- Visual Studio 2017 (tested with 15.3.5)
+- [Slow Cheetah for vs2017](https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.SlowCheetah-XMLTransforms)
+  - Only needed to view, add, and test configuration transformations within vs2017 but not to build the solution.
+
+
+Configuration and environment:
+
+- Make sure that MSSQL connection strings are correct
+- A (empty) MSSQL database, this needs to be created manually
+  - The connection string template uses the database `PerformanceTests` but this can be customized in the connection strings that need to be configured.
 
 # Performance counters
 
@@ -42,7 +52,7 @@ In order to run all permutations you need:
 - Azure Service Bus (ASB) - https://manage.windowsazure.com/#Workspaces/ServiceBusExtension/namespaces
 - Azure Storage Queue (ASQ) - https://portal.azure.com/
 
-All of these can be run locally except for Azure Service Bus. Azure Storage Queues can be run via the Azure Storage emulator but performance is very different from the real service.
+All of these can be run locally except for Azure Service Bus. Azure Storage Queues can be run via the Azure Storage emulator but performance is very different from the cloud service.
 
 # Connection strings
 
@@ -77,6 +87,40 @@ You can verify this by opening the corresponding folder in Windows Explorer. The
 # Adding a new scenario
 
 The current structure is that the **Common** shared project contains a **Scenarios** folder. This contains multiple scenarios where the real scenarios are classes names as `*Runner` like `GatedPublishRunner`, `GatedSendRunner`, `ReceiverRunner`. Each of these scenarios have a corresponding NUnit method in the file `Tests/Categories/Base.cs`. Each scenario has a corresponding method there with the exact same name. This name is used to execute the correct test by the host.
+
+
+# Adding new host and downstream modules
+
+1. The project name must be formatted
+  * Format template `{Type}.{CoreVersion}.{Name}_{Version}` `Transport.V7.MSMQ_v1`
+  * In memory persistence is special, it is part of code and does not need a trailing version number (`Persistence.V5.InMemory`). This was also for MSMQ until NServiceBus 7.
+2. Create an additional `Local` configuration that is based on `Release`.
+3. All projects MUST NOT output their artifacts to the default output path.
+  * Open project settings
+  * Select *Build* tab
+  * Change the *Output path* from `bin\{Release|Local|Debug}\NServiceBus7\` to `..\bin\{Release|Local|Debug}\{Projectname}\`
+
+
+# Additional configuration for Hosts
+
+The host project is special. It needs some customizations in order for it to work correctly
+
+Project settings:
+
+* Open project settings
+* Add '.x64' to Assembly name (NServiceBus7 => NServiceBus7.x64)
+* Default namespace : "Host"
+* remove the check at "Prefer 32-bit"
+* copy pre and post build events from another host
+  * Update the executable names in the post build step
+
+Configure Slow Cheetah:
+
+* Add visual studio extension 'slow cheetah'
+* Add nuget package 'Microsoft.VisualStudio.SlowCheetah'
+* Make sure the project has an `App.Config`
+* Right click the `App.config`, select *Add transform* and add `Local` and `Release` tranformations
+* Copy the content from another `App.*.config` host
 
 
 # Order of execution
