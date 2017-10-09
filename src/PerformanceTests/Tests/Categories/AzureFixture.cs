@@ -1,21 +1,13 @@
-﻿using System.Collections.Generic;
-
-namespace Tests.Categories
+namespace Categories
 {
-    using global::Categories;
+    using System.Collections.Generic;
     using NUnit.Framework;
-    using Permutations;
+    using Tests.Permutations;
     using Variables;
 
     [TestFixture(Description = "Persisters", Category = "Performance"), Explicit]
     public class AzureFixture : Base
     {
-        [TestCaseSource(nameof(CreatePermutations))]
-        public override void GatedPublishRunner(Permutation permutation)
-        {
-            base.GatedPublishRunner(permutation);
-        }
-
         [TestCaseSource(nameof(CreatePermutations))]
         public override void SagaInitiateRunner(Permutation permutation)
         {
@@ -26,10 +18,13 @@ namespace Tests.Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Transports = new[] { Transport.AzureStorageQueues, Transport.AzureServiceBus,  },
-                Persisters = new [] { Persistence.Azure, },
-                Serializers = new[] { Serialization.Json, },
-                OutboxModes = new[] { Outbox.Off, },
+                Versions = new[] { NServiceBusVersion.V7 },
+                Transports = new[] { Transport.MSMQ },
+                Persisters = new[] { Persistence.Azure },
+                Serializers = new[] { Serialization.Json },
+                OutboxModes = new[] { Outbox.Off },
+                TransactionMode = new [] { TransactionMode.Receive },
+                ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores04x }
             });
         }
     }
