@@ -28,6 +28,7 @@ Tools for development and testing:
 
 - Visual Studio 2017 (tested with 15.3.5)
 - [Slow Cheetah for vs2017](https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.SlowCheetah-XMLTransforms)
+  - Only needed to view, add, and test configuration transformations within vs2017 but not to build the solution.
 
 
 Configuration and environment:
