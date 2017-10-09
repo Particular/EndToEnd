@@ -63,10 +63,12 @@
     <ProjectReference Include="..\NServiceBus7\NServiceBus7.csproj">
       <Project>{FFD0D5BB-8AD1-48E5-8F73-E009F743849F}</Project>
       <Name>NServiceBus7</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{572499ED-E234-4C66-BD6E-D5A845065C5F}</Project>
       <Name>Utils</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
