@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Common.Scenarios;
 using NServiceBus;
 
 partial class SagaInitiateRunner : BaseRunner, ICreateSeedData

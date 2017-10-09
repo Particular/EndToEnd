@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Common.Scenarios;
 using Variables;
 
 public abstract partial class BaseRunner : IContext
