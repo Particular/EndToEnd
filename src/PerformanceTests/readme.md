@@ -35,6 +35,7 @@ Configuration and environment:
 
 - Make sure that MSSQL connection strings are correct
 - A (empty) MSSQL database, this needs to be created manually
+  - The connection string template uses the database `PerformanceTests` but this can be customized in the connection strings that need to be configured.
 
 # Performance counters
 
