@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Categories\AzureFixture.cs" />
     <Compile Include="Categories\NHibernateFixture.cs" />
+    <Compile Include="Categories\AzureServiceBusFixture.cs" />
     <Compile Include="Categories\SagasFixture.cs" />
     <Compile Include="Categories\PersistersPublishTransactionModesFixture.cs" />
     <Compile Include="Categories\RavenDBFixture.cs" />
