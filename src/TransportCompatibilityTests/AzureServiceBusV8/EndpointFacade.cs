@@ -1,4 +1,4 @@
-﻿namespace AzureServiceBusV7
+﻿namespace AzureServiceBusV8
 {
     using System;
     using System.Threading.Tasks;
@@ -23,13 +23,24 @@
 
             endpointConfiguration.EnableInstallers();
             endpointConfiguration.UsePersistence<InMemoryPersistence>();
-            endpointConfiguration.UseTransport<AzureServiceBusTransport>()
-                .UseTopology<EndpointOrientedTopology>()
+            var transportConfiguration = endpointConfiguration.UseTransport<AzureServiceBusTransport>();
+            transportConfiguration
+                .UseEndpointOrientedTopology()
                 .RegisterPublisher(typeof(TestEvent), "source")
                 .ConnectionString(AzureServiceBusConnectionStringBuilder.Build)
-                .Sanitization().UseStrategy<ValidateAndHashIfNeeded>();
+                .Sanitization()
+                .UseStrategy<ValidateAndHashIfNeeded>();
 
-            endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings));
+            var routing = transportConfiguration.Routing();
+            foreach (var mapping in endpointDefinition.Mappings)
+            {
+                routing.RouteToEndpoint(mapping.MessageType, mapping.TransportAddress);
+            }
+
+            endpointConfiguration.SendFailedMessagesTo("error");
+
+            endpointConfiguration.UseSerialization<NewtonsoftSerializer>();
+
             endpointConfiguration.MakeInstanceUniquelyAddressable(Guid.NewGuid() + "A");
 
             messageStore = new MessageStore();

@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlServerV4", "SqlServerV4\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureStorageQueuesV8", "AzureStorageQueuesV8\AzureStorageQueuesV8.csproj", "{0EC36A5A-D932-4DE3-B9B0-97E280F5DDE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureServiceBusV8", "AzureServiceBusV8\AzureServiceBusV8.csproj", "{9136FE74-F473-4265-BD0B-8A5B8ABD69CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +115,10 @@ Global
 		{0EC36A5A-D932-4DE3-B9B0-97E280F5DDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EC36A5A-D932-4DE3-B9B0-97E280F5DDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EC36A5A-D932-4DE3-B9B0-97E280F5DDE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9136FE74-F473-4265-BD0B-8A5B8ABD69CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9136FE74-F473-4265-BD0B-8A5B8ABD69CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9136FE74-F473-4265-BD0B-8A5B8ABD69CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9136FE74-F473-4265-BD0B-8A5B8ABD69CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +138,7 @@ Global
 		{A009EFC6-A346-42AB-9E31-0549A7C1DE09} = {0016BDD0-559A-454F-985A-0625640C40EA}
 		{95300C21-D1C9-4E35-AEE0-CEF312032D9B} = {730F50BD-97CE-4A53-A074-01A7AEFA0FFB}
 		{0EC36A5A-D932-4DE3-B9B0-97E280F5DDE5} = {2D1C1288-7385-4410-8F6E-AF57D0FAA8BC}
+		{9136FE74-F473-4265-BD0B-8A5B8ABD69CF} = {D9F4ACD7-CA95-429F-8121-01CF783747EF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4499F4CC-1518-41B1-BE63-5B1E4E05DA95}
