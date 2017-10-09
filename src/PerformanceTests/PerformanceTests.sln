@@ -119,11 +119,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{735027A4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V6.AmazonSQS_v3", "Transport.V6.AmazonSQS.V3\Transport.V6.AmazonSQS_v3.csproj", "{54C2B9E0-E4C3-4602-8346-977806DA895E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{51408171-3259-41A1-8621-5831B9CD569E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.SQL.V3", "Persistence.V7.SQL.V3\Persistence.V7.SQL.V3.csproj", "{BCF08AAB-D264-43E9-B970-C2BE8AADF038}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Scenarios", "Scenarios\Scenarios.shproj", "{E2D3CA80-F978-4BAC-A873-3DD939FC65AE}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Scenarios\Scenarios.projitems*{0c678e5b-168d-4596-b7b9-efeb3173413c}*SharedItemsImports = 4
 		Common\Common.Data.projitems*{10d11044-c92c-42ad-830e-57012ff4f039}*SharedItemsImports = 4
 		Common\Common.Data.projitems*{19307507-7c7a-433e-9752-7a3e63876991}*SharedItemsImports = 13
+		Scenarios\Scenarios.projitems*{bcf08aab-d264-43e9-b970-c2be8aadf038}*SharedItemsImports = 4
 		Common\Common.Data.projitems*{be2c7b5e-7a71-4b0c-9020-343ed2010993}*SharedItemsImports = 4
+		Scenarios\Scenarios.projitems*{e2d3ca80-f978-4bac-a873-3dd939fc65ae}*SharedItemsImports = 13
 		Common\Common.Data.projitems*{ffd0d5bb-8ad1-48e5-8f73-e009f743849f}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -360,6 +369,12 @@ Global
 		{54C2B9E0-E4C3-4602-8346-977806DA895E}.Local|Any CPU.Build.0 = Local|Any CPU
 		{54C2B9E0-E4C3-4602-8346-977806DA895E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54C2B9E0-E4C3-4602-8346-977806DA895E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Local|Any CPU.ActiveCfg = Release|Any CPU
+		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Local|Any CPU.Build.0 = Release|Any CPU
+		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -409,6 +424,9 @@ Global
 		{9B105C3A-2063-4875-9E32-C302EC4CC2C6} = {3CB57DB2-A0E9-4C56-B3D4-9051F34BD2C1}
 		{2CCF5185-7C29-403B-8D51-CB0F33848B7F} = {3CB57DB2-A0E9-4C56-B3D4-9051F34BD2C1}
 		{54C2B9E0-E4C3-4602-8346-977806DA895E} = {6350B419-BA36-45CA-B21F-F791E6A987A8}
+		{51408171-3259-41A1-8621-5831B9CD569E} = {3CB57DB2-A0E9-4C56-B3D4-9051F34BD2C1}
+		{BCF08AAB-D264-43E9-B970-C2BE8AADF038} = {51408171-3259-41A1-8621-5831B9CD569E}
+		{E2D3CA80-F978-4BAC-A873-3DD939FC65AE} = {3CB57DB2-A0E9-4C56-B3D4-9051F34BD2C1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {123279E2-15F8-4285-A8B5-109A33AF0FDD}

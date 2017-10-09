@@ -1,10 +1,9 @@
-﻿#if Version6 || Version7
-using System.Threading.Tasks;
-using NServiceBus;
+﻿#if Version5
+using NServiceBus.Saga;
 
 partial class SagaCongestionRunner
 {
-    public class SagaCongestion
+    public class CongestionSaga
         : Saga<SagaCongestionData>
         , IAmStartedByMessages<Command>
     {
@@ -13,17 +12,18 @@ partial class SagaCongestionRunner
             mapper.ConfigureMapping<Command>(m => m.Identifier).ToSaga(s => s.UniqueIdentifier);
         }
 
-        public Task Handle(Command message, IMessageHandlerContext context)
+        public void Handle(Command message)
         {
-            if (Shutdown) return Task.FromResult(0);
+            if (Shutdown) return;
             Data.UniqueIdentifier = message.Identifier;
             Data.Receives++;
-            return context.SendLocal(message);
+            Bus.SendLocal(message);
         }
     }
 
     public class SagaCongestionData : ContainSagaData
     {
+        [Unique]
         public virtual int UniqueIdentifier { get; set; }
         public virtual long Receives { get; set; }
     }
