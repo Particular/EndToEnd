@@ -16,7 +16,7 @@ class AuditProfile : IProfile, INeedPermutation
         if (Permutation.AuditMode == Variables.Audit.Off) cfg.DisableFeature<Audit>();
 
 #if Version6 || Version7
-            cfg.AuditProcessedMessagesTo(System.Configuration.ConfigurationManager.AppSettings["NServiceBus/AuditQueue"]);
+        if (Permutation.AuditMode == Variables.Audit.On) cfg.AuditProcessedMessagesTo(System.Configuration.ConfigurationManager.AppSettings["NServiceBus/AuditQueue"]);
 #endif
     }
 }
