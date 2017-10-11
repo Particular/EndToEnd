@@ -22,6 +22,7 @@ public class RavenDBProfile : IProfile, INeedContext, ISetup
 
     public void Configure(EndpointConfiguration cfg)
     {
+        if(Context.Permutation.TransactionMode==TransactionMode.Transactional) throw new NotSupportedException("RavenDB does not support MSDTC.");
         cfg.UsePersistence<RavenDBPersistence>()
            .DoNotSetupDatabasePermissions()
            .SetDefaultDocumentStore(CreateDocumentStore)
