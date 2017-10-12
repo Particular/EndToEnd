@@ -92,7 +92,6 @@
     <Compile Include="Categories\TransportsFixture.cs" />
     <Compile Include="Categories\ResourceUtilizationFixture.cs" />
     <Compile Include="Categories\SenderSideFixture.cs" />
-    <Compile Include="Integration\PermutationDirectoryResolverTests.cs" />
     <Compile Include="Tools\PermutationDirectoryResolver.cs" />
     <Compile Include="Tools\TestDescriptor.cs" />
     <Compile Include="Tools\TestEnvironment.cs" />
@@ -229,6 +228,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Integration\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\packages\Fody.1.29.4\build\dotnet\Fody.targets" Condition="Exists('..\..\..\packages\Fody.1.29.4\build\dotnet\Fody.targets')" />

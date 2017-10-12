@@ -5,9 +5,15 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "Transports", Category = "Performance"), Explicit]
-    public class SqlFixture : Base
+    [TestFixture(Category = "Performance"), Explicit]
+    public class SqlPersistenceFixture : Base
     {
+        [TestCaseSource(nameof(CreatePermutations))]
+        public override void GatedPublishRunner(Permutation permutation)
+        {
+            base.GatedPublishRunner(permutation);
+        }
+
         [TestCaseSource(nameof(CreatePermutations))]
         public void SagaUpdateRunner(Permutation permutation)
         {
@@ -15,7 +21,13 @@ namespace Categories
         }
 
         [TestCaseSource(nameof(CreatePermutations))]
-        public override void PublishOneOnOneRunner(Permutation permutation)
+        public override void SagaInitiateRunner(Permutation permutation)
+        {
+            base.SagaInitiateRunner(permutation);
+        }
+
+        [TestCaseSource(nameof(CreatePermutations))]
+        public void SagaCongestionRunner(Permutation permutation)
         {
             Tasks(permutation);
         }
@@ -24,22 +36,15 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Transports = new[] { Transport.SQLServer, Transport.SQLServer_Azure, Transport.SQLServer_RDS, },
-                Persisters = new[] { Persistence.NHibernate, Persistence.NHibernate_Azure, Persistence.NHibernate_RDS, },
+                Versions = new[] { NServiceBusVersion.V7 },
+                Transports = new[] { Transport.MSMQ },
+                Persisters = new[] { Persistence.Sql, },
                 MessageSizes = new[] { MessageSize.Tiny, },
                 Serializers = new[] { Serialization.Json, },
-                OutboxModes = new[] { Outbox.Off, Outbox.On, },
-                TransactionMode = new[] { TransactionMode.Atomic, TransactionMode.Receive, TransactionMode.Transactional, },
-                ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential, }
-
-            }, p => (p.Transport == Transport.SQLServer && p.Persister == Persistence.NHibernate
-                    || p.Transport == Transport.SQLServer_Azure && p.Persister == Persistence.NHibernate_Azure
-                    || p.Transport == Transport.SQLServer_RDS && p.Persister == Persistence.NHibernate_RDS)
-                    &&
-                    (p.OutboxMode == Outbox.On && p.TransactionMode == TransactionMode.Transactional
-                    || p.OutboxMode == Outbox.Off && p.TransactionMode == TransactionMode.Atomic
-                    )
-                    );
+                OutboxModes = new[] { Outbox.Off },
+                TransactionMode = new[] { TransactionMode.Transactional, },
+                ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores04x, }
+            });
         }
     }
 }

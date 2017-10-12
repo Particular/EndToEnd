@@ -3,5 +3,6 @@
 [assembly: SqlPersistenceSettings(
     MsSqlServerScripts = true,
     MySqlScripts = false,
-    OracleScripts = false,
-    ScriptPromotionPath = "$(SolutionDir)PromotedSqlScripts")]
+    OracleScripts = false   
+    //ScriptPromotionPath = "$(SolutionDir)PromotedSqlScripts"
+    )]

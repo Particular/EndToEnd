@@ -15,12 +15,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)CheckPlatform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\BaseRunner.IConfigurationSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\FakeTransport.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaInitiate\SagaInitiateRunner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaInitiate\SagaInitiateRunner.V5.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaInitiate\SagaInitiateRunner.V6.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaUpdate\SagaUpdateRunner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaUpdate\SagaUpdateRunner.V5.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaUpdate\SagaUpdateRunner.V6.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shortcut\ShortcutBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shortcut\ShortcutFeature.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IConfigureUnicastBus.cs" />

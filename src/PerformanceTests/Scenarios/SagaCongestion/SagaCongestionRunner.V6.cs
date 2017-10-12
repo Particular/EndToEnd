@@ -23,7 +23,7 @@ partial class SagaCongestionRunner
     }
 
 #if !CustomSaga
-    public partial class SagaCongestion
+    partial class SagaCongestion
         : Saga<SagaCongestionData>
     {
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaCongestionData> mapper)

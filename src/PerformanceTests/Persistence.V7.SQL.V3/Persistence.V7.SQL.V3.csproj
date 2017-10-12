@@ -7,16 +7,18 @@
     <ProjectGuid>{BCF08AAB-D264-43E9-B970-C2BE8AADF038}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Persistence.V7.SQL.V3</RootNamespace>
+    <RootNamespace>Persistence.V7.SQL</RootNamespace>
     <AssemblyName>Persistence.V7.SQL.V3</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\Persistence.V7.Sql_v3\</OutputPath>
     <DefineConstants>DEBUG;TRACE;Version7;CustomSaga</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,10 +26,19 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\Persistence.V7.Sql_v3\</OutputPath>
     <DefineConstants>TRACE;Version7;CustomSaga</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
+    <OutputPath>..\bin\Local\Persistence.V7.Sql_v3\</OutputPath>
+    <DefineConstants>TRACE;Version7;CustomSaga</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -38,7 +49,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="NServiceBus.Persistence.Sql, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NServiceBus.Persistence.Sql.3.0.0-beta0003\lib\net452\NServiceBus.Persistence.Sql.dll</HintPath>
+      <HintPath>..\..\..\packages\NServiceBus.Persistence.Sql.3.0.0-beta0004\lib\net452\NServiceBus.Persistence.Sql.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -59,6 +70,8 @@
   <ItemGroup>
     <Compile Include="Properties\Properties.cs" />
     <Compile Include="SagaCongestion\SagaCongestionRunner.V6.cs" />
+    <Compile Include="SagaInitiate\SagaInitiateRunner.V6.cs" />
+    <Compile Include="SagaUpdate\SagaUpdateRunner.V6.cs" />
     <Compile Include="SqlProfile.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,4 +86,11 @@
   </ItemGroup>
   <Import Project="..\Scenarios\Scenarios.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\packages\NServiceBus.Persistence.Sql.MsBuild.3.0.0-beta0004\build\NServiceBus.Persistence.Sql.MsBuild.targets" Condition="Exists('..\..\..\packages\NServiceBus.Persistence.Sql.MsBuild.3.0.0-beta0004\build\NServiceBus.Persistence.Sql.MsBuild.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\NServiceBus.Persistence.Sql.MsBuild.3.0.0-beta0004\build\NServiceBus.Persistence.Sql.MsBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NServiceBus.Persistence.Sql.MsBuild.3.0.0-beta0004\build\NServiceBus.Persistence.Sql.MsBuild.targets'))" />
+  </Target>
 </Project>

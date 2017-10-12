@@ -12,5 +12,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)SagaCongestion\SagaCongestionRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SagaCongestion\SagaCongestionRunner.V5.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SagaCongestion\SagaCongestionRunner.V6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaInitiate\SagaInitiateRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaInitiate\SagaInitiateRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaInitiate\SagaInitiateRunner.V6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaUpdate\SagaUpdateRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaUpdate\SagaUpdateRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaUpdate\SagaUpdateRunner.V6.cs" />
   </ItemGroup>
 </Project>

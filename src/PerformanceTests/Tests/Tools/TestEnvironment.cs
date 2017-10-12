@@ -43,8 +43,8 @@ namespace Tests.Tools
 
             startupDir.Create();
 
-            var sourceAssemblyFiles = Directory.GetFiles(result.RootProjectDirectory, "*");
-            CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, result.Files);
+            var sourceAssemblyFiles = Directory.GetFiles(result.RootProjectDirectory, "*", SearchOption.AllDirectories);
+            CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, result.Directories);
 
             var projectAssemblyPath = Path.Combine(startupDir.FullName, result.RootProjectDirectory + "." + permutation.Platform + ".exe");
 
@@ -75,7 +75,7 @@ namespace Tests.Tools
             if (!File.Exists(batFile)) File.WriteAllText(batFile, exe.Name + " " + args + " " + sessionIdArgument);
         }
 
-        void CopyAssembliesToStarupDir(DirectoryInfo destination, string[] baseFiles, FileInfo[] overrides)
+        void CopyAssembliesToStarupDir(DirectoryInfo destination, string[] baseFiles, DirectoryInfo[] dirs)
         {
             var maxRetryErrors = 100;
             foreach (var file in baseFiles)
@@ -96,22 +96,28 @@ namespace Tests.Tools
                 } while (true);
             }
 
-            foreach (var @override in overrides)
+            foreach (var dir in dirs)
             {
-                var dst = Path.Combine(destination.FullName, @override.Name);
-                do
+                var files = dir.GetFiles("*", SearchOption.AllDirectories);
+                foreach (var src in files)
                 {
-                    try
+                    var relative = src.FullName.Substring(dir.FullName.Length + 1);
+                    var dst = Path.Combine(destination.FullName, relative);
+                    do
                     {
-                        Clone(@override.FullName, dst);
-                        break;
-                    }
-                    catch
-                    {
-                        if (--maxRetryErrors < 0) throw;
-                        Thread.Sleep(100);
-                    }
-                } while (true);
+                        new FileInfo(dst).Directory.Create();
+                        try
+                        {
+                            Clone(src.FullName, dst);
+                            break;
+                        }
+                        catch
+                        {
+                            if (--maxRetryErrors < 0) throw;
+                            Thread.Sleep(100);
+                        }
+                    } while (true);
+                }
             }
         }
 

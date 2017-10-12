@@ -5,14 +5,9 @@ using NServiceBus;
 
 partial class SagaInitiateRunner
 {
-    public class TheSaga : Saga<SagaCreateData>,
-        IAmStartedByMessages<Command>
+    public partial class CreateSaga
+        : IAmStartedByMessages<Command>
     {
-        protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaCreateData> mapper)
-        {
-            mapper.ConfigureMapping<Command>(m => m.Identifier).ToSaga(s => s.Identifier);
-        }
-
         public Task Handle(Command message, IMessageHandlerContext context)
         {
             Data.Identifier = message.Identifier;
@@ -24,5 +19,15 @@ partial class SagaInitiateRunner
     {
         public virtual Guid Identifier { get; set; }
     }
+#if !CustomSaga
+    partial class CreateSaga
+        : Saga<SagaCreateData>
+    {
+        protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaCreateData> mapper)
+        {
+            mapper.ConfigureMapping<Command>(m => m.Identifier).ToSaga(s => s.Identifier);
+        }
+    }
+#endif
 }
 #endif

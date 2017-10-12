@@ -49,7 +49,7 @@ public static class AssemblyScanner
         return assemblies;
     }
 
-    public static IEnumerable<T> GetAll<T>()
+    public static IEnumerable<Type> GetAllTypes<T>()
     {
         var assemblies = GetAssemblies();
 
@@ -58,7 +58,12 @@ public static class AssemblyScanner
             .SelectMany(GetTypes)
             .Where(p => type.IsAssignableFrom(p) && !p.IsAbstract && !p.IsInterface);
 
-        return types.Select(t => (T)Activator.CreateInstance(t));
+        return types;
+    }
+
+    public static IEnumerable<T> GetAll<T>()
+    {
+        return GetAllTypes<T>().Select(t => (T)Activator.CreateInstance(t));
     }
 
     static Type[] GetTypes(Assembly a)

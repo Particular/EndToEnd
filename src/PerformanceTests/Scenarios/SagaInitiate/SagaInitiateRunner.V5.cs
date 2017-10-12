@@ -4,7 +4,7 @@ using NServiceBus.Saga;
 
 partial class SagaInitiateRunner
 {
-    public class TheSaga : Saga<SagaCreateData>,
+    public class CreateSaga : Saga<SagaCreateData>,
         IAmStartedByMessages<Command>
     {
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaCreateData> mapper)
