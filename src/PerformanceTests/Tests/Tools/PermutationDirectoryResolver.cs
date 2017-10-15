@@ -10,7 +10,6 @@ namespace Tests.Tools
     public class PermutationDirectoryResolver
     {
         readonly string rootDirectory;
-        static string[] assembliesToSkip = { "NServiceBus.Core.dll" };
 
         public PermutationDirectoryResolver(string rootDirectory)
         {

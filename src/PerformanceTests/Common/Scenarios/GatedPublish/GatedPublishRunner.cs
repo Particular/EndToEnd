@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NServiceBus;
-using NServiceBus.Config;
 using System.Collections.Generic;
 
 /// <summary>

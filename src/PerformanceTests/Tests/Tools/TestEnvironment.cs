@@ -1,6 +1,6 @@
-
 namespace Tests.Tools
 {
+    using System.Collections.Generic;
     using System.IO;
     using System.Threading;
     using System.Xml.Linq;
@@ -75,7 +75,7 @@ namespace Tests.Tools
             if (!File.Exists(batFile)) File.WriteAllText(batFile, exe.Name + " " + args + " " + sessionIdArgument);
         }
 
-        void CopyAssembliesToStarupDir(DirectoryInfo destination, string[] baseFiles, DirectoryInfo[] dirs)
+        void CopyAssembliesToStarupDir(DirectoryInfo destination, IEnumerable<string> baseFiles, IEnumerable<DirectoryInfo> dirs)
         {
             var maxRetryErrors = 100;
             foreach (var file in baseFiles)
