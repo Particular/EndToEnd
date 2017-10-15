@@ -1,6 +1,5 @@
 namespace Categories
 {
-    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
     using Tests.Permutations;
