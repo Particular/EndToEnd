@@ -121,7 +121,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V6.AmazonSQS_v3",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{51408171-3259-41A1-8621-5831B9CD569E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.Sql.V3", "Persistence.V7.SQL.V3\Persistence.V7.Sql.V3.csproj", "{BCF08AAB-D264-43E9-B970-C2BE8AADF038}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.Sql_v3", "Persistence.V7.SQL.V3\Persistence.V7.Sql_v3.csproj", "{BCF08AAB-D264-43E9-B970-C2BE8AADF038}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Scenarios", "Scenarios\Scenarios.shproj", "{E2D3CA80-F978-4BAC-A873-3DD939FC65AE}"
 EndProject
