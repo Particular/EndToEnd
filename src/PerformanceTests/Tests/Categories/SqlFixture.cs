@@ -36,14 +36,14 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Versions = new[] { NServiceBusVersion.V7 },
+                Versions = new[] { NServiceBusVersion.V7, NServiceBusVersion.V6 },
                 Transports = new[] { Transport.MSMQ },
                 Persisters = new[] { Persistence.Sql, },
                 MessageSizes = new[] { MessageSize.Tiny, },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off },
-                TransactionMode = new[] { TransactionMode.Transactional, },
-                ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores04x, }
+                TransactionMode = new[] { TransactionMode.Transactional, TransactionMode.Atomic, },
+                ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores02x, ConcurrencyLevel.Sequential }
             });
         }
     }
