@@ -8,7 +8,7 @@ namespace Version_7_0
     {
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<TestSagaData> mapper)
         {
-            
+            mapper.ConfigureMapping<TMsg>(msg => msg.CorrelationProperty).ToSaga(d => d.CorrelationProperty);
         }
 
         public Task Handle(TMsg message, IMessageHandlerContext context)
@@ -21,7 +21,7 @@ namespace Version_7_0
     {
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<TestSagaDataWithList> mapper)
         {
-
+            mapper.ConfigureMapping<TMsg>(msg => msg.CorrelationProperty).ToSaga(d => d.CorrelationProperty);
         }
 
         public Task Handle(TMsg message, IMessageHandlerContext context)
@@ -34,6 +34,7 @@ namespace Version_7_0
     {
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<TestSagaDataWithComposite> mapper)
         {
+            mapper.ConfigureMapping<TMsg>(msg => msg.CorrelationProperty).ToSaga(d => d.CorrelationProperty);
         }
 
         public Task Handle(TMsg message, IMessageHandlerContext context)
@@ -41,7 +42,8 @@ namespace Version_7_0
             return Task.FromResult(0);
         }
     }
-    public  class TMsg: IMessage
+    public class TMsg: IMessage
     {
+        public string CorrelationProperty { get; set; }
     }
 }
