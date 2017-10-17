@@ -39,6 +39,8 @@
             endpointConfiguration.SendFailedMessagesTo("error");
             endpointConfiguration.AuditProcessedMessagesTo("audit");
 
+            endpointConfiguration.EnableCallbacks();
+
             var routing = transportExtensions.Routing();
             foreach (var mapping in endpointDefinition.Mappings)
             {

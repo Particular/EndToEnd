@@ -26,7 +26,6 @@ namespace SqlServerV4
 
             endpointConfiguration.EnableInstallers();
 
-
             //TODO: NHibernate package isn't available yet
             endpointConfiguration.UsePersistence<InMemoryPersistence>();
             //endpointConfiguration.UsePersistence<NHibernatePersistence>()
