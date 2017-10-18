@@ -33,6 +33,9 @@
 
             endpointConfiguration.SendFailedMessagesTo("error");
 
+            endpointConfiguration.EnableCallbacks();
+            endpointConfiguration.MakeInstanceUniquelyAddressable("A");
+
             endpointConfiguration.Conventions().DefiningMessagesAs(t => t.Namespace != null && t.Namespace.EndsWith(".Messages") && t != typeof(TestEvent));
             endpointConfiguration.Conventions().DefiningEventsAs(t => t == typeof(TestEvent));
 
