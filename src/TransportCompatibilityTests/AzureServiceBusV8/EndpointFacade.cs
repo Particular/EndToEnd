@@ -39,6 +39,8 @@
 
             endpointConfiguration.SendFailedMessagesTo("error");
 
+            endpointConfiguration.EnableCallbacks();
+
             endpointConfiguration.UseSerialization<NewtonsoftSerializer>();
 
             endpointConfiguration.MakeInstanceUniquelyAddressable(Guid.NewGuid() + "A");
