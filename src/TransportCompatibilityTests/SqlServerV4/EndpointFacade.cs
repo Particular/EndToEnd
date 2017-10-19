@@ -7,6 +7,7 @@ using TransportCompatibilityTests.Common.Messages;
 
 namespace SqlServerV4
 {
+    using NServiceBus.Support;
     using NServiceBus.Transport.SQLServer;
     using TransportCompatibilityTests.Common.SqlServer;
 
@@ -49,6 +50,7 @@ namespace SqlServerV4
                 if (!string.IsNullOrEmpty(mapping.Schema))
                 {
                     endpointConfiguration.UseTransport<SqlServerTransport>().UseSchemaForQueue(mapping.TransportAddress, mapping.Schema);
+                    endpointConfiguration.UseTransport<SqlServerTransport>().UseSchemaForQueue($"{mapping.TransportAddress}.{RuntimeEnvironment.MachineName}", mapping.Schema);
                 }
             }
             foreach (var mapping in endpointDefinition.Publishers)
