@@ -37,16 +37,16 @@
       <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus.Azure.Transports.WindowsAzureServiceBus, Version=8.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NServiceBus.Azure.Transports.WindowsAzureServiceBus.8.0.0-beta0002\lib\net452\NServiceBus.Azure.Transports.WindowsAzureServiceBus.dll</HintPath>
+      <HintPath>..\..\..\packages\NServiceBus.Azure.Transports.WindowsAzureServiceBus.8.0.0-beta0003\lib\net452\NServiceBus.Azure.Transports.WindowsAzureServiceBus.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus.Callbacks, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NServiceBus.Callbacks.3.0.0-beta0001\lib\net452\NServiceBus.Callbacks.dll</HintPath>
+      <HintPath>..\..\..\packages\NServiceBus.Callbacks.3.0.0-beta0002\lib\net452\NServiceBus.Callbacks.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NServiceBus.7.0.0-beta0007\lib\net452\NServiceBus.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\NServiceBus.7.0.0-beta0009\lib\net452\NServiceBus.Core.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus.Newtonsoft.Json, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NServiceBus.Newtonsoft.Json.2.0.0-beta0001\lib\net452\NServiceBus.Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\NServiceBus.Newtonsoft.Json.2.0.0-beta0002\lib\net452\NServiceBus.Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
