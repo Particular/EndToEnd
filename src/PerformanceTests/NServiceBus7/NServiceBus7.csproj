@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcurrencyProfile.cs" />
     <Compile Include="PermutationTransactionExtention.cs" />
     <Compile Include="Session.cs" />
   </ItemGroup>
