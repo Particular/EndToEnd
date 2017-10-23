@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.ServiceBus.Messaging;
 using NServiceBus;
 using NServiceBus.Logging;
 using Tests.Permutations;
@@ -40,10 +41,14 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
         transport.Queues().EnablePartitioning(true);
         transport.Topics().EnablePartitioning(true);
 
+        if (Permutation.Transport == Transport.AzureServiceBus_AMQP) transport.TransportType(TransportType.Amqp);
+
+
         if (Permutation.TransactionMode != TransactionMode.Default
             && Permutation.TransactionMode != TransactionMode.None
             && Permutation.TransactionMode != TransactionMode.Receive
             && Permutation.TransactionMode != TransactionMode.Atomic
+            || Permutation.TransactionMode == TransactionMode.Atomic && Permutation.Transport == Transport.AzureServiceBus_AMQP
             ) throw new NotSupportedException("TransactionMode: " + Permutation.TransactionMode);
 
         if (Permutation.TransactionMode != TransactionMode.Default) transport.Transactions(Permutation.GetTransactionMode());

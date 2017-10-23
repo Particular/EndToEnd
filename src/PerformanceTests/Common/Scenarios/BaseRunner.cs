@@ -347,7 +347,7 @@ public abstract class BaseRunner :
     }
 
     bool IsSeedingData => this is ICreateSeedData;
-    bool IsPurgingSupported => Permutation.Transport != Transport.AzureServiceBus;
+    bool IsPurgingSupported => !Permutation.Transport.ToString().StartsWith(Transport.AzureServiceBus.ToString());
 
     static IEnumerable<int> IterateUntilFalse(Func<bool> condition)
     {

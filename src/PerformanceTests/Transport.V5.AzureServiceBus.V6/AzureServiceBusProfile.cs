@@ -20,6 +20,8 @@ class AzureServiceBusProfile : IProfile, INeedPermutation
     {
         busConfiguration.ScaleOut().UseSingleBrokerQueue();
 
+        if (Permutation.Transport != Transport.AzureServiceBus) throw new NotSupportedException(Permutation.Transport.ToString());
+
         busConfiguration
             .UseTransport<AzureServiceBusTransport>()
             .ConnectionString(connectionstring);
