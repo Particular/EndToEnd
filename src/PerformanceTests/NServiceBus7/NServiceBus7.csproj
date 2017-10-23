@@ -15,7 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.0.61" />
     <PackageReference Include="NLog" Version="4.0.0" />
-    <PackageReference Include="NServiceBus" Version="7.0.0-beta0007" />
+    <PackageReference Include="NServiceBus" Version="7.0.0-beta0009" />
     <PackageReference Include="NServiceBus.Metrics.PerformanceCounters" Version="2.0.0-alpha0024" />
     <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.0.0-beta0001" />
     <PackageReference Include="NServiceBus.NLog" Version="3.0.0-beta0001" />

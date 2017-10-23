@@ -77,7 +77,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NServiceBus7", "NServiceBus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V7.MQMQ_v1", "Transport.V7.MQMQ_v1\Transport.V7.MQMQ_v1.csproj", "{65D68C3F-E642-4676-84A0-168EA009477A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.InMemory", "Persistence.V7.InMemory\Persistence.V7.InMemory.csproj", "{F9E0CC37-8473-423D-9C1F-3571050EA5FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.V7.InMemory", "Persistence.V7.InMemory\Persistence.V7.InMemory.csproj", "{F9E0CC37-8473-423D-9C1F-3571050EA5FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.RavenDB_v4", "Persistence.V7.RavenDB_v4\Persistence.V7.RavenDB_v4.csproj", "{225DB06A-E12E-483A-B744-A3294649EE57}"
 EndProject
@@ -353,8 +353,8 @@ Global
 		{0B72CFCD-E3BF-490A-9591-9BD370F23859}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BD6F057-3764-4E40-8CED-FD77DDDC81F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BD6F057-3764-4E40-8CED-FD77DDDC81F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BD6F057-3764-4E40-8CED-FD77DDDC81F6}.Local|Any CPU.ActiveCfg = Local|Any CPU
-		{7BD6F057-3764-4E40-8CED-FD77DDDC81F6}.Local|Any CPU.Build.0 = Local|Any CPU
+		{7BD6F057-3764-4E40-8CED-FD77DDDC81F6}.Local|Any CPU.ActiveCfg = Release|Any CPU
+		{7BD6F057-3764-4E40-8CED-FD77DDDC81F6}.Local|Any CPU.Build.0 = Release|Any CPU
 		{7BD6F057-3764-4E40-8CED-FD77DDDC81F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BD6F057-3764-4E40-8CED-FD77DDDC81F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6375B9A9-D1B7-42AB-A665-7EF6F9E7CFB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
