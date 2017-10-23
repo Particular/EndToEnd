@@ -10,6 +10,8 @@ class PerformanceCounters : IProfile
 {
     public void Configure(Configuration cfg)
     {
+#pragma warning disable 618
         cfg.EnableCriticalTimePerformanceCounter();
+#pragma warning restore 618
     }
 }
