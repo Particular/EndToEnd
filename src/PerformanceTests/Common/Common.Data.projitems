@@ -40,15 +40,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedPublish\GatedPublishRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProfilesExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\LoopRunner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaCongestion\SagaCongestionRunner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaCongestion\SagaCongestionRunner.V5.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaCongestion\SagaCongestionRunner.V6.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaInitiate\SagaInitiateRunner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaInitiate\SagaInitiateRunner.V5.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaInitiate\SagaInitiateRunner.V6.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaUpdate\SagaUpdateRunner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaUpdate\SagaUpdateRunner.V5.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaUpdate\SagaUpdateRunner.V6.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOne\SendLocalOneOnOneRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOne\SendLocalOneOnOneRunner.V5.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOne\SendLocalOneOnOneRunner.V6.cs" />

@@ -4,15 +4,9 @@ using NServiceBus;
 
 partial class SagaCongestionRunner
 {
-    public class SagaCongestion
-        : Saga<SagaCongestionData>
-        , IAmStartedByMessages<Command>
+    public partial class SagaCongestion
+        : IAmStartedByMessages<Command>
     {
-        protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaCongestionData> mapper)
-        {
-            mapper.ConfigureMapping<Command>(m => m.Identifier).ToSaga(s => s.UniqueIdentifier);
-        }
-
         public Task Handle(Command message, IMessageHandlerContext context)
         {
             if (Shutdown) return Task.FromResult(0);
@@ -27,5 +21,16 @@ partial class SagaCongestionRunner
         public virtual int UniqueIdentifier { get; set; }
         public virtual long Receives { get; set; }
     }
+
+#if !CustomSaga
+    partial class SagaCongestion
+        : Saga<SagaCongestionData>
+    {
+        protected override void ConfigureHowToFindSaga(SagaPropertyMapper<SagaCongestionData> mapper)
+        {
+            mapper.ConfigureMapping<Command>(m => m.Identifier).ToSaga(s => s.UniqueIdentifier);
+        }
+    }
+#endif
 }
 #endif

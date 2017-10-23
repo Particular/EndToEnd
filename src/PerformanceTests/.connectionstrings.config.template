@@ -7,6 +7,7 @@
   <add name="AzureStorageQueue" connectionString="UseDevelopmentStorage=true" />
   <add name="AzureStorage" connectionString="UseDevelopmentStorage=true" />
   <add name="NHibernate" connectionString="Data Source=.\SQLEXPRESS;Integrated Security=True;Database=PerformanceTests" />
+  <add name="Sql" connectionString="Data Source=.\SQLEXPRESS;Integrated Security=True;Database=PerformanceTests" />
   <add name="RavenDB" connectionString="Url = http://localhost:8080"/>
   <add name="MSMQ" connectionString="deadLetter=false;journal=false"/>
 </connectionStrings>

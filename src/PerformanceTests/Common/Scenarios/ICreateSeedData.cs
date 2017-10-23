@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-interface ICreateSeedData
+public interface ICreateSeedData
 {
     /// <summary>
     /// Sends or publishes a single message

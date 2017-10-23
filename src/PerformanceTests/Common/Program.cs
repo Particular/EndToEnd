@@ -56,8 +56,13 @@ namespace Host
 
                     if (Environment.UserInteractive) Console.Title = PermutationParser.ToFriendlyString(permutation);
 
-                    var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                    var runnableTest = permutation.Tests.Select(x => (BaseRunner)assembly.CreateInstance(x)).Single();
+                    var runnerTypes = AssemblyScanner.GetAllTypes<BaseRunner>();
+
+                    foreach(var t in runnerTypes) Log.Error(t.FullName);
+
+                    var runnerType = runnerTypes.First(x=>x.Name.Contains(permutation.Tests[0]));
+                    
+                    var runnableTest = (BaseRunner)Activator.CreateInstance(runnerType);
 
                     Log.InfoFormat("Executing scenario: {0}", runnableTest);
                     await runnableTest.Execute(permutation, endpointName).ConfigureAwait(false);

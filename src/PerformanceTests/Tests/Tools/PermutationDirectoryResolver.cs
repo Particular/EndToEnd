@@ -10,7 +10,6 @@ namespace Tests.Tools
     public class PermutationDirectoryResolver
     {
         readonly string rootDirectory;
-        static string[] assembliesToSkip = { "NServiceBus.Core.dll" };
 
         public PermutationDirectoryResolver(string rootDirectory)
         {
@@ -26,12 +25,10 @@ namespace Tests.Tools
             var dirs = root.GetDirectories()
                 .Where(d => components.Any(c => d.Name.StartsWith(c)));
 
-            var files = dirs.SelectMany(d => d.GetFiles("*.dll").Where(dll => !assembliesToSkip.Any(dllToSkip => string.Compare(dllToSkip, dll.Name, true) == 0))).ToArray();
-
             return new PermutationResult
             {
                 RootProjectDirectory = GetRootDirectory(permutation.Version),
-                Files = files.ToArray()
+                Directories = dirs.ToArray()
             };
         }
 
@@ -72,7 +69,7 @@ namespace Tests.Tools
 
         public class PermutationResult
         {
-            public FileInfo[] Files { get; set; }
+            public DirectoryInfo[] Directories { get; set; }
             public string RootProjectDirectory { get; set; }
         }
     }

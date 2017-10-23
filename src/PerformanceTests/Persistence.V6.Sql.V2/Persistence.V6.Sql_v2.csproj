@@ -1,74 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C3E92DC8-F3C3-4CBF-BBC8-02B6DD440817}</ProjectGuid>
+    <ProjectGuid>{A3E380CE-6E44-4ED4-BBF6-BF08FA4DAE6D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Persistence.V6.RavenDB</RootNamespace>
-    <AssemblyName>Persistence.V6.RavenDB_v4</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>Persistence.V6.Sql</RootNamespace>
+    <AssemblyName>Persistence.V6.Sql.V2</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\Persistence.V6.RavenDB_v4\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;Version6</DefineConstants>
+    <OutputPath>..\bin\Debug\Persistence.V6.Sql_v2\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CustomSaga;Version6</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\Persistence.V6.RavenDB_v4\</OutputPath>
-    <DefineConstants>TRACE;Version6</DefineConstants>
+    <OutputPath>..\bin\Release\Persistence.V6.Sql_v2\</OutputPath>
+    <DefineConstants>TRACE;CustomSaga;Version6</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Local|AnyCPU'">
-    <OutputPath>..\bin\Local\Persistence.V6.RavenDB_v4\</OutputPath>
-    <DefineConstants>TRACE;Version6</DefineConstants>
+    <OutputPath>..\bin\Local\Persistence.V6.Sql_v2\</OutputPath>
+    <DefineConstants>TRACE;CustomSaga;Version6</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="NServiceBus.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\NServiceBus.6.4.1\lib\net452\NServiceBus.Core.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="NServiceBus.RavenDB, Version=4.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NServiceBus.RavenDB.4.2.1\lib\net452\NServiceBus.RavenDB.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Raven.Abstractions, Version=3.5.5.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\RavenDB.Database.3.5.5-patch-35222\lib\net45\Raven.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Raven.Client.Lightweight, Version=3.5.5.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\RavenDB.Client.3.5.5-patch-35222\lib\net45\Raven.Client.Lightweight.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Database, Version=3.5.5.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\RavenDB.Database.3.5.5-patch-35222\lib\net45\Raven.Database.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NServiceBus.Persistence.Sql, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NServiceBus.Persistence.Sql.2.1.4\lib\net452\NServiceBus.Persistence.Sql.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -78,26 +60,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RavenDBProfile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SagaCongestion\SagaCongestionRunner.V5.cs" />
+    <Compile Include="SagaCongestion\SagaCongestionRunner.V6.cs" />
+    <Compile Include="SagaInitiate\SagaInitiateRunner.V6.cs" />
+    <Compile Include="SagaUpdate\SagaUpdateRunner.V6.cs" />
+    <Compile Include="SqlProfile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NServiceBus6\NServiceBus6.csproj">
-      <Project>{10d11044-c92c-42ad-830e-57012ff4f039}</Project>
+      <Project>{10D11044-C92C-42AD-830E-57012FF4F039}</Project>
       <Name>NServiceBus6</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
-      <Project>{572499ed-e234-4c66-bd6e-d5a845065c5f}</Project>
+      <Project>{572499ED-E234-4C66-BD6E-D5A845065C5F}</Project>
       <Name>Utils</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Scenarios\Scenarios.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\packages\NServiceBus.Persistence.Sql.MsBuild.2.1.4\build\NServiceBus.Persistence.Sql.MsBuild.targets" Condition="Exists('..\..\..\packages\NServiceBus.Persistence.Sql.MsBuild.2.1.4\build\NServiceBus.Persistence.Sql.MsBuild.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\NServiceBus.Persistence.Sql.MsBuild.2.1.4\build\NServiceBus.Persistence.Sql.MsBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NServiceBus.Persistence.Sql.MsBuild.2.1.4\build\NServiceBus.Persistence.Sql.MsBuild.targets'))" />
+  </Target>
 </Project>

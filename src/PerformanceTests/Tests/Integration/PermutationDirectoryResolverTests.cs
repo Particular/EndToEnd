@@ -29,7 +29,7 @@
 
         var result = resolver.Resolve(permutation);
             Assert.That(result.RootProjectDirectory, Is.EqualTo("NServiceBus6"));
-            Assert.That(result.Files, Is.Not.Empty);
+            Assert.That(result.Directories, Is.Not.Empty);
         }
 
         [TestCase(NServiceBusVersion.V5, Persistence.InMemory, "Persistence.V5.InMemory.dll")]
