@@ -62,6 +62,16 @@ This template file is copied to two projects during the pre build when they do n
 
 # Run it locally
 
+## Using the front-end
+
+Launching the front-end will give you an easy way to launch a permutation.
+
+![image](https://cloud.githubusercontent.com/assets/152998/19308669/274c5506-9081-11e6-87eb-b739a71f7d1e.png)
+
+Just select the permutation values that you want to use, verify the durations and launch it.
+
+## Using NUnit
+
 You can run the tests just like you would run any other NUnit. Just open the relevant test runner. Select a namespace, fixture or test to run. You will not see the permutations yet because those are dynamic. Run it once and you will see all permutations appearing for that fixture.
 
 ![Permutations in test](Images/permutations.png)

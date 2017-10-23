@@ -10,13 +10,12 @@ namespace Categories
     using Tests.Permutations;
     using Tests.Tools;
     using VisualStudioDebugHelper;
-    using Variables;
 
     public abstract class Base
     {
+        static readonly TimeSpan MaxDuration = TimeSpan.Parse(ConfigurationManager.AppSettings["MaxDuration"]);
         public static string SessionId;
         static readonly bool InvokeEnabled = bool.Parse(ConfigurationManager.AppSettings["InvokeEnabled"]);
-        static readonly TimeSpan MaxDuration = TimeSpan.Parse(ConfigurationManager.AppSettings["MaxDuration"]);
 
         public virtual void ReceiveRunner(Permutation permutation)
         {
@@ -83,7 +82,6 @@ namespace Categories
         {
             if (!InvokeEnabled) Assert.Inconclusive("Invoke disabled, set 'InvokeEnabled' appSetting to True.");
 
-            DeleteOtherPlatformHost(permutation);
             LaunchAndWait(permutation);
             Console.WriteLine(ScanLogs.ToIniString(new FileInfo(permutation.Exe).DirectoryName));
         }
@@ -120,21 +118,6 @@ namespace Categories
                     Assert.Inconclusive("Not supported");
                 }
                 Assert.AreEqual((int)ReturnCodes.OK, p.ExitCode, "Execution failed.");
-            }
-        }
-
-        static void DeleteOtherPlatformHost(Permutation permutation)
-        {
-            var x64 = new FileInfo(permutation.Exe.Replace("x86.exe", "x64.exe"));
-            var x86 = new FileInfo(permutation.Exe.Replace("x64.exe", "x86.exe"));
-
-            if (permutation.Platform == Platform.x86)
-            {
-                x64.Delete();
-            }
-            else
-            {
-                x86.Delete();
             }
         }
     }

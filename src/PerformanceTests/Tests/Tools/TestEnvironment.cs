@@ -1,6 +1,7 @@
 
 namespace Tests.Tools
 {
+    using System;
     using System.IO;
     using System.Threading;
     using System.Xml.Linq;
@@ -15,7 +16,7 @@ namespace Tests.Tools
 
         static TestEnvironment()
         {
-            System.Environment.CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public TestEnvironment(string sessionId)
@@ -60,6 +61,7 @@ namespace Tests.Tools
 
             GenerateBat(descriptor);
             UpdateAppConfig(descriptor);
+            DeleteOtherPlatformHost(permutation);
 
             return descriptor;
         }
@@ -157,6 +159,21 @@ namespace Tests.Tools
                 );
 
             return new DirectoryInfo(path);
+        }
+
+        static void DeleteOtherPlatformHost(Permutation permutation)
+        {
+            var x64 = new FileInfo(permutation.Exe.Replace("x86.exe", "x64.exe"));
+            var x86 = new FileInfo(permutation.Exe.Replace("x64.exe", "x86.exe"));
+
+            if (permutation.Platform == Platform.x86)
+            {
+                x64.Delete();
+            }
+            else
+            {
+                x86.Delete();
+            }
         }
     }
 }

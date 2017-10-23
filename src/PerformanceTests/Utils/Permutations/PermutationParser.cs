@@ -10,7 +10,7 @@ namespace Tests.Permutations
 
         public static string ToArgs(Permutation instance)
         {
-            return "--tests:" + string.Join(Separator, instance.Tests) + 
+            return "--tests:" + string.Join(Separator, instance.Tests) +
                    " --category:" + instance.Category +
                    " --description:\"" + instance.Description + "\"" +
                    " --variables:" + ToString(instance);
@@ -28,6 +28,10 @@ namespace Tests.Permutations
             instance.Tests = tests;
             instance.Category = category;
             instance.Description = description;
+
+            if (args.Any(x => x.StartsWith("--run"))) Settings.RunDuration = TimeSpan.Parse(GetVar(args, "run"));
+            if (args.Any(x => x.StartsWith("--warmup"))) Settings.WarmupDuration = TimeSpan.Parse(GetVar(args, "warmup"));
+
             return instance;
         }
 
