@@ -1,6 +1,7 @@
 ﻿namespace AzureStorageQueuesV6
 {
     using System;
+    using System.Linq;
     using NServiceBus;
     using NServiceBus.Pipeline;
     using NServiceBus.Pipeline.Contexts;
@@ -35,7 +36,7 @@
             busConfiguration.UseTransport<AzureStorageQueueTransport>()
                 .ConnectionString(AzureStorageQueuesConnectionStringBuilder.Build());
 
-            busConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings));
+            busConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings.Concat(endpointDefinition.Publishers)));
 
             messageStore = new MessageStore();
             subscriptionStore = new SubscriptionStore();

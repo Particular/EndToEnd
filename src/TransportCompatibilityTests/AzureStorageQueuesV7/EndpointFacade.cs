@@ -1,6 +1,7 @@
 ﻿namespace AzureStorageQueuesV7
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using NServiceBus;
     using NServiceBus.Logging;
@@ -39,7 +40,7 @@
             endpointConfiguration.UseTransport<AzureStorageQueueTransport>()
                 .ConnectionString(AzureStorageQueuesConnectionStringBuilder.Build());
 
-            endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings));
+            endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings.Concat(endpointDefinition.Publishers)));
 
             endpointConfiguration.UseSerialization<JsonSerializer>();
 
