@@ -2,10 +2,12 @@
 <connectionStrings>
   <add name="SqlServer" connectionString="Data Source=.\SQLEXPRESS;Integrated Security=True;Database=PerformanceTests;Min Pool Size=100;Max Pool Size=1000;" providerName="System.Data.SqlClient"/>
   <add name="RabbitMQ" connectionString="host=localhost;RequestedHeartbeat=600;UsePublisherConfirms=True" />
+  <add name="AmazonSQS" connectionString="Region=eu-west-2;QueueNamePrefix=perftest-;S3BucketForLargeMessages=perftest-sqs;S3KeyPrefix=messages;NativeDeferral=true;MaxTTLDays=1"/>
   <add name="AzureServiceBus" connectionString="Endpoint=sb://ramon-test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=yTy3ASKfxVc44RCeuY7mpELR3n10TZOhA3yDnVTU5W0=" />
   <add name="AzureStorageQueue" connectionString="UseDevelopmentStorage=true" />
   <add name="AzureStorage" connectionString="UseDevelopmentStorage=true" />
   <add name="NHibernate" connectionString="Data Source=.\SQLEXPRESS;Integrated Security=True;Database=PerformanceTests" />
+  <add name="Sql" connectionString="Data Source=.\SQLEXPRESS;Integrated Security=True;Database=PerformanceTests" />
   <add name="RavenDB" connectionString="Url = http://localhost:8080"/>
   <add name="MSMQ" connectionString="deadLetter=false;journal=false"/>
 </connectionStrings>

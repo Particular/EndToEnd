@@ -65,7 +65,7 @@ abstract class BaseLoop : BaseRunner
                     if (batchDuration.Elapsed < TimeSpan.FromSeconds(2.5))
                     {
                         BatchSize *= 2;
-                        Log.InfoFormat("Batch size increased to {0}", BatchSize);
+                        Log.InfoFormat("Batch size increased to {0,7:N0}", BatchSize);
                     }
                     Console.Write("2");
 
@@ -80,10 +80,11 @@ abstract class BaseLoop : BaseRunner
             duration = start.Elapsed.TotalSeconds;
             avg = count / duration;
             var statsLog = LogManager.GetLogger("Statistics");
-            statsLog.InfoFormat("{0}: {1:0.0} ({2})", "LoopLastBatchSize", BatchSize, "#");
-            statsLog.InfoFormat("{0}: {1:0.0} ({2})", "LoopCount", count, "#");
-            statsLog.InfoFormat("{0}: {1:0.0} ({2})", "LoopDuration", duration, "s");
-            statsLog.InfoFormat("{0}: {1:0.0} ({2})", "LoopThroughputAvg", avg, "msg/s");
+
+            statsLog.InfoFormat(Statistics.StatsFormatInt, "LoopLastBatchSize", BatchSize, "#");
+            statsLog.InfoFormat(Statistics.StatsFormatInt, "LoopCount", count, "#");
+            statsLog.InfoFormat(Statistics.StatsFormatDouble, "LoopDuration", duration, "s");
+            statsLog.InfoFormat(Statistics.StatsFormatDouble, "LoopThroughputAvg", avg, "msg/s");
 
         }
         catch (Exception ex)

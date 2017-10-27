@@ -17,7 +17,7 @@ abstract class LoopRunner : BaseRunner
 
     CancellationToken stopLoopCancellationToken;
     CancellationTokenSource stopLoopCancellationTokenSource;
-    int BatchSize = 16;
+    int batchSize = 16;
 
     protected abstract Task SendMessage(ISession session);
 
@@ -47,24 +47,27 @@ abstract class LoopRunner : BaseRunner
 
             Log.Info("Starting");
             var start = Stopwatch.StartNew();
-            countdownEvent.Reset(BatchSize);
+            countdownEvent.Reset(batchSize);
+
+            const int MinimumBatchSeedDuration = 2500;
 
             while (!stopLoopCancellationToken.IsCancellationRequested)
             {
                 try
                 {
                     Console.Write("1");
-                    countdownEvent.Reset(BatchSize);
+                    countdownEvent.Reset(batchSize);
                     var batchDuration = Stopwatch.StartNew();
 
-                    await BatchHelper.Batch(BatchSize, i => SendMessage(session)).ConfigureAwait(false);
+                    await BatchHelper.Batch(batchSize, i => SendMessage(session)).ConfigureAwait(false);
 
-                    count += BatchSize;
+                    count += batchSize;
 
-                    if (batchDuration.Elapsed < TimeSpan.FromSeconds(2.5))
+                    var duration = batchDuration.ElapsedMilliseconds;
+                    if (duration < MinimumBatchSeedDuration)
                     {
-                        BatchSize *= 2;
-                        Log.InfoFormat("Batch size increased to {0}", BatchSize);
+                        batchSize *= 2;
+                        Log.InfoFormat("Increasing batch size to {0,7:N0} as sending took {1,7:N0}ms which is less then {2:N0}ms", batchSize, duration, MinimumBatchSeedDuration);
                     }
                     Console.Write("2");
                     await countdownEvent.WaitAsync(stopLoopCancellationToken).ConfigureAwait(false);
@@ -76,15 +79,15 @@ abstract class LoopRunner : BaseRunner
             }
             Log.Info("Stopped");
 
-            var duration = start.Elapsed.TotalSeconds;
-            var avg = count / duration;
+            var elapsed = start.Elapsed.TotalSeconds;
+            var avg = count / elapsed;
             var statsLog = LogManager.GetLogger("Statistics");
             var avgLatency = latencySum / TimeSpan.TicksPerMillisecond / count;
-            statsLog.InfoFormat("{0}: {1:0.0} ({2})", "LoopLastBatchSize", BatchSize, "#");
-            statsLog.InfoFormat("{0}: {1:0.0} ({2})", "LoopCount", count, "#");
-            statsLog.InfoFormat("{0}: {1:0.0} ({2})", "LoopDuration", duration, "s");
-            statsLog.InfoFormat("{0}: {1:0.0} ({2})", "LoopThroughputAvg", avg, "msg/s");
-            statsLog.InfoFormat("{0}: {1:0.0} ({2})", "LoopLatency", avgLatency, "ms");
+            statsLog.InfoFormat(Statistics.StatsFormatInt, "LoopLastBatchSize", batchSize, "#");
+            statsLog.InfoFormat(Statistics.StatsFormatInt, "LoopCount", count, "#");
+            statsLog.InfoFormat(Statistics.StatsFormatDouble, "LoopDuration", elapsed, "s");
+            statsLog.InfoFormat(Statistics.StatsFormatDouble, "LoopThroughputAvg", avg, "msg/s");
+            statsLog.InfoFormat(Statistics.StatsFormatDouble, "LoopLatency", avgLatency, "ms");
         }
         catch (Exception ex)
         {

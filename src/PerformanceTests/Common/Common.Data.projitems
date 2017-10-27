@@ -9,9 +9,13 @@
     <Import_RootNamespace>Common</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ErrorProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AuditProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckGCServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckPlatform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\BaseRunner.v5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\BaseRunner.v6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\FakeTransport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shortcut\ShortcutBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Shortcut\ShortcutFeature.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IConfigureUnicastBus.cs" />
@@ -36,15 +40,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\GatedPublish\GatedPublishRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProfilesExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\LoopRunner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaCongestion\SagaCongestionRunner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaCongestion\SagaCongestionRunner.V5.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaCongestion\SagaCongestionRunner.V6.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaInitiate\SagaInitiateRunner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaInitiate\SagaInitiateRunner.V5.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaInitiate\SagaInitiateRunner.V6.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaUpdate\SagaUpdateRunner.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaUpdate\SagaUpdateRunner.V5.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SagaUpdate\SagaUpdateRunner.V6.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOne\SendLocalOneOnOneRunner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOne\SendLocalOneOnOneRunner.V5.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\SendLocalOneOnOne\SendLocalOneOnOneRunner.V6.cs" />

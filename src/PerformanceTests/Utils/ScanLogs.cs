@@ -24,7 +24,7 @@ public class ScanLogs
             d["Fixture"] = di.Parent.Parent.Name;
             d["Test"] = di.Parent.Name;
             d["LogTimestamp"] = File.GetLastWriteTimeUtc(log).ToString("s", CultureInfo.InvariantCulture);
-            d["LogSize"] = new FileInfo(log).Length.ToString(CultureInfo.InvariantCulture);
+            d["LogSize"] = new FileInfo(log).Length.ToString("N0",CultureInfo.InvariantCulture);
 
             foreach (var line in File.ReadLines(log))
             {

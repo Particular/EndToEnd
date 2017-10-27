@@ -9,6 +9,9 @@ using Tests.Permutations;
 [Serializable]
 public class Statistics : IDisposable
 {
+    public const string StatsFormatInt = "{0}: {1:N0} ({2})";
+    public const string StatsFormatDouble = "{0}: {1:N} ({2})";
+
     long first;
     long last;
     readonly long applicationStart = GetTimestamp();
@@ -109,34 +112,34 @@ public class Statistics : IDisposable
     {
         var durationSeconds = Math.Max(-1, ToSeconds(warmup, last));
 
-        LogStats("ReceiveFirstLastDuration", durationSeconds, "s");
-        LogStats("NumberOfMessages", NumberOfMessages, "#");
+        LogStats("ReceiveFirstLastDuration", durationSeconds, "s", StatsFormatDouble);
+        LogStats("NumberOfMessages", NumberOfMessages, "#", StatsFormatInt);
 
         var throughput = NumberOfMessages / durationSeconds;
 
-        LogStats("Throughput", throughput, "msg/s");
+        LogStats("Throughput", throughput, "msg/s", StatsFormatDouble);
 
-        LogStats("NumberOfRetries", NumberOfRetries, "#");
+        LogStats("NumberOfRetries", NumberOfRetries, "#", StatsFormatInt);
 
         var ttfm = Math.Max(-1, ToSeconds(applicationStart, first));
 
-        LogStats("TimeToFirstMessage", ttfm, "s");
+        LogStats("TimeToFirstMessage", ttfm, "s", StatsFormatDouble);
 
         if (sendTimeNoTx != TimeSpan.Zero)
-            LogStats("Sending", Convert.ToDouble(NumberOfMessages / 2) / sendTimeNoTx.TotalSeconds, "msg/s");
+            LogStats("Sending", Convert.ToDouble(NumberOfMessages / 2) / sendTimeNoTx.TotalSeconds, "msg/s", StatsFormatDouble);
 
         if (sendTimeWithTx != TimeSpan.Zero)
-            LogStats("SendingInsideTX", Convert.ToDouble(NumberOfMessages / 2) / sendTimeWithTx.TotalSeconds, "msg/s");
+            LogStats("SendingInsideTX", Convert.ToDouble(NumberOfMessages / 2) / sendTimeWithTx.TotalSeconds, "msg/s", StatsFormatDouble);
 
         var counterValues = perfCounterValues.ToList();
-        LogStats("PrivateBytes-Min", counterValues.Min() / 1024, "kb");
-        LogStats("PrivateBytes-Max", counterValues.Max() / 1024, "kb");
-        LogStats("PrivateBytes-Avg", counterValues.Average() / 1024, "kb");
+        LogStats("PrivateBytes-Min", counterValues.Min() / 1024, "kb", StatsFormatInt);
+        LogStats("PrivateBytes-Max", counterValues.Max() / 1024, "kb", StatsFormatInt);
+        LogStats("PrivateBytes-Avg", counterValues.Average() / 1024, "kb", StatsFormatInt);
     }
 
-    static void LogStats(string key, double value, string unit)
+    static void LogStats(string key, double value, string unit, string format)
     {
-        logger.Info("{0}: {1:0.0} ({2})", key, value, unit);
+        logger.Info(format, key, value, unit);
     }
 
     void ConfigureSplunk()

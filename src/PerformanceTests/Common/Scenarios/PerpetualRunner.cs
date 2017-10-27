@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using NServiceBus.Logging;
 
-abstract class PerpetualRunner : BaseRunner
+public abstract class PerpetualRunner : BaseRunner
 {
     readonly ILog Log = LogManager.GetLogger(nameof(PerpetualRunner));
 

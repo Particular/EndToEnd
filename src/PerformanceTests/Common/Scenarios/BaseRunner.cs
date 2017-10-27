@@ -1,29 +1,19 @@
-﻿#if Version6
+﻿#if Version6 || Version7
 using Configuration = NServiceBus.EndpointConfiguration;
 #else
 using Configuration = NServiceBus.BusConfiguration;
 #endif
 using System;
-using System.Configuration;
 using System.Linq;
-using System.Reflection;
-using NServiceBus;
-using NServiceBus.Config;
-using NServiceBus.Config.ConfigurationSource;
 using NServiceBus.Logging;
 using Tests.Permutations;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Common.Scenarios;
 using Variables;
 
-public abstract class BaseRunner :
-#pragma warning disable 618
-    IConfigurationSource,
-#pragma warning restore 618
-    IContext
+public abstract partial class BaseRunner : IContext
 {
     readonly ILog Log = LogManager.GetLogger("BaseRunner");
 
@@ -32,7 +22,7 @@ public abstract class BaseRunner :
     ISession Session { get; set; }
 
     protected byte[] Data { private set; get; }
-    protected bool SendOnly { get; set; }
+    public bool IsSendOnly { get; set; }
     protected int MaxConcurrencyLevel { private set; get; }
 
     protected static bool Shutdown { private set; get; }
@@ -98,19 +88,28 @@ public abstract class BaseRunner :
 
     async Task CreateSeedData(ICreateSeedData instance)
     {
-        Log.Info("Creating send only endpoint...");
-        await CreateSendOnlyEndpoint().ConfigureAwait(false);
+        var sendOnly = IsSendOnly;
+        IsSendOnly = true; // Needed as performance counter profiles apply configuration that is not allowed on send-only endpoints.
+        try
+        {
+            Log.Info("Creating send only endpoint...");
+            await CreateSendOnlyEndpoint().ConfigureAwait(false);
+        }
+        finally
+        {
+            IsSendOnly = sendOnly;
+        }
 
         try
         {
-            Log.InfoFormat("Start seeding messages for {0} seconds...", Settings.SeedDuration.TotalSeconds);
+            Log.InfoFormat("Start seeding messages for {0:N} seconds...", Settings.SeedDuration.TotalSeconds);
             var cts = new CancellationTokenSource();
             cts.CancelAfter(Settings.SeedDuration);
 
             var count = 0L;
             var start = Stopwatch.StartNew();
 
-            const int minimumBatchSeedDuration = 2500;
+            const int MinimumBatchSeedDuration = 2500;
             var batchSize = 512;
 
             Parallel.ForEach(IterateUntilFalse(() => !cts.Token.IsCancellationRequested),
@@ -122,10 +121,10 @@ public abstract class BaseRunner :
                   BatchHelper.Batch(currentBatchSize, i => instance.SendMessage(Session)).ConfigureAwait(false).GetAwaiter().GetResult();
                   Interlocked.Add(ref count, currentBatchSize);
                   var duration = sw.ElapsedMilliseconds;
-                  if (duration < minimumBatchSeedDuration)
+                  if (duration < MinimumBatchSeedDuration)
                   {
                       batchSize = currentBatchSize * 2; // Last writer wins
-                      Log.InfoFormat("Increasing seed batch size to {0:N0} as sending took {1:N0}ms which is less then {2:N0}ms", batchSize, duration, minimumBatchSeedDuration);
+                      Log.InfoFormat("Increasing seed batch size to {0,7:N0} as sending took {1,7:N0}ms which is less then {2:N0}ms", batchSize, duration, MinimumBatchSeedDuration);
                   }
               }
             );
@@ -133,177 +132,15 @@ public abstract class BaseRunner :
             var elapsed = start.Elapsed;
             var avg = count / elapsed.TotalSeconds;
             Log.InfoFormat("Done seeding, seeded {0:N0} messages, {1:N1} msg/s", count, avg);
-            LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedThroughputAvg", avg, "msg/s");
-            LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedCount", count, "#");
-            LogManager.GetLogger("Statistics").InfoFormat("{0}: {1:0.0} ({2})", "SeedDuration", elapsed.TotalMilliseconds, "ms");
+            LogManager.GetLogger("Statistics").InfoFormat(Statistics.StatsFormatDouble, "SeedThroughputAvg", avg, "msg/s");
+            LogManager.GetLogger("Statistics").InfoFormat(Statistics.StatsFormatInt, "SeedCount", count, "#");
+            LogManager.GetLogger("Statistics").InfoFormat(Statistics.StatsFormatDouble, "SeedDuration", elapsed.TotalMilliseconds, "ms");
         }
         finally
         {
             await Session.CloseWithSuppress().ConfigureAwait(false);
         }
     }
-
-#if Version5
-    async Task CreateOrPurgeAndDrainQueues()
-    {
-        var configuration = CreateConfiguration();
-        if (IsPurgingSupported) configuration.PurgeOnStartup(true);
-        ShortcutBehavior.Shortcut = true; // Required, as instance already receives messages before DrainMessages() is called!
-        var instance = Bus.Create(configuration).Start();
-        await DrainMessages().ConfigureAwait(false);
-        await new Session(instance).CloseWithSuppress().ConfigureAwait(false);
-    }
-
-    Task CreateSendOnlyEndpoint()
-    {
-        var configuration = CreateConfiguration();
-        var instance = Bus.CreateSendOnly(configuration);
-        Session = new Session(instance);
-        return Task.FromResult(0);
-    }
-
-    Task CreateEndpoint()
-    {
-        var configuration = CreateConfiguration();
-        configuration.CustomConfigurationSource(this);
-        configuration.DefineCriticalErrorAction(OnCriticalError);
-
-        if (SendOnly)
-        {
-            Session = new Session(Bus.CreateSendOnly(configuration));
-            return Task.FromResult(0);
-        }
-
-        configuration.PurgeOnStartup(!IsSeedingData && IsPurgingSupported);
-        Session = new Session(Bus.Create(configuration).Start());
-        return Task.FromResult(0);
-    }
-
-    BusConfiguration CreateConfiguration()
-    {
-        var configuration = new Configuration();
-        configuration.EndpointName(EndpointName);
-        configuration.EnableInstallers();
-
-        var scanableTypes = GetTypesToInclude();
-        configuration.TypesToScan(scanableTypes);
-
-        configuration.ApplyProfiles(this);
-
-        return configuration;
-    }
-
-    List<Type> GetTypesToInclude()
-    {
-        var location = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        var asm = new NServiceBus.Hosting.Helpers.AssemblyScanner(location).GetScannableAssemblies();
-
-        var allTypes = (from a in asm.Assemblies
-                        from b in a.GetLoadableTypes()
-                        select b).ToList();
-
-        var allTypesToExclude = GetTypesToExclude(allTypes);
-
-        var finalInternalListToScan = allTypes.Except(allTypesToExclude);
-
-        return finalInternalListToScan.ToList();
-    }
-
-    void OnCriticalError(string errorMessage, Exception exception)
-    {
-        try
-        {
-            try
-            {
-                Log.Fatal("OnCriticalError", exception);
-                Session.CloseWithSuppress().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            finally
-            {
-                NLog.LogManager.Shutdown();
-            }
-        }
-        finally
-        {
-            Environment.FailFast("NServiceBus critical error", exception);
-        }
-    }
-
-#else
-    async Task CreateOrPurgeAndDrainQueues()
-    {
-        var configuration = CreateConfiguration();
-        if (IsPurgingSupported) configuration.PurgeOnStartup(true);
-        ShortcutBehavior.Shortcut = true; // Required, as instance already receives messages before DrainMessages() is called!
-        var instance = await Endpoint.Start(configuration).ConfigureAwait(false);
-        await DrainMessages().ConfigureAwait(false);
-        await new Session(instance).CloseWithSuppress().ConfigureAwait(false);
-    }
-
-    async Task CreateSendOnlyEndpoint()
-    {
-        var configuration = CreateConfiguration();
-        configuration.SendOnly();
-        var instance = await Endpoint.Start(configuration).ConfigureAwait(false);
-        Session = new Session(instance);
-    }
-
-    async Task CreateEndpoint()
-    {
-        var configuration = CreateConfiguration();
-        configuration.CustomConfigurationSource(this);
-
-        if (SendOnly)
-        {
-            configuration.SendOnly();
-            Session = new Session(await Endpoint.Start(configuration).ConfigureAwait(false));
-            return;
-        }
-
-        //configuration.PurgeOnStartup(!IsSeedingData && IsPurgingSupported);
-
-        var instance = Endpoint.Start(configuration).ConfigureAwait(false).GetAwaiter().GetResult();
-        Session = new Session(instance);
-    }
-
-    Configuration CreateConfiguration()
-    {
-        var configuration = new Configuration(EndpointName);
-        configuration.EnableInstallers();
-#pragma warning disable 618
-        configuration.ExcludeTypes(GetTypesToExclude().ToArray());
-#pragma warning restore 618
-        configuration.ApplyProfiles(this);
-        configuration.DefineCriticalErrorAction(OnCriticalError);
-        return configuration;
-    }
-
-    IEnumerable<Type> GetTypesToExclude()
-    {
-        return GetTypesToExclude(Assembly.GetAssembly(this.GetType()).GetTypes());
-    }
-
-    async Task OnCriticalError(ICriticalErrorContext context)
-    {
-        try
-        {
-            try
-            {
-                Log.Fatal("OnCriticalError", context.Exception);
-                await context.Stop();
-            }
-            finally
-            {
-                NLog.LogManager.Shutdown();
-            }
-        }
-        finally
-        {
-            Environment.FailFast("NServiceBus critical error", context.Exception);
-        }
-    }
-
-#endif
 
     IEnumerable<Type> GetTypesToExclude(IEnumerable<Type> allTypes)
     {
@@ -319,27 +156,6 @@ public abstract class BaseRunner :
         return allTypesToExclude;
     }
 
-    public T GetConfiguration<T>() where T : class, new()
-    {
-        IConfigureUnicastBus configureUnicastBus;
-
-        //read from existing config 
-#pragma warning disable 618
-        var config = (UnicastBusConfig)ConfigurationManager.GetSection(typeof(UnicastBusConfig).Name);
-        if (config != null) throw new InvalidOperationException("UnicastBus Configuration should be in code using IConfigureUnicastBus interface.");
-
-        if (typeof(T) == typeof(UnicastBusConfig) && null != (configureUnicastBus = this as IConfigureUnicastBus))
-        {
-            return new UnicastBusConfig
-            {
-                MessageEndpointMappings = configureUnicastBus.GenerateMappings()
-            } as T;
-        }
-#pragma warning restore 618
-
-        return ConfigurationManager.GetSection(typeof(T).Name) as T;
-    }
-
     void InitData()
     {
         Data = new byte[(int)Permutation.MessageSize];
@@ -347,7 +163,7 @@ public abstract class BaseRunner :
     }
 
     bool IsSeedingData => this is ICreateSeedData;
-    bool IsPurgingSupported => Permutation.Transport != Transport.AzureServiceBus;
+    bool IsPurgingSupported => (Permutation.Transport != Transport.AzureServiceBus && Permutation.Transport != Transport.AmazonSQS);
 
     static IEnumerable<int> IterateUntilFalse(Func<bool> condition)
     {
@@ -369,7 +185,7 @@ public abstract class BaseRunner :
             do
             {
                 current = ShortcutBehavior.Count;
-                Log.DebugFormat("Delaying to detect receive activity, last count is {0}...", current);
+                Log.DebugFormat("Delaying to detect receive activity, last count is {0:N0}...", current);
                 await Task.Delay(DrainPollInterval).ConfigureAwait(false);
             } while (ShortcutBehavior.Count > current);
 

@@ -1,19 +1,17 @@
-﻿using System.Collections.Generic;
-
-namespace Tests.Categories
+namespace Categories
 {
-    using global::Categories;
+    using System.Collections.Generic;
     using NUnit.Framework;
-    using Permutations;
+    using Tests.Permutations;
     using Variables;
 
     [TestFixture(Description = "Persisters", Category = "Performance"), Explicit]
     public class AzureFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
-        public override void GatedPublishRunner(Permutation permutation)
+        public void SagaUpdateRunner(Permutation permutation)
         {
-            base.GatedPublishRunner(permutation);
+            Tasks(permutation);
         }
 
         [TestCaseSource(nameof(CreatePermutations))]
@@ -22,14 +20,23 @@ namespace Tests.Categories
             base.SagaInitiateRunner(permutation);
         }
 
+        [TestCaseSource(nameof(CreatePermutations))]
+        public void SagaCongestionRunner(Permutation permutation)
+        {
+            Tasks(permutation);
+        }
+
         static IEnumerable<Permutation> CreatePermutations()
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Transports = new[] { Transport.AzureStorageQueues, Transport.AzureServiceBus,  },
-                Persisters = new [] { Persistence.Azure, },
-                Serializers = new[] { Serialization.Json, },
-                OutboxModes = new[] { Outbox.Off, },
+                Versions = new[] { NServiceBusVersion.V7, NServiceBusVersion.V6, NServiceBusVersion.V5 },
+                Transports = new[] { Transport.MSMQ },
+                Persisters = new[] { Persistence.Azure },
+                Serializers = new[] { Serialization.Json },
+                OutboxModes = new[] { Outbox.Off },
+                TransactionMode = new [] { TransactionMode.Receive },
+                ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential }
             });
         }
     }

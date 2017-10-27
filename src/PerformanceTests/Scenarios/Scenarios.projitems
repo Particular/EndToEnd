@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>e2d3ca80-f978-4bac-a873-3dd939fc65ae</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Scenarios</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)SagaCongestion\SagaCongestionRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaCongestion\SagaCongestionRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaCongestion\SagaCongestionRunner.V6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaInitiate\SagaInitiateRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaInitiate\SagaInitiateRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaInitiate\SagaInitiateRunner.V6.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaUpdate\SagaUpdateRunner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaUpdate\SagaUpdateRunner.V5.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SagaUpdate\SagaUpdateRunner.V6.cs" />
+  </ItemGroup>
+</Project>

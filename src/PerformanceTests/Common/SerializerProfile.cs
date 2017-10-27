@@ -1,4 +1,4 @@
-#if Version6
+#if Version6 || Version7
 using Configuration = NServiceBus.EndpointConfiguration;
 #else
 using Configuration = NServiceBus.BusConfiguration;
@@ -20,7 +20,12 @@ class SerializerProfile : IProfile, INeedPermutation
                 cfg.UseSerialization<XmlSerializer>();
                 break;
             case Serialization.Json:
+#if Version6 || Version7
+                cfg.UseSerialization<NewtonsoftSerializer>();
+#else
                 cfg.UseSerialization<JsonSerializer>();
+#endif
+
                 break;
         }
     }
