@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
+    <TargetFramework>net461</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>Persistence.V7.InMemory</RootNamespace>
     <AssemblyName>Persistence.V7.InMemory</AssemblyName>
@@ -18,13 +18,3 @@
 
   <Import Project="..\Scenarios\Scenarios.projitems" Label="Shared" />
 </Project>
-<!--  <ItemGroup>-->
-<!--    <Reference Include="System" />-->
-<!--    <Reference Include="System.Core" />-->
-<!--    <Reference Include="System.Xml.Linq" />-->
-<!--    <Reference Include="System.Data.DataSetExtensions" />-->
-<!--    <Reference Include="Microsoft.CSharp" />-->
-<!--    <Reference Include="System.Data" />-->
-<!--    <Reference Include="System.Net.Http" />-->
-<!--    <Reference Include="System.Xml" />-->
-<!--  </ItemGroup>-->

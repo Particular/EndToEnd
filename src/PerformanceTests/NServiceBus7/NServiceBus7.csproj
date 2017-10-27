@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
+    <TargetFramework>net461</TargetFramework>
     <RootNamespace>Host</RootNamespace>
     <LangVersion>latest</LangVersion>
-    <OutputType>Exe</OutputType> <!--should this be winexe?-->
+    <OutputType>Exe</OutputType>
     <AssemblyName>NServiceBus7.x64</AssemblyName>
     <StartupObject>Host.Program</StartupObject>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -22,9 +22,9 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
-    <PackageReference Include="Microsoft.Win32.Registry" Version="4.4.0" />
-  </ItemGroup>
+<!--  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">-->
+<!--    <PackageReference Include="Microsoft.Win32.Registry" Version="4.4.0" />-->
+<!--  </ItemGroup>-->
 
   <ItemGroup>
     <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj" />
@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include=".connectionstrings.config">
+    <None Include="../.connectionstrings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config">
@@ -49,12 +49,11 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PreBuildEvent>copy /-Y "$(SolutionDir).connectionstrings.config.template" "$(ProjectDir).connectionstrings.config"</PreBuildEvent>
-    <!--<PostBuildEvent>
-    copy "$(TargetPath)" "$(TargetDir)NServiceBus7.x86.exe"
-    copy "$(TargetPath).config" "$(TargetDir)NServiceBus7.x86.exe.config"
-    "%25programFiles(x86)%25\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\CorFlags.exe" "$(TargetDir)NServiceBus7.x86.exe" /32bit+
-    </PostBuildEvent>-->
+    <PostBuildEvent>
+      copy "$(TargetPath)NServiceBus7.x64.exe" "$(TargetDir)NServiceBus7.x86.exe"
+      copy "$(TargetPath)NServiceBus7.x64.exe.config" "$(TargetDir)NServiceBus7.x86.exe.config"
+      "%25programFiles(x86)%25\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\CorFlags.exe" "$(TargetDir)NServiceBus7.x86.exe" /32bit+
+    </PostBuildEvent>
   </PropertyGroup>
 
   <Import Project="..\Common\Common.Data.projitems" Label="Shared" />
