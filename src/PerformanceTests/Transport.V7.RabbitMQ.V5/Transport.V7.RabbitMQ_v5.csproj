@@ -2,7 +2,6 @@
   
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <OutputType>Library</OutputType>
     <RootNamespace>Transport.V7.RabbitMQ</RootNamespace>
     <AssemblyName>Transport.V7.RabbitMQ.V5</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.RabbitMQ_v5\</OutputPath>
@@ -11,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-beta0009" />
     <PackageReference Include="NServiceBus.RabbitMQ" Version="5.0.0-beta30-0009" />
-    <PackageReference Include="RabbitMQ.Client" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
