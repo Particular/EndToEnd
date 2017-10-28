@@ -137,7 +137,6 @@ Global
 		Scenarios\Scenarios.projitems*{426cf1b4-1aec-42a3-b695-33bee5a694f3}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{a3e380ce-6e44-4ed4-bbf6-bf08fa4dae6d}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{a87b5d9c-1abe-4f11-a080-6903f7b456fa}*SharedItemsImports = 4
-		Scenarios\Scenarios.projitems*{bcf08aab-d264-43e9-b970-c2be8aadf038}*SharedItemsImports = 4
 		Common\Common.Data.projitems*{be2c7b5e-7a71-4b0c-9020-343ed2010993}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{c3e92dc8-f3c3-4cbf-bbc8-02b6dd440817}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{d8cb2da9-4ae4-417c-89c3-00555f5e1f47}*SharedItemsImports = 4
@@ -380,8 +379,8 @@ Global
 		{54C2B9E0-E4C3-4602-8346-977806DA895E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Local|Any CPU.ActiveCfg = Local|Any CPU
-		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Local|Any CPU.Build.0 = Local|Any CPU
+		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Local|Any CPU.ActiveCfg = Release|Any CPU
+		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Local|Any CPU.Build.0 = Release|Any CPU
 		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCF08AAB-D264-43E9-B970-C2BE8AADF038}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A3E380CE-6E44-4ED4-BBF6-BF08FA4DAE6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
