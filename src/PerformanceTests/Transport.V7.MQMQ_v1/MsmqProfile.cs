@@ -14,7 +14,7 @@ class MsmqProfile : IProfile, INeedPermutation
     public void Configure(EndpointConfiguration endpointConfiguration)
     {
         var transport = endpointConfiguration.UseTransport<MsmqTransport>();
-        transport.ConnectionString(ConfigurationHelper.GetConnectionString("MSMQ"));
+        transport.DisableDeadLetterQueueing();
 
         if (Permutation.TransactionMode != TransactionMode.Default
             && Permutation.TransactionMode != TransactionMode.None

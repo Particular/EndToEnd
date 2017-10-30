@@ -17,7 +17,7 @@ class NHibernateProfile : IProfile, ISetup, INeedPermutation
     void ISetup.Setup()
     {
         var cs = ConfigurationHelper.GetConnectionString(Permutation.Persister.ToString());
-        var sql = Assembly.GetExecutingAssembly().GetManifestResourceText("Persistence.V6.NHibernate.init.sql");
+        var sql = Assembly.GetExecutingAssembly().GetManifestResourceText("Persistence.V7.NHibernate.init.sql");
         SqlHelper.CreateDatabase(cs);
         SqlHelper.ExecuteScript(cs, sql);
     }
