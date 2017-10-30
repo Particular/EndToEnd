@@ -26,7 +26,7 @@ namespace Tests.Tools
 
         public TestDescriptor CreateTestEnvironments(Permutation permutation)
         {
-            var result = resolver.Resolve(permutation);
+            var components = resolver.Resolve(permutation);
             var startupDir = GetStartupDir(permutation);
 
             if (startupDir.Exists)
@@ -43,10 +43,10 @@ namespace Tests.Tools
 
             startupDir.Create();
 
-            var sourceAssemblyFiles = Directory.GetFiles(result.RootProjectDirectory, "*", SearchOption.AllDirectories);
-            CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, result.Directories);
+            var sourceAssemblyFiles = Directory.GetFiles(components.RootProjectDirectory, "*", SearchOption.AllDirectories);
+            CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, components.Directories);
 
-            var projectAssemblyPath = Path.Combine(startupDir.FullName, result.RootProjectDirectory + "." + permutation.Platform + ".exe");
+            var projectAssemblyPath = Path.Combine(startupDir.FullName, components.RootProjectDirectory + "." + permutation.Platform + ".exe");
 
             var descriptor = new TestDescriptor
             {
