@@ -22,10 +22,6 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
   </ItemGroup>
 
-<!--  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">-->
-<!--    <PackageReference Include="Microsoft.Win32.Registry" Version="4.4.0" />-->
-<!--  </ItemGroup>-->
-
   <ItemGroup>
     <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
