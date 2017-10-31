@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-beta0009" />
-    <PackageReference Include="NServiceBus.RabbitMQ" Version="5.0.0-beta30-0009" />
+    <PackageReference Include="NServiceBus.RabbitMQ" Version="5.0.0-beta0031" />
   </ItemGroup>
 
   <ItemGroup>
