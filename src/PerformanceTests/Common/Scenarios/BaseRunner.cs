@@ -112,22 +112,19 @@ public abstract partial class BaseRunner : IContext
             const int MinimumBatchSeedDuration = 2500;
             var batchSize = 512;
 
-            Parallel.ForEach(IterateUntilFalse(() => !cts.Token.IsCancellationRequested),
-                new ParallelOptions { MaxDegreeOfParallelism = 4 },
-                b =>
-              {
-                  var currentBatchSize = batchSize;
-                  var sw = Stopwatch.StartNew();
-                  BatchHelper.Batch(currentBatchSize, i => instance.SendMessage(Session)).ConfigureAwait(false).GetAwaiter().GetResult();
-                  Interlocked.Add(ref count, currentBatchSize);
-                  var duration = sw.ElapsedMilliseconds;
-                  if (duration < MinimumBatchSeedDuration)
-                  {
-                      batchSize = currentBatchSize * 2; // Last writer wins
-                      Log.InfoFormat("Increasing seed batch size to {0,7:N0} as sending took {1,7:N0}ms which is less then {2:N0}ms", batchSize, duration, MinimumBatchSeedDuration);
-                  }
-              }
-            );
+            while (!cts.Token.IsCancellationRequested)
+            {
+                var currentBatchSize = batchSize;
+                var sw = Stopwatch.StartNew();
+                await BatchHelper.Batch(currentBatchSize, i => instance.SendMessage(Session)).ConfigureAwait(false);
+                Interlocked.Add(ref count, currentBatchSize);
+                var duration = sw.ElapsedMilliseconds;
+                if (duration < MinimumBatchSeedDuration)
+                {
+                    batchSize = currentBatchSize * 2; // Last writer wins
+                    Log.InfoFormat("Increasing seed batch size to {0,7:N0} as sending took {1,7:N0}ms which is less then {2:N0}ms", batchSize, duration, MinimumBatchSeedDuration);
+                }
+            }
 
             var elapsed = start.Elapsed;
             var avg = count / elapsed.TotalSeconds;
