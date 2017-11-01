@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <RootNamespace>Transport.V7.MQMQ_v1</RootNamespace>
-    <AssemblyName>Transport.V7.MQMQ_v1</AssemblyName>
+    <RootNamespace>Transport.V7.MSMQ</RootNamespace>
+    <AssemblyName>Transport.V7.MSMQ_v1</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.MSMQ_v1\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
   </PropertyGroup>

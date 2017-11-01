@@ -75,7 +75,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtifactsParser", "Artifact
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NServiceBus7", "NServiceBus7\NServiceBus7.csproj", "{FFD0D5BB-8AD1-48E5-8F73-E009F743849F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transport.V7.MQMQ_v1", "Transport.V7.MQMQ_v1\Transport.V7.MQMQ_v1.csproj", "{65D68C3F-E642-4676-84A0-168EA009477A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transport.V7.MSMQ_v1", "Transport.V7.MSMQ_v1\Transport.V7.MSMQ_v1.csproj", "{65D68C3F-E642-4676-84A0-168EA009477A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.V7.InMemory", "Persistence.V7.InMemory\Persistence.V7.InMemory.csproj", "{F9E0CC37-8473-423D-9C1F-3571050EA5FD}"
 EndProject
