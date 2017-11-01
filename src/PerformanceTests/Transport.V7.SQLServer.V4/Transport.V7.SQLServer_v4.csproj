@@ -5,6 +5,7 @@
     <RootNamespace>Transport.V7.SQLServer</RootNamespace>
     <AssemblyName>Transport.V7.SQLServer_v4</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.SQLServer_v4\</OutputPath>
+    <Configurations>Debug;Release;Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

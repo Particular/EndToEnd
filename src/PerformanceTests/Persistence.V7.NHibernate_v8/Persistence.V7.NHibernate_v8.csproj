@@ -6,6 +6,7 @@
     <AssemblyName>Persistence.V7.NHibernate_v8</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Persistence.V7.NHibernate\</OutputPath>
     <DefineConstants>$(DefineConstants);Version7</DefineConstants>
+    <Configurations>Debug;Release;Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

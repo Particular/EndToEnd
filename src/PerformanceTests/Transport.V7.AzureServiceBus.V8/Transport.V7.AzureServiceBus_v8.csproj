@@ -5,6 +5,7 @@
     <RootNamespace>Transport.V7.AzureServiceBus.V8</RootNamespace>
     <AssemblyName>Transport.V7.AzureServiceBus.V8</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.AzureServiceBus_v8\</OutputPath>
+    <Configurations>Debug;Release;Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

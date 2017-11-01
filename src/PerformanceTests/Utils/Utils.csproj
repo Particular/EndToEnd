@@ -5,6 +5,7 @@
     <RootNamespace>Utils</RootNamespace>
     <AssemblyName>Utils</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Utils\</OutputPath>
+    <Configurations>Debug;Release;Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

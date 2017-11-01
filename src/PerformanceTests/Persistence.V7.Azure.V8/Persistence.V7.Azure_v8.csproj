@@ -5,6 +5,7 @@
     <AssemblyName>Persistence.V7.Azure.V8</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Persistence.V7.Azure_v8\</OutputPath>
     <DefineConstants>$(DefineConstants);Version7</DefineConstants>
+    <Configurations>Debug;Release;Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

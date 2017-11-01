@@ -10,6 +10,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DefineConstants>$(DefineConstants);Version7</DefineConstants>
     <OutputPath>..\bin\$(Configuration)\NServiceBus7\</OutputPath>
+    <Configurations>Debug;Release;Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,12 +35,16 @@
     <None Include="App.config">
       <TransformOnBuild>true</TransformOnBuild>
     </None>
-    <None Include="App.Local.config">
-      <DependentUpon>App.config</DependentUpon>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.Debug.config">
       <IsTransformFile>True</IsTransformFile>
     </None>
-    <None Include="App.Release.config">
-      <DependentUpon>App.config</DependentUpon>
+    <None Update="App.Local.config">
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Update="App.Release.config">
       <IsTransformFile>True</IsTransformFile>
     </None>
   </ItemGroup>
