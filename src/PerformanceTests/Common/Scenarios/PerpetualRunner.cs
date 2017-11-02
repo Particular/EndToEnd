@@ -10,7 +10,7 @@ public abstract class PerpetualRunner : BaseRunner
     protected override async Task Start(ISession session)
     {
         const int duration = 5000;
-        await base.Start(session);
+        await base.Start(session).ConfigureAwait(false);
         var seedSize = MaxConcurrencyLevel * Permutation.PrefetchMultiplier * 2;
 
         Log.InfoFormat("Trying to seed {0:N0} items within {1:N0}ms...", seedSize, duration);
