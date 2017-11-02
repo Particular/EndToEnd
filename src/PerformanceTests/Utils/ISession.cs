@@ -3,7 +3,7 @@
 public interface ISession
 {
     Task Send(object message);
+    Task Send(string destination, object message);
     Task Publish(object message);
-    Task SendLocal(object message);
     Task Close();
 }

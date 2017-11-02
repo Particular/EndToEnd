@@ -10,7 +10,7 @@ abstract class SendLoop : BaseLoop
     }
     protected override Task SendMessage(ISession session)
     {
-        return session.SendLocal(new Command { Data = Data });
+        return session.Send(EndpointName, new Command { Data = Data });
     }
 
     class Command : ICommand

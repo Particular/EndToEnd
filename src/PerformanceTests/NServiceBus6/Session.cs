@@ -15,14 +15,14 @@ class Session : ISession
         return instance.Send(message);
     }
 
+    public Task Send(string destination, object message)
+    {
+        return instance.Send(destination, message);
+    }
+
     public Task Publish(object message)
     {
         return instance.Publish(message);
-    }
-
-    public Task SendLocal(object message)
-    {
-        return instance.SendLocal(message);
     }
 
     public Task Close()

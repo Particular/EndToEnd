@@ -11,7 +11,7 @@ class GatedSendLocalRunner : LoopRunner
 {
     protected override Task SendMessage(ISession session)
     {
-        return session.SendLocal(new Command
+        return session.Send(EndpointName, new Command
         {
             Data = Data
         });

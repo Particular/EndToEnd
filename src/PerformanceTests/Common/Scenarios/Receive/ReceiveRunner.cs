@@ -26,7 +26,7 @@ partial class ReceiveRunner : BaseRunner, ICreateSeedData
     public Task SendMessage(ISession session)
     {
         Interlocked.Increment(ref seedCount);
-        return session.SendLocal(new Command { Data = Data });
+        return session.Send(EndpointName, new Command { Data = Data });
     }
 
     static void Signal()

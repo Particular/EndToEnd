@@ -15,7 +15,7 @@ partial class SagaCongestionRunner
 {
     protected override Task Seed(int i, ISession session)
     {
-        return session.SendLocal(new Command { Identifier = 1, Data = Data });
+        return session.Send(EndpointName, new Command { Identifier = 1, Data = Data });
     }
 
     public class Command : ICommand
