@@ -24,7 +24,7 @@
             endpointConfiguration.EnableInstallers();
             endpointConfiguration.UsePersistence<InMemoryPersistence>();
             endpointConfiguration.UseTransport<AzureServiceBusTransport>()
-                .UseTopology<EndpointOrientedTopology>()
+                .UseEndpointOrientedTopology()
                 .RegisterPublisher(typeof(TestEvent), "source")
                 .ConnectionString(AzureServiceBusConnectionStringBuilder.Build)
                 .Sanitization().UseStrategy<ValidateAndHashIfNeeded>();
