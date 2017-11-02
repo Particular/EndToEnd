@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Net;
 using NServiceBus.Logging;
@@ -31,5 +32,11 @@ static class EnvironmentStats
         log.InfoFormat("EnableDnsRoundRobin: {0}", ServicePointManager.EnableDnsRoundRobin);
         log.InfoFormat("Expect100Continue: {0}", ServicePointManager.Expect100Continue);
         log.InfoFormat("UseNagleAlgorithm: {0}", ServicePointManager.UseNagleAlgorithm);
+
+        log = LogManager.GetLogger("ENVVAR");
+        foreach (var item in Environment.GetEnvironmentVariables().OfType<DictionaryEntry>().OrderBy(x=>x.Key))
+        {
+            log.DebugFormat("{0}={1}", item.Key, item.Value);
+        }
     }
 }
