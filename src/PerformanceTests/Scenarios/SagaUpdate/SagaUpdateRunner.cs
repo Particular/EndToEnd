@@ -6,7 +6,7 @@ partial class SagaUpdateRunner
 {
     protected override Task Seed(int i, ISession session)
     {
-        return session.SendLocal(new Command { Identifier = ++i, Data = Data });
+        return session.Send(EndpointName, new Command { Identifier = ++i, Data = Data });
     }
 
     public class Command : ICommand

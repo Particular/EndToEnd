@@ -14,7 +14,7 @@ partial class SendLocalOneOnOneRunner : PerpetualRunner
 {
     protected override Task Seed(int i, ISession session)
     {
-        return session.SendLocal(new Command { Data = Data });
+        return session.Send(EndpointName, new Command { Data = Data });
     }
 
     public class Command : ICommand

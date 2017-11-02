@@ -6,7 +6,7 @@ partial class SagaInitiateRunner : BaseRunner, ICreateSeedData
 {
     public Task SendMessage(ISession session)
     {
-        return session.SendLocal(new Command { Identifier = Guid.NewGuid() });
+        return session.Send(EndpointName, new Command { Identifier = Guid.NewGuid() });
     }
 
     public class Command : ICommand
