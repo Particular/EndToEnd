@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net452</TargetFramework>
     <RootNamespace>Transport.V7.AzureStorageQueues</RootNamespace>
     <AssemblyName>Transport.V7.AzureStorageQueues.V8</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.AzureStorageQueues_v8\</OutputPath>

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net452</TargetFramework>
     <RootNamespace>Persistence.V7.Azure.V8</RootNamespace>
     <AssemblyName>Persistence.V7.Azure.V8</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Persistence.V7.Azure_v8\</OutputPath>

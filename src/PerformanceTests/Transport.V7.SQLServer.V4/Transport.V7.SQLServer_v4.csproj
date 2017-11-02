@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net452</TargetFramework>
     <RootNamespace>Transport.V7.SQLServer</RootNamespace>
     <AssemblyName>Transport.V7.SQLServer_v4</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.SQLServer_v4\</OutputPath>

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
-    <OutputType>Library</OutputType>
+    <TargetFramework>net452</TargetFramework>
     <RootNamespace>Persistence.V7.InMemory</RootNamespace>
     <AssemblyName>Persistence.V7.InMemory</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Persistence.V7.InMemory\</OutputPath>

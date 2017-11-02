@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net452</TargetFramework>
     <RootNamespace>Transport.V7.RabbitMQ</RootNamespace>
     <AssemblyName>Transport.V7.RabbitMQ.V5</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.RabbitMQ_v5\</OutputPath>

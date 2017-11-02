@@ -28,7 +28,7 @@ namespace Tests.Tools
             if (permutation.Version == NServiceBusVersion.V7)
             {
                 // v7 targeting projects are using the new csproj format
-                dirs = dirs.Select(d => d.GetDirectories("net461").Single());
+                dirs = dirs.Select(d => d.GetDirectories("net452").Single());
             }
 
             return new PermutationResult

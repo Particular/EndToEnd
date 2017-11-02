@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
-    <OutputType>Library</OutputType>
+    <TargetFramework>net452</TargetFramework>
     <RootNamespace>Persistence.V7.NHibernate</RootNamespace>
     <AssemblyName>Persistence.V7.NHibernate_v8</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Persistence.V7.NHibernate\</OutputPath>
