@@ -56,12 +56,12 @@ namespace Host
 
                     if (Environment.UserInteractive) Console.Title = PermutationParser.ToFriendlyString(permutation);
 
-                    var runnerTypes = AssemblyScanner.GetAllTypes<BaseRunner>();
+                    var runnerTypes = AssemblyScanner.GetAllTypes<BaseRunner>().ToArray();
 
-                    foreach(var t in runnerTypes) Log.Error(t.FullName);
+                    foreach (var t in runnerTypes) Log.DebugFormat("Found runner: {0}", t.FullName);
 
-                    var runnerType = runnerTypes.First(x=>x.Name.Contains(permutation.Tests[0]));
-                    
+                    var runnerType = runnerTypes.First(x => x.Name.Contains(permutation.Tests[0]));
+
                     var runnableTest = (BaseRunner)Activator.CreateInstance(runnerType);
 
                     Log.InfoFormat("Executing scenario: {0}", runnableTest);
