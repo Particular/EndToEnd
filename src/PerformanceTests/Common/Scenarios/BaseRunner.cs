@@ -26,7 +26,6 @@ public abstract partial class BaseRunner : IContext
     protected int MaxConcurrencyLevel { private set; get; }
 
     protected static bool Shutdown { private set; get; }
-    protected readonly BatchHelper.IBatchHelper BatchHelper = global::BatchHelper.Instance;
     protected readonly Statistics Statistics = Statistics.Instance;
 
     public async Task Execute(Permutation permutation, string endpointName)
@@ -112,11 +111,13 @@ public abstract partial class BaseRunner : IContext
             const int MinimumBatchSeedDuration = 2500;
             var batchSize = 512;
 
+            Log.InfoFormat("BatchHelper type: {0}", BatchHelper.Instance);
+
             while (!cts.Token.IsCancellationRequested)
             {
                 var currentBatchSize = batchSize;
                 var sw = Stopwatch.StartNew();
-                await BatchHelper.Batch(currentBatchSize, i => instance.SendMessage(Session)).ConfigureAwait(false);
+                await BatchHelper.Instance.Batch(currentBatchSize, i => instance.SendMessage(Session)).ConfigureAwait(false);
                 Interlocked.Add(ref count, currentBatchSize);
                 var duration = sw.ElapsedMilliseconds;
                 if (duration < MinimumBatchSeedDuration)

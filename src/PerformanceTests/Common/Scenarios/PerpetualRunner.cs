@@ -15,6 +15,8 @@ public abstract class PerpetualRunner : BaseRunner
 
         Log.InfoFormat("Trying to seed {0:N0} items within {1:N0}ms...", seedSize, duration);
 
+        Log.InfoFormat("BatchHelper type: {0}", BatchHelper.Instance);
+
         var start = Stopwatch.StartNew();
         var chunkSize = 16;
         var count = 0;
@@ -30,7 +32,7 @@ public abstract class PerpetualRunner : BaseRunner
 
             Log.InfoFormat("\tSeeding {0:N0} items...", j);
 
-            await BatchHelper.Batch(j, i => Seed(i + count /*no issue, as we await*/, session)).ConfigureAwait(false);
+            await BatchHelper.Instance.Batch(j, i => Seed(i + count /*no issue, as we await*/, session)).ConfigureAwait(false);
             chunkSize *= 2;
             count += j;
         } while (count < seedSize);

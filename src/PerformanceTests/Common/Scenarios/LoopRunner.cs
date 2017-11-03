@@ -51,6 +51,8 @@ abstract class LoopRunner : BaseRunner
 
             const int MinimumBatchSeedDuration = 2500;
 
+            Log.InfoFormat("BatchHelper type: {0}", BatchHelper.Instance);
+
             while (!stopLoopCancellationToken.IsCancellationRequested)
             {
                 try
@@ -59,7 +61,7 @@ abstract class LoopRunner : BaseRunner
                     countdownEvent.Reset(batchSize);
                     var batchDuration = Stopwatch.StartNew();
 
-                    await BatchHelper.Batch(batchSize, i => SendMessage(session)).ConfigureAwait(false);
+                    await BatchHelper.Instance.Batch(batchSize, i => SendMessage(session)).ConfigureAwait(false);
 
                     count += batchSize;
 

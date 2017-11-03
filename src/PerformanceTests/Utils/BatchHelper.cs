@@ -19,6 +19,19 @@ public class BatchHelper
             return Task.WhenAll(sends);
         }
     }
+    public class TaskWhenAllTaskRun : IBatchHelper
+    {
+        public Task Batch(int count, Func<int, Task> action)
+        {
+            var sends = new Task[count];
+            for (var i = 0; i < count; i++)
+            {
+                var i2 = i;
+                sends[i] = Task.Run(() => action(i2));
+            }
+            return Task.WhenAll(sends);
+        }
+    }
 
     public class ParallelFor : IBatchHelper
     {
