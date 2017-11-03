@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -22,10 +21,6 @@ public class Statistics : IDisposable
     TimeSpan sendTimeWithTx = TimeSpan.Zero;
 
     Process process;
-    PerformanceCounter privateBytesCounter;
-    Timer perfCountersTimer;
-
-    static ConcurrentBag<double> perfCounterValues = new ConcurrentBag<double>();
 
     static ILog logger = LogManager.GetLogger("Statistics");
 
@@ -48,8 +43,6 @@ public class Statistics : IDisposable
         if (disposing)
         {
             process?.Dispose();
-            privateBytesCounter?.Dispose();
-            perfCountersTimer?.Dispose();
             GC.SuppressFinalize(this);
         }
     }
@@ -74,12 +67,6 @@ public class Statistics : IDisposable
     Statistics()
     {
         process = Process.GetCurrentProcess();
-        privateBytesCounter = new PerformanceCounter("Process", "Private Bytes", process.ProcessName);
-        perfCountersTimer = new Timer(state =>
-            perfCounterValues.Add(privateBytesCounter.NextValue()),
-            null,
-            TimeSpan.FromSeconds(1),
-            TimeSpan.FromSeconds(1));
     }
 
     static long GetTimestamp()
@@ -99,7 +86,6 @@ public class Statistics : IDisposable
         Interlocked.Exchange(ref numberOfRetries, 0);
         sendTimeNoTx = TimeSpan.Zero;
         sendTimeWithTx = TimeSpan.Zero;
-        perfCountersTimer.Dispose();
     }
 
     public void Dump()
@@ -125,10 +111,10 @@ public class Statistics : IDisposable
         if (sendTimeWithTx != TimeSpan.Zero)
             LogStats("SendingInsideTX", Convert.ToDouble(NumberOfMessages / 2) / sendTimeWithTx.TotalSeconds, "msg/s", StatsFormatDouble);
 
-        var counterValues = perfCounterValues.ToList();
-        LogStats("PrivateBytes-Min", counterValues.Min() / 1024, "kb", StatsFormatInt);
-        LogStats("PrivateBytes-Max", counterValues.Max() / 1024, "kb", StatsFormatInt);
-        LogStats("PrivateBytes-Avg", counterValues.Average() / 1024, "kb", StatsFormatInt);
+        LogStats("PrivateMemorySize", process.PrivateMemorySize64 / 1024, "kB", StatsFormatInt);
+        LogStats("PeakWorkingSet", process.PeakWorkingSet64 / 1024, "kB", StatsFormatInt);
+        LogStats("PeakPagedMemorySize", process.PeakPagedMemorySize64 / 1024, "kB", StatsFormatInt);
+        LogStats("PeakVirtualMemorySize", process.PeakVirtualMemorySize64 / 1024, "kB", StatsFormatInt);
     }
 
     static void LogStats(string key, double value, string unit, string format)
