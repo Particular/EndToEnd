@@ -10,6 +10,8 @@ namespace Variables
         RavenDB_Embedded,
         //MSMQ,
         Azure,
-        Sql
+        Sql,
+        Sql_Azure,
+        Sql_RDS
     }
 }
