@@ -11,6 +11,7 @@
     <DefineConstants>$(DefineConstants);Version7</DefineConstants>
     <OutputPath>..\bin\$(Configuration)\NServiceBus7\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
