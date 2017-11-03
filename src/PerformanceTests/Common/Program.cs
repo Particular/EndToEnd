@@ -37,7 +37,7 @@ namespace Host
 
         static async Task<int> MainAsync()
         {
-            GCSettings.LatencyMode = GCLatencyMode.Batch;
+            GCSettings.LatencyMode = GCLatencyMode.Batch; // https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/latency
             LogManager.Use<Log4NetFactory>();
 
             Log = LogManager.GetLogger(typeof(Program));
