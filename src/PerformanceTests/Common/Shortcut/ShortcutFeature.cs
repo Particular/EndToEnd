@@ -11,6 +11,8 @@ public class ShortcutFeature : Feature
     protected override void Setup(FeatureConfigurationContext context)
     {
         context.Container.ConfigureComponent<ShortcutBehavior>(DependencyLifecycle.SingleInstance);
-        context.Pipeline.Register(nameof(ShortcutBehavior), typeof(ShortcutBehavior), "Shortcut processing to drain queue ASAP transport agnostic.");
+#if Version5
+        context.Pipeline.Register<ShortcutBehavior.Step>();
+#endif
     }
 }
