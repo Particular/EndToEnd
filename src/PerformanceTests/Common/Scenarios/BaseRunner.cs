@@ -101,7 +101,7 @@ public abstract partial class BaseRunner : IContext
 
         try
         {
-            Log.InfoFormat("Start seeding messages for {0:N} seconds...", Settings.SeedDuration.TotalSeconds);
+            Log.InfoFormat("Start seeding messages for {0:N} seconds until {1}...", Settings.SeedDuration.TotalSeconds, DateTime.Now + TimeSpan.FromSeconds(Settings.SeedDuration.TotalSeconds));
             var cts = new CancellationTokenSource();
             cts.CancelAfter(Settings.SeedDuration);
 
@@ -117,7 +117,19 @@ public abstract partial class BaseRunner : IContext
             {
                 var currentBatchSize = batchSize;
                 var sw = Stopwatch.StartNew();
-                await BatchHelper.Instance.Batch(currentBatchSize, i => instance.SendMessage(Session)).ConfigureAwait(false);
+                await BatchHelper.Instance.Batch(currentBatchSize,
+                    async i =>
+                    {
+                        try
+                        {
+                            await RetryWithBackoff(() => instance.SendMessage(Session), cts.Token, i.ToString(), 5)
+                                .ConfigureAwait(false);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                        }
+
+                    }).ConfigureAwait(false);
                 Interlocked.Add(ref count, currentBatchSize);
                 var duration = sw.ElapsedMilliseconds;
                 if (duration < MinimumBatchSeedDuration)
@@ -161,7 +173,7 @@ public abstract partial class BaseRunner : IContext
     }
 
     bool IsSeedingData => this is ICreateSeedData;
-    bool IsPurgingSupported => (Permutation.Transport != Transport.AzureServiceBus && Permutation.Transport != Transport.AmazonSQS);
+    bool IsPurgingSupported => (Permutation.Transport != Transport.AzureServiceBus);
 
     static IEnumerable<int> IterateUntilFalse(Func<bool> condition)
     {
@@ -211,5 +223,33 @@ public abstract partial class BaseRunner : IContext
         Log.InfoFormat("Run: Duration {0}, until {1}", Settings.RunDuration, DateTime.Now + Settings.RunDuration);
         await Task.Delay(Settings.RunDuration).ConfigureAwait(false);
         Log.Info("Run duration expired.");
+    }
+
+    static Random random = new Random();
+    async Task RetryWithBackoff(Func<Task> action, CancellationToken token, string id, int maxAttempts)
+    {
+        while (true)
+        {
+            var attempts = 0;
+            try
+            {
+                await action()
+                    .ConfigureAwait(false);
+                return;
+            }
+            catch (Exception ex)
+            {
+                if (attempts > maxAttempts) throw new InvalidOperationException("Exhausted send retries.", ex);
+                double next;
+                lock (random) next = random.NextDouble();
+                next *= 0.2; // max 20% jitter
+                next += 1D;
+                next *= 100 * Math.Pow(2, ++attempts);
+                var delay = TimeSpan.FromMilliseconds(next);
+                Log.WarnFormat("{0} attempt {1} / {2} : {3} ({4})", id, attempts, delay, ex.Message, ex.GetType());
+                    await Task.Delay(delay, token)
+                        .ConfigureAwait(false);
+            }
+        }
     }
 }
