@@ -127,6 +127,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Scenarios", "Scenarios\Scen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V6.Sql_v2", "Persistence.V6.Sql.V2\Persistence.V6.Sql_v2.csproj", "{A3E380CE-6E44-4ED4-BBF6-BF08FA4DAE6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V5.AmazonSQS.V1", "Transport.V5.AmazonSQS.V1\Transport.V5.AmazonSQS.V1.csproj", "{C23EEB87-BAA3-4937-8F96-DAA6A6983405}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Scenarios\Scenarios.projitems*{02ca6a55-a771-4ad5-912a-484a2bbefbd5}*SharedItemsImports = 4
@@ -389,6 +391,12 @@ Global
 		{A3E380CE-6E44-4ED4-BBF6-BF08FA4DAE6D}.Local|Any CPU.Build.0 = Local|Any CPU
 		{A3E380CE-6E44-4ED4-BBF6-BF08FA4DAE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3E380CE-6E44-4ED4-BBF6-BF08FA4DAE6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C23EEB87-BAA3-4937-8F96-DAA6A6983405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C23EEB87-BAA3-4937-8F96-DAA6A6983405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C23EEB87-BAA3-4937-8F96-DAA6A6983405}.Local|Any CPU.ActiveCfg = Release|Any CPU
+		{C23EEB87-BAA3-4937-8F96-DAA6A6983405}.Local|Any CPU.Build.0 = Release|Any CPU
+		{C23EEB87-BAA3-4937-8F96-DAA6A6983405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C23EEB87-BAA3-4937-8F96-DAA6A6983405}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -442,6 +450,7 @@ Global
 		{BCF08AAB-D264-43E9-B970-C2BE8AADF038} = {51408171-3259-41A1-8621-5831B9CD569E}
 		{E2D3CA80-F978-4BAC-A873-3DD939FC65AE} = {3CB57DB2-A0E9-4C56-B3D4-9051F34BD2C1}
 		{A3E380CE-6E44-4ED4-BBF6-BF08FA4DAE6D} = {51408171-3259-41A1-8621-5831B9CD569E}
+		{C23EEB87-BAA3-4937-8F96-DAA6A6983405} = {6350B419-BA36-45CA-B21F-F791E6A987A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {123279E2-15F8-4285-A8B5-109A33AF0FDD}

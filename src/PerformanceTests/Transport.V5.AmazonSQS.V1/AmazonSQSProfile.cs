@@ -1,0 +1,46 @@
+﻿using System;
+using NServiceBus;
+using NServiceBus.Logging;
+using NServiceBus.Settings;
+using Tests.Permutations;
+using Variables;
+
+class AmazonSQSProfile : IProfile, INeedPermutation
+{
+    public Permutation Permutation { private get; set; }
+
+    public void Configure(BusConfiguration cfg)
+    {
+        // https://docs.particular.net/transports/sqs/configuration-options?version=sqs_1
+        cfg.UseTransport<SqsTransport>()
+            .ConnectionString(ConfigurationHelper.GetConnectionString("AmazonSQS"));
+
+        // https://docs.particular.net/transports/sqs/transaction-support
+        if (Permutation.TransactionMode != TransactionMode.Default
+            && Permutation.TransactionMode != TransactionMode.None
+            && Permutation.TransactionMode != TransactionMode.Receive
+            ) throw new NotSupportedException("TransactionMode: " + Permutation.TransactionMode);
+
+        InitTransactionMode(cfg.Transactions());
+    }
+
+    void InitTransactionMode(TransactionSettings transactionSettings)
+    {
+        var mode = Permutation.TransactionMode;
+        switch (mode)
+        {
+            case TransactionMode.Default:
+                return;
+            case TransactionMode.None:
+                transactionSettings.Disable();
+                return;
+            case TransactionMode.Receive:
+                transactionSettings.DisableDistributedTransactions();
+                return;
+            case TransactionMode.Atomic:
+            case TransactionMode.Transactional:
+            default:
+                throw new NotSupportedException("TransactionMode: " + mode);
+        }
+    }
+}
