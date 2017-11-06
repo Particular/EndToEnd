@@ -25,6 +25,12 @@ namespace Tests.Tools
             var dirs = root.GetDirectories()
                 .Where(d => components.Any(c => d.Name.StartsWith(c)));
 
+            if (permutation.Version == NServiceBusVersion.V7)
+            {
+                // v7 targeting projects are using the new csproj format
+                dirs = dirs.Select(d => d.GetDirectories("net452").Single());
+            }
+
             return new PermutationResult
             {
                 RootProjectDirectory = GetRootDirectory(permutation.Version),

@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{FEAAE402-8ED0-47FB-8E54-42B1D7F654CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{572499ED-E234-4C66-BD6E-D5A845065C5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{572499ED-E234-4C66-BD6E-D5A845065C5F}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Common", "Common\Common.shproj", "{19307507-7C7A-433E-9752-7A3E63876991}"
 EndProject
@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudioDebugHelper", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE378DAF-B1F4-418B-B521-C472E541CC0F}"
 	ProjectSection(SolutionItems) = preProject
-		.connectionstrings.config.template = .connectionstrings.config.template
+		.connectionstrings.config = .connectionstrings.config
 		cleanup.sql = cleanup.sql
 		NServiceBus.ico = NServiceBus.ico
 		readme.md = readme.md
@@ -73,27 +73,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Distribution.V6.SenderSide"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtifactsParser", "ArtifactsParser\ArtifactsParser.csproj", "{1EE3C2EE-7A98-4F57-90CD-11CDE828E0F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NServiceBus7", "NServiceBus7\NServiceBus7.csproj", "{FFD0D5BB-8AD1-48E5-8F73-E009F743849F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NServiceBus7", "NServiceBus7\NServiceBus7.csproj", "{FFD0D5BB-8AD1-48E5-8F73-E009F743849F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V7.MQMQ_v1", "Transport.V7.MQMQ_v1\Transport.V7.MQMQ_v1.csproj", "{65D68C3F-E642-4676-84A0-168EA009477A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transport.V7.MSMQ_v1", "Transport.V7.MSMQ_v1\Transport.V7.MSMQ_v1.csproj", "{65D68C3F-E642-4676-84A0-168EA009477A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.InMemory", "Persistence.V7.InMemory\Persistence.V7.InMemory.csproj", "{F9E0CC37-8473-423D-9C1F-3571050EA5FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.V7.InMemory", "Persistence.V7.InMemory\Persistence.V7.InMemory.csproj", "{F9E0CC37-8473-423D-9C1F-3571050EA5FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.RavenDB_v4", "Persistence.V7.RavenDB_v4\Persistence.V7.RavenDB_v4.csproj", "{225DB06A-E12E-483A-B744-A3294649EE57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.V7.RavenDB_v4", "Persistence.V7.RavenDB_v4\Persistence.V7.RavenDB_v4.csproj", "{225DB06A-E12E-483A-B744-A3294649EE57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.NHibernate_v8", "Persistence.V7.NHibernate_v8\Persistence.V7.NHibernate_v8.csproj", "{0C678E5B-168D-4596-B7B9-EFEB3173413C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.V7.NHibernate_v8", "Persistence.V7.NHibernate_v8\Persistence.V7.NHibernate_v8.csproj", "{0C678E5B-168D-4596-B7B9-EFEB3173413C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V7.SQLServer_v4", "Transport.V7.SQLServer.V4\Transport.V7.SQLServer_v4.csproj", "{18F93E5B-746A-4F78-B5EE-5F0F286DC78F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transport.V7.SQLServer_v4", "Transport.V7.SQLServer.V4\Transport.V7.SQLServer_v4.csproj", "{18F93E5B-746A-4F78-B5EE-5F0F286DC78F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V7.AmazonSQS_v4", "Transport.V7.AmazonSQS.V4\Transport.V7.AmazonSQS_v4.csproj", "{0B72CFCD-E3BF-490A-9591-9BD370F23859}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transport.V7.AmazonSQS_v4", "Transport.V7.AmazonSQS.V4\Transport.V7.AmazonSQS_v4.csproj", "{0B72CFCD-E3BF-490A-9591-9BD370F23859}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V7.RabbitMQ_v5", "Transport.V7.RabbitMQ.V5\Transport.V7.RabbitMQ_v5.csproj", "{7BD6F057-3764-4E40-8CED-FD77DDDC81F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transport.V7.RabbitMQ_v5", "Transport.V7.RabbitMQ.V5\Transport.V7.RabbitMQ_v5.csproj", "{7BD6F057-3764-4E40-8CED-FD77DDDC81F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V7.AzureServiceBus_v8", "Transport.V7.AzureServiceBus.V8\Transport.V7.AzureServiceBus_v8.csproj", "{6375B9A9-D1B7-42AB-A665-7EF6F9E7CFB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transport.V7.AzureServiceBus_v8", "Transport.V7.AzureServiceBus.V8\Transport.V7.AzureServiceBus_v8.csproj", "{6375B9A9-D1B7-42AB-A665-7EF6F9E7CFB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V7.AzureStorageQueues_v8", "Transport.V7.AzureStorageQueues.V8\Transport.V7.AzureStorageQueues_v8.csproj", "{A0F91DE1-7309-45B1-ADBC-D8388C6312C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transport.V7.AzureStorageQueues_v8", "Transport.V7.AzureStorageQueues.V8\Transport.V7.AzureStorageQueues_v8.csproj", "{A0F91DE1-7309-45B1-ADBC-D8388C6312C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.Azure_v8", "Persistence.V7.Azure.V8\Persistence.V7.Azure_v8.csproj", "{4B4045B2-1B52-44B7-9CC2-42C761B56C9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.V7.Azure_v8", "Persistence.V7.Azure.V8\Persistence.V7.Azure_v8.csproj", "{4B4045B2-1B52-44B7-9CC2-42C761B56C9B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AzureServiceBus", "AzureServiceBus", "{4D5970FE-3F07-4EC9-8382-0466F2F00AC0}"
 EndProject
@@ -121,7 +121,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport.V6.AmazonSQS_v3",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{51408171-3259-41A1-8621-5831B9CD569E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.V7.Sql_v3", "Persistence.V7.SQL.V3\Persistence.V7.Sql_v3.csproj", "{BCF08AAB-D264-43E9-B970-C2BE8AADF038}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.V7.Sql_v3", "Persistence.V7.SQL.V3\Persistence.V7.Sql_v3.csproj", "{BCF08AAB-D264-43E9-B970-C2BE8AADF038}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Scenarios", "Scenarios\Scenarios.shproj", "{E2D3CA80-F978-4BAC-A873-3DD939FC65AE}"
 EndProject
@@ -130,24 +130,18 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Scenarios\Scenarios.projitems*{02ca6a55-a771-4ad5-912a-484a2bbefbd5}*SharedItemsImports = 4
-		Scenarios\Scenarios.projitems*{0c678e5b-168d-4596-b7b9-efeb3173413c}*SharedItemsImports = 4
 		Common\Common.Data.projitems*{10d11044-c92c-42ad-830e-57012ff4f039}*SharedItemsImports = 4
 		Common\Common.Data.projitems*{19307507-7c7a-433e-9752-7a3e63876991}*SharedItemsImports = 13
 		Scenarios\Scenarios.projitems*{207e1813-ec15-4c3b-adbc-88e3733257e4}*SharedItemsImports = 4
-		Scenarios\Scenarios.projitems*{225db06a-e12e-483a-b744-a3294649ee57}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{2951d082-f37d-45f1-92fa-19dcff3d8622}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{426cf1b4-1aec-42a3-b695-33bee5a694f3}*SharedItemsImports = 4
-		Scenarios\Scenarios.projitems*{4b4045b2-1b52-44b7-9cc2-42c761b56c9b}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{a3e380ce-6e44-4ed4-bbf6-bf08fa4dae6d}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{a87b5d9c-1abe-4f11-a080-6903f7b456fa}*SharedItemsImports = 4
-		Scenarios\Scenarios.projitems*{bcf08aab-d264-43e9-b970-c2be8aadf038}*SharedItemsImports = 4
 		Common\Common.Data.projitems*{be2c7b5e-7a71-4b0c-9020-343ed2010993}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{c3e92dc8-f3c3-4cbf-bbc8-02b6dd440817}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{d8cb2da9-4ae4-417c-89c3-00555f5e1f47}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{e2d3ca80-f978-4bac-a873-3dd939fc65ae}*SharedItemsImports = 13
-		Scenarios\Scenarios.projitems*{f9e0cc37-8473-423d-9c1f-3571050ea5fd}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{fac26029-1e00-43e5-b7db-13318fc1092a}*SharedItemsImports = 4
-		Common\Common.Data.projitems*{ffd0d5bb-8ad1-48e5-8f73-e009f743849f}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

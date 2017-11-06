@@ -2,20 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
-    <RootNamespace>Transport.V7.AzureServiceBus.V8</RootNamespace>
-    <AssemblyName>Transport.V7.AzureServiceBus.V8</AssemblyName>
-    <OutputPath>..\bin\$(Configuration)\Transport.V7.AzureServiceBus_v8\</OutputPath>
+    <RootNamespace>Transport.V7.MSMQ</RootNamespace>
+    <AssemblyName>Transport.V7.MSMQ_v1</AssemblyName>
+    <OutputPath>..\bin\$(Configuration)\Transport.V7.MSMQ_v1\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-*" />
-    <PackageReference Include="NServiceBus.Azure.Transports.WindowsAzureServiceBus" Version="8.0.0-*" />
+    <PackageReference Include="NServiceBus.Transport.Msmq" Version="1.0.0-*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NServiceBus7\NServiceBus7.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

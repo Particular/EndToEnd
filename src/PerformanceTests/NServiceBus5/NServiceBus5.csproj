@@ -134,7 +134,7 @@ copy "$(TargetPath).config" "$(TargetDir)NServiceBus5.x86.exe.config"
 "%25programFiles(x86)%25\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\CorFlags.exe" "$(TargetDir)NServiceBus5.x86.exe" /32bit+</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>copy /-Y "$(SolutionDir).connectionstrings.config.template" "$(ProjectDir).connectionstrings.config"</PreBuildEvent>
+    <PreBuildEvent>copy /-Y "$(SolutionDir).connectionstrings.config" "$(ProjectDir).connectionstrings.config"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets" Condition="Exists('..\..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
