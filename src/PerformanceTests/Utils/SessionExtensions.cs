@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using NLog;
+using log4net;
 
 public static class SessionExtensions
 {
-    static Logger Log = LogManager.GetLogger(nameof(SessionExtensions));
+    static ILog Log = LogManager.GetLogger(nameof(SessionExtensions));
 
     public static async Task CloseWithSuppress(this ISession instance)
     {
@@ -14,7 +14,7 @@ public static class SessionExtensions
         }
         catch (Exception ex)
         {
-            Log.Warn(ex, "CloseWithSuppress ({0}): {1}", ex.GetType(), ex.Message.Replace(Environment.NewLine,"; "));
+            Log.Warn(ex);
         }
     }
 }
