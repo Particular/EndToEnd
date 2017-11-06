@@ -5,6 +5,7 @@ namespace Categories
     using NUnit.Framework;
     using Tests.Permutations;
     using Variables;
+    using System.Linq;
 
     [TestFixture(Description = "Persisters", Category = "Performance")]
     public class PersistersFixture : Base
@@ -24,7 +25,8 @@ namespace Categories
                 Persisters = (Persistence[])Enum.GetValues(typeof(Persistence)),
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
-            });
+            },
+            filter => filter.Version != NServiceBusVersion.V5 || !new[] { Persistence.Sql, Persistence.Sql_Azure, Persistence.Sql_RDS }.Contains(filter.Persister));
         }
     }
 }
