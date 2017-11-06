@@ -7,6 +7,7 @@ namespace Host
     using System.Runtime;
     using System.Threading;
     using System.Threading.Tasks;
+    using log4net.Config;
     using Microsoft.Win32;
 #if Version5
     using NServiceBus.Log4Net;
@@ -28,6 +29,8 @@ namespace Host
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+            XmlConfigurator.Configure();
 
             return MainAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
