@@ -80,8 +80,6 @@ public class Statistics : IDisposable
             null,
             TimeSpan.FromSeconds(1),
             TimeSpan.FromSeconds(1));
-
-        //ConfigureSplunk();
     }
 
     static long GetTimestamp()
