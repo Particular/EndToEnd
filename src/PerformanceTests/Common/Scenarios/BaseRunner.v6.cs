@@ -87,15 +87,8 @@ partial class BaseRunner
     {
         try
         {
-            try
-            {
-                Log.Fatal("OnCriticalError", context.Exception);
-                await context.Stop().ConfigureAwait(false);
-            }
-            finally
-            {
-                NLog.LogManager.Shutdown();
-            }
+            Log.Fatal("OnCriticalError", context.Exception);
+            await context.Stop().ConfigureAwait(false);
         }
         finally
         {

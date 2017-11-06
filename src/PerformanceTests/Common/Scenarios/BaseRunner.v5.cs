@@ -83,15 +83,8 @@ partial class BaseRunner
     {
         try
         {
-            try
-            {
-                Log.Fatal("OnCriticalError", exception);
-                Session.CloseWithSuppress().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            finally
-            {
-                NLog.LogManager.Shutdown();
-            }
+            Log.Fatal("OnCriticalError", exception);
+            Session.CloseWithSuppress().ConfigureAwait(false).GetAwaiter().GetResult();
         }
         finally
         {

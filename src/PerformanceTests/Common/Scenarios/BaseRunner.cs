@@ -49,7 +49,7 @@ public abstract partial class BaseRunner : IContext
 
 
         await Setup().ConfigureAwait(false);
-        Statistics.Reset(GetType().Name);
+        Statistics.Reset();
 
         Log.InfoFormat("Create receiving endpoint...");
         await CreateEndpoint().ConfigureAwait(false);
