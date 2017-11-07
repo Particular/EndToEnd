@@ -111,7 +111,7 @@ public abstract partial class BaseRunner : IContext
             const int MinimumBatchSeedDuration = 2500;
             var batchSize = 512;
 
-            Log.InfoFormat("BatchHelper type: {0}", BatchHelper.Instance);
+            Log.InfoFormat("BatchHelper type: {0}", BatchHelper.Instance.GetType());
 
             while (!cts.Token.IsCancellationRequested)
             {

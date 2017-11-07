@@ -15,7 +15,7 @@ public abstract class PerpetualRunner : BaseRunner
 
         Log.InfoFormat("Trying to seed {0:N0} items within {1:N0}ms...", seedSize, duration);
 
-        Log.InfoFormat("BatchHelper type: {0}", BatchHelper.Instance);
+        Log.InfoFormat("BatchHelper type: {0}", BatchHelper.Instance.GetType());
 
         var start = Stopwatch.StartNew();
         var chunkSize = 16;

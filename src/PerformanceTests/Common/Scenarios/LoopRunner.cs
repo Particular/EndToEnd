@@ -51,7 +51,7 @@ abstract class LoopRunner : BaseRunner
 
             const int MinimumBatchSeedDuration = 2500;
 
-            Log.InfoFormat("BatchHelper type: {0}", BatchHelper.Instance);
+            Log.InfoFormat("BatchHelper type: {0}", BatchHelper.Instance.GetType());
 
             while (!stopLoopCancellationToken.IsCancellationRequested)
             {
