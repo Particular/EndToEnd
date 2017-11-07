@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Messaging" />
     <Reference Include="System.Configuration" />
   </ItemGroup>
   
