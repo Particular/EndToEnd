@@ -26,7 +26,6 @@ public abstract partial class BaseRunner : IContext
     protected int MaxConcurrencyLevel { private set; get; }
 
     protected static bool Shutdown { private set; get; }
-    protected readonly BatchHelper.IBatchHelper BatchHelper = global::BatchHelper.Instance;
     protected readonly Statistics Statistics = Statistics.Instance;
 
     public async Task Execute(Permutation permutation, string endpointName)
@@ -102,7 +101,7 @@ public abstract partial class BaseRunner : IContext
 
         try
         {
-            Log.InfoFormat("Start seeding messages for {0:N} seconds...", Settings.SeedDuration.TotalSeconds);
+            Log.InfoFormat("Start seeding messages for {0:N} seconds until {1}...", Settings.SeedDuration.TotalSeconds, DateTime.Now + TimeSpan.FromSeconds(Settings.SeedDuration.TotalSeconds));
             var cts = new CancellationTokenSource();
             cts.CancelAfter(Settings.SeedDuration);
 
@@ -112,22 +111,33 @@ public abstract partial class BaseRunner : IContext
             const int MinimumBatchSeedDuration = 2500;
             var batchSize = 512;
 
-            Parallel.ForEach(IterateUntilFalse(() => !cts.Token.IsCancellationRequested),
-                new ParallelOptions { MaxDegreeOfParallelism = 4 },
-                b =>
-              {
-                  var currentBatchSize = batchSize;
-                  var sw = Stopwatch.StartNew();
-                  BatchHelper.Batch(currentBatchSize, i => instance.SendMessage(Session)).ConfigureAwait(false).GetAwaiter().GetResult();
-                  Interlocked.Add(ref count, currentBatchSize);
-                  var duration = sw.ElapsedMilliseconds;
-                  if (duration < MinimumBatchSeedDuration)
-                  {
-                      batchSize = currentBatchSize * 2; // Last writer wins
-                      Log.InfoFormat("Increasing seed batch size to {0,7:N0} as sending took {1,7:N0}ms which is less then {2:N0}ms", batchSize, duration, MinimumBatchSeedDuration);
-                  }
-              }
-            );
+            Log.InfoFormat("BatchHelper type: {0}", BatchHelper.Instance.GetType());
+
+            while (!cts.Token.IsCancellationRequested)
+            {
+                var currentBatchSize = batchSize;
+                var sw = Stopwatch.StartNew();
+                await BatchHelper.Instance.Batch(currentBatchSize,
+                    async i =>
+                    {
+                        try
+                        {
+                            await RetryWithBackoff(() => instance.SendMessage(Session), cts.Token, i.ToString(), 5)
+                                .ConfigureAwait(false);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            Interlocked.Decrement(ref count);
+                        }
+                    }).ConfigureAwait(false);
+                Interlocked.Add(ref count, currentBatchSize);
+                var duration = sw.ElapsedMilliseconds;
+                if (duration < MinimumBatchSeedDuration)
+                {
+                    batchSize = currentBatchSize * 2; // Last writer wins
+                    Log.InfoFormat("Increasing seed batch size to {0,7:N0} as sending took {1,7:N0}ms which is less then {2:N0}ms", batchSize, duration, MinimumBatchSeedDuration);
+                }
+            }
 
             var elapsed = start.Elapsed;
             var avg = count / elapsed.TotalSeconds;
@@ -163,7 +173,7 @@ public abstract partial class BaseRunner : IContext
     }
 
     bool IsSeedingData => this is ICreateSeedData;
-    bool IsPurgingSupported => (Permutation.Transport != Transport.AzureServiceBus && Permutation.Transport != Transport.AmazonSQS);
+    bool IsPurgingSupported => (Permutation.Transport != Transport.AzureServiceBus);
 
     static IEnumerable<int> IterateUntilFalse(Func<bool> condition)
     {
@@ -213,5 +223,33 @@ public abstract partial class BaseRunner : IContext
         Log.InfoFormat("Run: Duration {0}, until {1}", Settings.RunDuration, DateTime.Now + Settings.RunDuration);
         await Task.Delay(Settings.RunDuration).ConfigureAwait(false);
         Log.Info("Run duration expired.");
+    }
+
+    static Random random = new Random();
+    async Task RetryWithBackoff(Func<Task> action, CancellationToken token, string id, int maxAttempts)
+    {
+        while (true)
+        {
+            var attempts = 0;
+            try
+            {
+                await action()
+                    .ConfigureAwait(false);
+                return;
+            }
+            catch (Exception ex)
+            {
+                if (attempts > maxAttempts) throw new InvalidOperationException("Exhausted send retries.", ex);
+                double next;
+                lock (random) next = random.NextDouble();
+                next *= 0.2; // max 20% jitter
+                next += 1D;
+                next *= 100 * Math.Pow(2, attempts++);
+                var delay = TimeSpan.FromMilliseconds(next); // Results in 100ms, 200ms, 400ms, 800ms, etc. including max 20% random jitter.
+                Log.WarnFormat("{0} attempt {1} / {2} : {3} ({4})", id, attempts, delay, ex.Message, ex.GetType());
+                    await Task.Delay(delay, token)
+                        .ConfigureAwait(false);
+            }
+        }
     }
 }

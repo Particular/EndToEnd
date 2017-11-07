@@ -13,6 +13,8 @@ class MsmqProfile : IProfile, INeedPermutation
 
     public void Configure(EndpointConfiguration endpointConfiguration)
     {
+        BatchHelper.Instance = new BatchHelper.TaskWhenAllTaskRun();
+
         var transport = endpointConfiguration.UseTransport<MsmqTransport>();
         transport.ConnectionString(ConfigurationHelper.GetConnectionString("MSMQ"));
 
