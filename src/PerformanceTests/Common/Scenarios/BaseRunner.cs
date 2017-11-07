@@ -244,8 +244,8 @@ public abstract partial class BaseRunner : IContext
                 lock (random) next = random.NextDouble();
                 next *= 0.2; // max 20% jitter
                 next += 1D;
-                next *= 100 * Math.Pow(2, ++attempts);
-                var delay = TimeSpan.FromMilliseconds(next);
+                next *= 100 * Math.Pow(2, attempts++);
+                var delay = TimeSpan.FromMilliseconds(next); // Results in 100ms, 200ms, 400ms, 800ms, etc. including max 20% random jitter.
                 Log.WarnFormat("{0} attempt {1} / {2} : {3} ({4})", id, attempts, delay, ex.Message, ex.GetType());
                     await Task.Delay(delay, token)
                         .ConfigureAwait(false);
