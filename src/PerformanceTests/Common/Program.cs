@@ -93,7 +93,6 @@ namespace Host
             finally
             {
                 Log.Info("Fin!");
-                log4net.LogManager.Shutdown();
             }
             return (int)ReturnCodes.OK;
         }
