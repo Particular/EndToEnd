@@ -8,6 +8,7 @@ using NServiceBus;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Threading.Tasks;
+using log4net;
 using NServiceBus.Config;
 using NServiceBus.Config.ConfigurationSource;
 
@@ -85,6 +86,7 @@ partial class BaseRunner
         {
             Log.Fatal("OnCriticalError", exception);
             Session.CloseWithSuppress().ConfigureAwait(false).GetAwaiter().GetResult();
+            LogManager.Shutdown();
         }
         finally
         {
