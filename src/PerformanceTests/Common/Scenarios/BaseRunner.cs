@@ -127,8 +127,8 @@ public abstract partial class BaseRunner : IContext
                         }
                         catch (OperationCanceledException)
                         {
+                            Interlocked.Decrement(ref count);
                         }
-
                     }).ConfigureAwait(false);
                 Interlocked.Add(ref count, currentBatchSize);
                 var duration = sw.ElapsedMilliseconds;
