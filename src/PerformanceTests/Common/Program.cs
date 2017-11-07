@@ -7,8 +7,14 @@ namespace Host
     using System.Runtime;
     using System.Threading;
     using System.Threading.Tasks;
+    using log4net.Config;
     using Microsoft.Win32;
+#if Version5
+    using NServiceBus.Log4Net;
+#else
     using NServiceBus;
+#endif
+
     using NServiceBus.Logging;
     using Tests.Permutations;
     using VisualStudioDebugHelper;
@@ -21,14 +27,18 @@ namespace Host
 
         static int Main()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+            XmlConfigurator.Configure();
+
             return MainAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         static async Task<int> MainAsync()
         {
             GCSettings.LatencyMode = GCLatencyMode.Batch;
-            LogManager.Use<NLogFactory>();
-            NLog.LogManager.Configuration.DefaultCultureInfo = CultureInfo.InvariantCulture;
+            LogManager.Use<Log4NetFactory>();
 
             Log = LogManager.GetLogger(typeof(Program));
 
@@ -83,7 +93,6 @@ namespace Host
             finally
             {
                 Log.Info("Fin!");
-                NLog.LogManager.Shutdown();
             }
             return (int)ReturnCodes.OK;
         }

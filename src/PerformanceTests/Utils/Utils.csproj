@@ -16,8 +16,8 @@
   
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="1.9.71" />
+    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="NLog" Version="4.3.9" />
     <PackageReference Include="NUnit" Version="3.*" />
   </ItemGroup>
 

@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Configuration;
-using NLog;
+using log4net;
 
 public static class ConfigurationHelper
 {
-    static readonly ILogger Log = LogManager.GetLogger(nameof(Configuration));
+    static readonly ILog Log = LogManager.GetLogger(nameof(Configuration));
 
     public static string GetConnectionString(string connectionStringName)
     {
         var environmentVariableConnectionString = Environment.GetEnvironmentVariable(connectionStringName);
         if (!string.IsNullOrWhiteSpace(environmentVariableConnectionString))
         {
-            Log.Info("Environment variable found {0}", environmentVariableConnectionString);
+            Log.InfoFormat("Environment variable found {0}", environmentVariableConnectionString);
             return environmentVariableConnectionString;
         }
 
         var applicationConfigConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName];
         if (applicationConfigConnectionString != null)
         {
-            Log.Info("App.config connection string variable found {0}", environmentVariableConnectionString);
+            Log.InfoFormat("App.config connection string variable found {0}", environmentVariableConnectionString);
             return applicationConfigConnectionString.ConnectionString;
         }
 
@@ -33,7 +33,7 @@ public static class ConfigurationHelper
 
         if (!string.IsNullOrWhiteSpace(value))
         {
-            Log.Info("Setting: {0} = {1} ({2})", key, value, "Environment");
+            Log.InfoFormat("Setting: {0} = {1} ({2})", key, value, "Environment");
             return value;
         }
 
@@ -41,7 +41,7 @@ public static class ConfigurationHelper
 
         if (!string.IsNullOrWhiteSpace(value))
         {
-            Log.Info("Setting: {0} = {1} ({2})", key, value, "AppSetting");
+            Log.InfoFormat("Setting: {0} = {1} ({2})", key, value, "AppSetting");
             return value;
         }
 

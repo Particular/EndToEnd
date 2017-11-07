@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using log4net;
 using NServiceBus;
 
 partial class BaseRunner
@@ -87,15 +88,9 @@ partial class BaseRunner
     {
         try
         {
-            try
-            {
-                Log.Fatal("OnCriticalError", context.Exception);
-                await context.Stop().ConfigureAwait(false);
-            }
-            finally
-            {
-                NLog.LogManager.Shutdown();
-            }
+            Log.Fatal("OnCriticalError", context.Exception);
+            await context.Stop().ConfigureAwait(false);
+            LogManager.Shutdown();
         }
         finally
         {
