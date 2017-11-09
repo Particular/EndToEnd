@@ -24,7 +24,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)INeedContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OutboxProfile.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PerformanceCounters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Program.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ReflectionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\BaseRunner.cs" />
