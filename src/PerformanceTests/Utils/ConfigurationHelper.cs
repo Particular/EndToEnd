@@ -4,7 +4,7 @@ using log4net;
 
 public static class ConfigurationHelper
 {
-    static readonly ILog Log = LogManager.GetLogger(nameof(Configuration));
+    static readonly ILog Log = LogManager.GetLogger(typeof(Configuration));
 
     public static string GetConnectionString(string connectionStringName)
     {

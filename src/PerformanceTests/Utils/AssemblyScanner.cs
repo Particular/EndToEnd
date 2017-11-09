@@ -10,7 +10,7 @@ public static class AssemblyScanner
 {
     public static IEnumerable<Assembly> GetAssemblies()
     {
-        var l = LogManager.GetLogger(nameof(AssemblyScanner));
+        var l = LogManager.GetLogger(typeof(AssemblyScanner));
 
         foreach (var path in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.dll"))
         {
