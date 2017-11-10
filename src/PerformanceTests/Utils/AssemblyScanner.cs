@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using NLog;
+using log4net;
 
 public static class AssemblyScanner
 {
@@ -43,7 +43,7 @@ public static class AssemblyScanner
                 version = ex.Message;
             }
 
-            l.Info("Loaded: {0} ({1})", name, version);
+            l.InfoFormat("Loaded: {0} ({1})", name, version);
         }
 
         return assemblies;

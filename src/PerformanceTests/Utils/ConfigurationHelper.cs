@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Configuration;
-using NLog;
+using log4net;
 
 public static class ConfigurationHelper
 {
-    static readonly ILogger Log = LogManager.GetLogger(nameof(ConfigurationHelper));
+    static readonly ILog Log = LogManager.GetLogger(nameof(Configuration));
 
     public static string GetConnectionString(string connectionStringName)
     {
@@ -18,9 +18,8 @@ public static class ConfigurationHelper
         var applicationConfigConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName];
         if (applicationConfigConnectionString != null)
         {
-            var cs = applicationConfigConnectionString.ConnectionString;
             Log.Info("App.config connection string variable found.");
-            return cs;
+            return applicationConfigConnectionString.ConnectionString;
         }
 
         throw new NotSupportedException($"Connection string {connectionStringName} could not be resolved.");
