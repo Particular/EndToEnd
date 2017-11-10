@@ -19,7 +19,7 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Platforms = (Platform[])Enum.GetValues(typeof(Platform)),
+                Platforms = new [] { Platform.x64 },
                 GarbageCollectors = (GarbageCollector[])Enum.GetValues(typeof(GarbageCollector)),
                 Transports = new[] { Transport.MSMQ },
                 Serializers = new[] { Serialization.Json, },
