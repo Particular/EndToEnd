@@ -12,7 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ErrorProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AuditProfile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckGCServer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CheckPlatform.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\BaseRunner.v5.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\BaseRunner.v6.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scenarios\FakeTransport.cs" />

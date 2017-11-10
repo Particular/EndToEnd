@@ -5,7 +5,7 @@
     <RootNamespace>Host</RootNamespace>
     <LangVersion>latest</LangVersion>
     <OutputType>Exe</OutputType>
-    <AssemblyName>NServiceBus7.x64</AssemblyName>
+    <AssemblyName>NServiceBus7</AssemblyName>
     <StartupObject>Host.Program</StartupObject>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DefineConstants>$(DefineConstants);Version7</DefineConstants>
