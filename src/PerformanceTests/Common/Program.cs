@@ -54,11 +54,17 @@ namespace Host
 
                     ValidateServicePointManager(permutation);
 
-                    if (Environment.UserInteractive) Console.Title = PermutationParser.ToFriendlyString(permutation);
+                    if (Environment.UserInteractive) 
+                    {
+                        Console.Title = PermutationParser.ToFriendlyString(permutation);
+                    }
 
                     var runnerTypes = AssemblyScanner.GetAllTypes<BaseRunner>().ToArray();
 
-                    foreach (var t in runnerTypes) Log.DebugFormat("Found runner: {0}", t.FullName);
+                    foreach (var t in runnerTypes) 
+                    {
+                        Log.DebugFormat("Found runner: {0}", t.FullName);
+                    }
 
                     var runnerType = runnerTypes.First(x => x.Name.Contains(permutation.Tests[0]));
 
@@ -115,7 +121,10 @@ namespace Host
             foreach (var instance in AssemblyScanner.GetAll<ISetup>())
             {
                 var p = instance as INeedPermutation;
-                if (p != null) p.Permutation = permutation;
+                if (p != null)
+                {
+                    p.Permutation = permutation;
+                }
                 Log.InfoFormat("Invoke setup: {0}", instance);
                 instance.Setup();
             }
@@ -210,7 +219,10 @@ namespace Host
             domain.UnhandledException += (o, ea) =>
             {
                 var exception = ea.ExceptionObject as Exception;
-                if (exception != null) unhandledLog.Error(exception.Message, exception);
+                if (exception != null)
+                {
+                    unhandledLog.Error(exception.Message, exception);
+                }
             };
         }
 
