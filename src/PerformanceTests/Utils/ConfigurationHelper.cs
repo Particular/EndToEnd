@@ -11,14 +11,14 @@ public static class ConfigurationHelper
         var environmentVariableConnectionString = Environment.GetEnvironmentVariable(connectionStringName);
         if (!string.IsNullOrWhiteSpace(environmentVariableConnectionString))
         {
-            Log.InfoFormat("Environment variable found {0}", environmentVariableConnectionString);
+            Log.Info("Environment variable found.");
             return environmentVariableConnectionString;
         }
 
         var applicationConfigConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName];
         if (applicationConfigConnectionString != null)
         {
-            Log.InfoFormat("App.config connection string variable found {0}", environmentVariableConnectionString);
+            Log.Info("App.config connection string variable found.");
             return applicationConfigConnectionString.ConnectionString;
         }
 
@@ -28,23 +28,22 @@ public static class ConfigurationHelper
     public static string FetchSetting(string key)
     {
         string value;
-
-        value = Environment.GetEnvironmentVariable(key);
-
-        if (!string.IsNullOrWhiteSpace(value))
-        {
-            Log.InfoFormat("Setting: {0} = {1} ({2})", key, value, "Environment");
-            return value;
-        }
-
-        value = ConfigurationManager.AppSettings[key];
-
-        if (!string.IsNullOrWhiteSpace(value))
-        {
-            Log.InfoFormat("Setting: {0} = {1} ({2})", key, value, "AppSetting");
-            return value;
-        }
-
+        if (TryGetEnvVar(key, out value)) return value;
+        if (TryGetAppSetting(key, out value)) return value;
         return null;
+    }
+
+    static bool TryGetAppSetting(string key, out string value)
+    {
+        value = ConfigurationManager.AppSettings[key];
+        if (string.IsNullOrWhiteSpace(value)) return false;
+        return true;
+    }
+
+    static bool TryGetEnvVar(string key, out string value)
+    {
+        value = Environment.GetEnvironmentVariable(key);
+        if (string.IsNullOrWhiteSpace(value)) return false;
+        return true;
     }
 }
