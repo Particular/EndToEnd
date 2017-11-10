@@ -36,7 +36,7 @@ static class EnvironmentStats
         log = LogManager.GetLogger("ENVVAR");
         foreach (var item in Environment.GetEnvironmentVariables().OfType<DictionaryEntry>().OrderBy(x=>x.Key))
         {
-            log.DebugFormat("{0}={1}", item.Key, item.Value);
+            log.DebugFormat("- {0}", item.Key);
         }
     }
 }
