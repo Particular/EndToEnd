@@ -12,7 +12,6 @@ public static class ConfigurationHelper
         if (!string.IsNullOrWhiteSpace(environmentVariableConnectionString))
         {
             Log.Info("Environment variable found.");
-            Log.Debug("Connection string: {0}", environmentVariableConnectionString);
             return environmentVariableConnectionString;
         }
 
@@ -21,7 +20,6 @@ public static class ConfigurationHelper
         {
             var cs = applicationConfigConnectionString.ConnectionString;
             Log.Info("App.config connection string variable found.");
-            Log.Debug("Connection string: {0}", cs);
             return cs;
         }
 
@@ -40,7 +38,6 @@ public static class ConfigurationHelper
     {
         value = ConfigurationManager.AppSettings[key];
         if (string.IsNullOrWhiteSpace(value)) return false;
-        Log.Debug("Setting: {0} = {1} ({2})", key, value, "AppSetting");
         return true;
     }
 
@@ -48,7 +45,6 @@ public static class ConfigurationHelper
     {
         value = Environment.GetEnvironmentVariable(key);
         if (string.IsNullOrWhiteSpace(value)) return false;
-        Log.Debug("Setting: {0} = {1} ({2})", key, value, "Environment");
         return true;
     }
 }
