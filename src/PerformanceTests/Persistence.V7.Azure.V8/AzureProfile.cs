@@ -15,5 +15,8 @@ class AzureProfile : IProfile, INeedPermutation
 
         cfg.UsePersistence<AzureStoragePersistence>()
             .ConnectionString(connectionString);
+
+        cfg.UsePersistence<AzureStoragePersistence, StorageType.Sagas>()
+            .AssumeSecondaryIndicesExist();
     }
 }

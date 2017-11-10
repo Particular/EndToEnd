@@ -1,5 +1,6 @@
 ﻿using System;
 using NServiceBus;
+using NServiceBus.Persistence;
 using Tests.Permutations;
 using Variables;
 
@@ -15,5 +16,8 @@ class AzureProfile : IProfile, INeedPermutation
 
         cfg.UsePersistence<AzureStoragePersistence>()
             .ConnectionString(connectionString);
+
+        cfg.UsePersistence<AzureStoragePersistence, StorageType.Sagas>()
+            .AssumeSecondaryIndicesExist();
     }
 }
