@@ -2,7 +2,6 @@
 {
     public enum Platform
     {
-        x86,
         x64
     }
 }

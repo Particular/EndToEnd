@@ -46,7 +46,7 @@ namespace Tests.Tools
             var sourceAssemblyFiles = Directory.GetFiles(components.RootProjectDirectory, "*", SearchOption.AllDirectories);
             CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, components.Directories);
 
-            var projectAssemblyPath = Path.Combine(startupDir.FullName, components.RootProjectDirectory + "." + permutation.Platform + ".exe");
+            var projectAssemblyPath = Path.Combine(startupDir.FullName, components.RootProjectDirectory + ".exe");
 
             var descriptor = new TestDescriptor
             {
