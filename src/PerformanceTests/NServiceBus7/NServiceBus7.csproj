@@ -59,14 +59,6 @@
     </None>
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net452'">
-    <PostBuildEvent>
-      copy "$(TargetPath)NServiceBus7.x64.exe" "$(TargetDir)NServiceBus7.x86.exe"
-      copy "$(TargetPath)NServiceBus7.x64.exe.config" "$(TargetDir)NServiceBus7.x86.exe.config"
-      "%25programFiles(x86)%25\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\CorFlags.exe" "$(TargetDir)NServiceBus7.x86.exe" /32bit+
-    </PostBuildEvent>
-  </PropertyGroup>
-
   <Import Project="..\Common\Common.Data.projitems" Label="Shared" />
 
 </Project>
