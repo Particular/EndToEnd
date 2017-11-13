@@ -2,6 +2,6 @@
 {
     public enum Platform
     {
-        x64
+        NetFramework
     }
 }
