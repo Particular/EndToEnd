@@ -4,7 +4,7 @@ using log4net;
 
 public static class SessionExtensions
 {
-    static ILog Log = LogManager.GetLogger(nameof(SessionExtensions));
+    static ILog Log = LogManager.GetLogger(typeof(SessionExtensions));
 
     public static async Task CloseWithSuppress(this ISession instance)
     {

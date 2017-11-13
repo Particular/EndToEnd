@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using log4net;
 using Tests.Permutations;
@@ -22,7 +21,7 @@ public class Statistics : IDisposable
 
     Process process;
 
-    static ILog logger = LogManager.GetLogger("Statistics");
+    static ILog logger = LogManager.GetLogger(typeof(Statistics));
 
     public long NumberOfMessages => numberOfMessages;
     public long NumberOfRetries => numberOfRetries;
