@@ -1,6 +1,5 @@
 ﻿using System;
 using NServiceBus;
-using NServiceBus.Logging;
 using NServiceBus.Settings;
 using Tests.Permutations;
 using Variables;
