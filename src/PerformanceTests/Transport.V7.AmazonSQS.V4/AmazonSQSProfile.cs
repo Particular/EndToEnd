@@ -5,6 +5,8 @@ using Amazon.SQS;
 using NServiceBus;
 using Tests.Permutations;
 using Variables;
+using Amazon.Runtime;
+using Amazon.S3;
 
 class AmazonSQSProfile : IProfile, INeedPermutation
 {
@@ -20,14 +22,24 @@ class AmazonSQSProfile : IProfile, INeedPermutation
         // https://docs.particular.net/transports/sqs/configuration-options
         var transport = endpointConfiguration.UseTransport<SqsTransport>();
 
+        var credentials = new EnvironmentVariablesAWSCredentials();
+        var region = RegionEndpoint.GetBySystemName(cs["Region"].ToString());
         transport.QueueNamePrefix(cs["QueueNamePrefix"].ToString());
         transport.MaxTimeToLive(TimeSpan.FromDays(Convert.ToDouble(cs["MaxTTLDays"].ToString())));
         transport.NativeDeferral(Convert.ToBoolean(cs["NativeDeferral"]));
-        transport.ClientFactory(() => new AmazonSQSClient(new AmazonSQSConfig
-        {
-            RegionEndpoint = RegionEndpoint.GetBySystemName(cs["Region"].ToString())
-        }));
-        transport.S3(cs["S3BucketForLargeMessages"].ToString(), cs["S3KeyPrefix"].ToString());
+        transport.ClientFactory(() => new AmazonSQSClient(
+            credentials,
+            new AmazonSQSConfig
+            {
+                RegionEndpoint = region,
+            }));
+        var s3Configuration = transport.S3(cs["S3BucketForLargeMessages"].ToString(), cs["S3KeyPrefix"].ToString());
+        s3Configuration.ClientFactory(() => new AmazonS3Client(
+            credentials,
+            new AmazonS3Config
+            {
+                RegionEndpoint = region,
+            }));
 
         // https://docs.particular.net/transports/sqs/transaction-support
         if (Permutation.TransactionMode != TransactionMode.Default
