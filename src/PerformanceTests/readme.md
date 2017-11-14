@@ -56,9 +56,9 @@ All of these can be run locally except for Azure Service Bus. Azure Storage Queu
 
 # Connection strings
 
-All of these need a correct connection string. There is a connection string template file `.connectionstrings.config` at the location of the `readme.md`. This already contains a few connection strings to access all services locally expect for Azure Service Bus.
+All of these tests need a correct connection string. There is a connection string template file `.connectionstrings.config` at the location of the `readme.md`. This already contains a few connection strings to access all services locally expect for Azure Service Bus.
 
-This template file is copied to two projects during the pre build when they do not exist yet. These files are NOT stored in the repository and are ignored. You can safely edit these and store your own connection strings.
+This file needs to be copied one level above the repository folder, as this is the location from where the host projects link to. This was your custom values are not stored in the repository folder itself and your data cannot be accidentally committed. Another benefit is that you can easilly execute `git clean -xfd`.
 
 # Run it locally
 
