@@ -6,6 +6,7 @@
     <AssemblyName>Transport.V7.AzureStorageQueues.V8</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.AzureStorageQueues_v8\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>        
   </PropertyGroup>
 
   <ItemGroup>

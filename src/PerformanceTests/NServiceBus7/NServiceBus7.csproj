@@ -12,6 +12,7 @@
     <OutputPath>..\bin\$(Configuration)\NServiceBus7\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>    
   </PropertyGroup>
 
   <ItemGroup>

@@ -7,6 +7,7 @@
     <AssemblyName>Transport.V7.AmazonSQS_v4</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.AmazonSQS_v4\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>        
   </PropertyGroup>
 
   <ItemGroup>
