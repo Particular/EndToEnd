@@ -96,7 +96,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".connectionstrings.config">
+    <None Include="..\..\..\..\.connectionstrings.config">
+      <Link>.connectionstrings.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config">
