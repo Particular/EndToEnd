@@ -6,6 +6,7 @@
     <OutputPath>..\bin\$(Configuration)\Persistence.V7.InMemory\</OutputPath>
     <DefineConstants>$(DefineConstants);Version7</DefineConstants>
     <Configurations>Debug;Release;Local</Configurations>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>        
   </PropertyGroup>
 
   <ItemGroup>

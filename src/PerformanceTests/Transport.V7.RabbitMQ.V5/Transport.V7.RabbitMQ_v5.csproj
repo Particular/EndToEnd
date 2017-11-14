@@ -6,6 +6,7 @@
     <AssemblyName>Transport.V7.RabbitMQ.V5</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.RabbitMQ_v5\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>            
   </PropertyGroup>
 
   <ItemGroup>
