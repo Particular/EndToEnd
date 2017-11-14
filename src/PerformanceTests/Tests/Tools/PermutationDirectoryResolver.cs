@@ -28,19 +28,32 @@ namespace Tests.Tools
             if (permutation.Version == NServiceBusVersion.V7)
             {
                 // v7 targeting projects are using the new csproj format
-                dirs = dirs.Select(d => d.GetDirectories("net452").Single());
+                var platformDirectory = GetTargetFrameworkName(permutation);
+                dirs = dirs.Select(d => d.GetDirectories(platformDirectory).Single());
             }
 
             return new PermutationResult
             {
-                RootProjectDirectory = GetRootDirectory(permutation.Version),
+                HostDirectory = GetHostDirectory(permutation),
+                HostAssemblyName = GetHostName(permutation),
                 Directories = dirs.ToArray()
             };
         }
 
-        string GetRootDirectory(NServiceBusVersion version)
+        static string GetTargetFrameworkName(Permutation permutation)
         {
-            switch (version)
+            switch (permutation.Platform)
+            {
+                case Platform.NetFramework:
+                    return "net452";
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        string GetHostName(Permutation permutation)
+        {
+            switch (permutation.Version)
             {
                 case NServiceBusVersion.V5:
                     return "NServiceBus5";
@@ -49,9 +62,24 @@ namespace Tests.Tools
                 case NServiceBusVersion.V7:
                     return "NServiceBus7";
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(version), version, null);
+                    throw new NotSupportedException(permutation.Version.ToString("G"));
             }
         }
+
+        string GetHostDirectory(Permutation permutation)
+        {
+            switch (permutation.Version)
+            {
+                case NServiceBusVersion.V5:
+                case NServiceBusVersion.V6:
+                    return GetHostName(permutation);
+                case NServiceBusVersion.V7:
+                    return Path.Combine(GetHostName(permutation), GetTargetFrameworkName(permutation));
+                default:
+                    throw new NotSupportedException(permutation.Version.ToString("G"));
+            }
+        }
+
 
         string GetImplementation(object instance)
         {
@@ -76,7 +104,8 @@ namespace Tests.Tools
         public class PermutationResult
         {
             public DirectoryInfo[] Directories { get; set; }
-            public string RootProjectDirectory { get; set; }
+            public string HostDirectory { get; set; }
+            public string HostAssemblyName { get; set; }
         }
     }
 }

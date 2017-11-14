@@ -43,10 +43,10 @@ namespace Tests.Tools
 
             startupDir.Create();
 
-            var sourceAssemblyFiles = Directory.GetFiles(components.RootProjectDirectory, "*", SearchOption.AllDirectories);
+            var sourceAssemblyFiles = Directory.GetFiles(components.HostDirectory, "*", SearchOption.AllDirectories);
             CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, components.Directories);
 
-            var projectAssemblyPath = Path.Combine(startupDir.FullName, components.RootProjectDirectory + ".exe");
+            var projectAssemblyPath = Path.Combine(startupDir.FullName, components.HostAssemblyName + ".exe");
 
             var descriptor = new TestDescriptor
             {
