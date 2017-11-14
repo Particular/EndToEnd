@@ -24,7 +24,7 @@ class AzureStorageQueuesProfile : IProfile, INeedContext
             && Permutation.TransactionMode != TransactionMode.Receive
             ) throw new NotSupportedException("TransactionMode: " + Permutation.TransactionMode);
 
-        if (Permutation.TransactionMode != TransactionMode.Default) transport.Transactions(Permutation.GetTransactionMode());
+        if (Permutation.TransactionMode != TransactionMode.Default && !Context.IsSendOnly) transport.Transactions(Permutation.GetTransactionMode());
 
     }
 
