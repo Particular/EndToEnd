@@ -31,7 +31,7 @@ class SqlServerProfile : IProfile, ISetup, INeedPermutation
     void ISetup.Setup()
     {
         var cs = ConfigurationHelper.GetConnectionString(Permutation.Transport.ToString());
-        var sql = Assembly.GetExecutingAssembly().GetManifestResourceText("Transport.V6.SQLServer.init.sql");
+        var sql = ResourceHelper.GetManifestResourceTextThatEndsWith("init.sql");
         SqlHelper.CreateDatabase(cs);
         SqlHelper.ExecuteScript(cs, sql);
     }
