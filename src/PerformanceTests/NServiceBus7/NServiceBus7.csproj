@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFrameworks>net452;netcoreapp2.0</TargetFrameworks>
     <RootNamespace>Host</RootNamespace>
     <LangVersion>latest</LangVersion>
     <OutputType>Exe</OutputType>
@@ -18,8 +18,15 @@
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.0.61" />
     <PackageReference Include="NServiceBus" Version="7.0.0-*" />
     <PackageReference Include="NServiceBus.Log4Net" Version="3.0.0-*" />
-    <PackageReference Include="NServiceBus.Metrics.PerformanceCounters" Version="2.0.0-alpha0024" />
     <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.0.0-*" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <PackageReference Include="Microsoft.Win32.Registry" Version="4.*" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
+    <PackageReference Include="NServiceBus.Metrics.PerformanceCounters" Version="2.0.0-alpha0024" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,7 +58,7 @@
     </None>
   </ItemGroup>
 
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net452'">
     <PostBuildEvent>
       copy "$(TargetPath)NServiceBus7.x64.exe" "$(TargetDir)NServiceBus7.x86.exe"
       copy "$(TargetPath)NServiceBus7.x64.exe.config" "$(TargetDir)NServiceBus7.x86.exe.config"

@@ -4,6 +4,7 @@ namespace Host
     using System.Globalization;
     using System.Linq;
     using System.Net;
+    using System.Reflection;
     using System.Runtime;
     using System.Threading;
     using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace Host
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-            XmlConfigurator.Configure();
+            XmlConfigurator.Configure(log4net.LogManager.GetRepository(Assembly.GetExecutingAssembly()));
 
             return MainAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }

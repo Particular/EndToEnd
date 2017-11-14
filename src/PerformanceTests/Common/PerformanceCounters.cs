@@ -1,3 +1,4 @@
+#if NET452
 #if Version6 || Version7
 using Configuration = NServiceBus.EndpointConfiguration;
 #else
@@ -24,3 +25,4 @@ class PerformanceCounters : IProfile, INeedContext
 #endif
     }
 }
+#endif
