@@ -22,8 +22,6 @@ class AmazonSQSProfile : IProfile, INeedPermutation
         // https://docs.particular.net/transports/sqs/configuration-options
         var transport = endpointConfiguration.UseTransport<SqsTransport>();
 
-        NServiceBus.Logging.LogManager.GetLogger(nameof(AmazonSQSProfile)).Info(RegionEndpoint.GetBySystemName(cs["Region"].ToString()).DisplayName);
-
         var credentials = new EnvironmentVariablesAWSCredentials();
         var region = RegionEndpoint.GetBySystemName(cs["Region"].ToString());
         transport.QueueNamePrefix(cs["QueueNamePrefix"].ToString());
