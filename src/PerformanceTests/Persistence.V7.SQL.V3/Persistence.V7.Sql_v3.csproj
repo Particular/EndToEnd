@@ -8,6 +8,9 @@
     <Configurations>Debug;Release;Local</Configurations>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>        
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="init.sql" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-*" />

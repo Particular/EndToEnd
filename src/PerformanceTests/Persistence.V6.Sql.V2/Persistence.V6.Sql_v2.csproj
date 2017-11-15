@@ -80,6 +80,9 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="init.sql" />
+  </ItemGroup>
   <Import Project="..\Scenarios\Scenarios.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\packages\NServiceBus.Persistence.Sql.MsBuild.2.1.4\build\NServiceBus.Persistence.Sql.MsBuild.targets" Condition="Exists('..\..\..\packages\NServiceBus.Persistence.Sql.MsBuild.2.1.4\build\NServiceBus.Persistence.Sql.MsBuild.targets')" />

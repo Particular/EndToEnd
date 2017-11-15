@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using NServiceBus;
+﻿using NServiceBus;
 using NServiceBus.Persistence;
 using Tests.Permutations;
 
@@ -17,7 +16,7 @@ class NHibernateProfile : IProfile, ISetup, INeedPermutation
     void ISetup.Setup()
     {
         var cs = ConfigurationHelper.GetConnectionString(Permutation.Persister.ToString());
-        var sql = Assembly.GetExecutingAssembly().GetManifestResourceText("Persistence.V5.NHibernate.init.sql");
+        var sql = ResourceHelper.GetManifestResourceTextThatEndsWith("init.sql");
         SqlHelper.CreateDatabase(cs);
         SqlHelper.ExecuteScript(cs, sql);
     }
