@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using NServiceBus;
 using NServiceBus.Settings;
 using Tests.Permutations;
@@ -10,9 +11,13 @@ class AmazonSQSProfile : IProfile, INeedPermutation
 
     public void Configure(BusConfiguration cfg)
     {
+        var cs = ConfigurationHelper.GetConnectionString("AmazonSQS");
+        var builder = new DbConnectionStringBuilder { ConnectionString = cs };
+        builder.Remove("NativeDeferral");
+
         // https://docs.particular.net/transports/sqs/configuration-options?version=sqs_1
         cfg.UseTransport<SqsTransport>()
-            .ConnectionString(ConfigurationHelper.GetConnectionString("AmazonSQS"));
+            .ConnectionString(builder.ToString());
 
         // https://docs.particular.net/transports/sqs/transaction-support
         if (Permutation.TransactionMode != TransactionMode.Default
