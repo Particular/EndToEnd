@@ -3,6 +3,7 @@ namespace Host
     using System;
     using System.Configuration;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Reflection;
@@ -39,24 +40,6 @@ namespace Host
             Console.WriteLine("executing assembly: " + Assembly.GetExecutingAssembly());
 //            Console.WriteLine(ConfigurationManager.GetSection("log4net"));
 
-            Console.WriteLine("before assembly scanner:");
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                Console.WriteLine(assembly.GetName().Name + " - " + assembly.Location + " - " + assembly.HostContext);
-            }
-            Console.WriteLine("--------------------------------");
-            Assembly.Load("NServiceBus.Core");
-            Assembly.Load("NServiceBus.Core");
-            Assembly.Load("NServiceBus.Core");
-            Assembly.LoadFile("NServiceBus.Core.dll");
-            Assembly.LoadFile("NServiceBus.Core.dll");
-            Assembly.LoadFile("NServiceBus.Core.dll");
-            Console.WriteLine("before assembly scanner:");
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                Console.WriteLine(assembly.GetName().Name + " - " + assembly.Location + " - " + assembly.HostContext);
-            }
-            Console.WriteLine("--------------------------------");
 
 
 
