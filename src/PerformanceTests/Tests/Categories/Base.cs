@@ -89,34 +89,27 @@ namespace Categories
 
         static void LaunchAndWait(Permutation permutation, TestDescriptor testDescriptor)
         {
-//            var processId = DebugAttacher.GetCurrentVisualStudioProcessId();
-//            var processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
-            var processIdArgument = string.Empty;
+            var permutationArgs = PermutationParser.ToArgs(permutation);
             var sessionIdArgument = $" --sessionId={SessionId}";
-
-            var arguments = string.Format("{0} {1} {2}",
-                PermutationParser.ToArgs(permutation),
-                processIdArgument,
-                sessionIdArgument
-                );
 
             ProcessStartInfo pi;
             if (permutation.Platform == Platform.NetFramework)
             {
-                var exe = new FileInfo(testDescriptor.ProjectAssemblyPath);
-                pi = new ProcessStartInfo(exe.FullName, arguments)
+                var processId = DebugAttacher.GetCurrentVisualStudioProcessId();
+                var processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
+
+                pi = new ProcessStartInfo(testDescriptor.ProjectAssemblyPath, permutationArgs + sessionIdArgument + processIdArgument)
                 {
                     UseShellExecute = false,
-                    WorkingDirectory = exe.DirectoryName,
+                    WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                 };
             }
             else
             {
-                // app domain base path?
-                pi = new ProcessStartInfo("dotnet", $"{testDescriptor.ProjectAssemblyPath} {arguments}")
+                pi = new ProcessStartInfo("dotnet", $"{testDescriptor.ProjectAssemblyPath} {permutationArgs}{sessionIdArgument}")
                 {
-                    WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                     UseShellExecute = false,
+                    WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                 };
             }
 
