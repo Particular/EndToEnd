@@ -2,6 +2,7 @@ namespace Tests.Tools
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Xml.Linq;
     using System.Xml.XPath;
@@ -46,19 +47,29 @@ namespace Tests.Tools
             var sourceAssemblyFiles = Directory.GetFiles(components.HostDirectory, "*", SearchOption.AllDirectories);
             CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, components.Directories);
 
-            var projectAssemblyPath = Path.Combine(startupDir.FullName, components.HostAssemblyName + ".exe");
+            string projectAssemblyPath;
+            if (permutation.Platform == Platform.NetFramework)
+            {
+                projectAssemblyPath = Path.Combine(startupDir.FullName, components.HostAssemblyName + ".exe");
+            }
+            else
+            {
+                //TODO
+                projectAssemblyPath = Path.Combine(startupDir.FullName, "NServiceBus7.dll");
+            }
 
             var descriptor = new TestDescriptor
             {
                 Permutation = permutation,
                 ProjectAssemblyPath = projectAssemblyPath,
+                ProjectAssemblyDirectory = startupDir.FullName,
                 Category = permutation.Category,
                 Description = permutation.Description,
             };
 
-            permutation.Exe = projectAssemblyPath;
+            //permutation.Exe = projectAssemblyPath;
 
-            GenerateBat(descriptor);
+            //GenerateBat(descriptor);
             UpdateAppConfig(descriptor);
 
             return descriptor;
@@ -78,7 +89,7 @@ namespace Tests.Tools
         void CopyAssembliesToStarupDir(DirectoryInfo destination, IEnumerable<string> baseFiles, IEnumerable<DirectoryInfo> dirs)
         {
             var maxRetryErrors = 100;
-            foreach (var file in baseFiles)
+            foreach (var file in baseFiles.Where(f => !f.EndsWith(".deps.json")))
             {
                 var dst = Path.Combine(destination.FullName, Path.GetFileName(file));
                 do
@@ -99,7 +110,7 @@ namespace Tests.Tools
             foreach (var dir in dirs)
             {
                 var files = dir.GetFiles("*", SearchOption.AllDirectories);
-                foreach (var src in files)
+                foreach (var src in files.Where(f => !f.FullName.EndsWith(".deps.json")))
                 {
                     var relative = src.FullName.Substring(dir.FullName.Length + 1);
                     var dst = Path.Combine(destination.FullName, relative);
@@ -148,7 +159,8 @@ namespace Tests.Tools
                 if (equalTimestamps) return;
                 File.Delete(dst);
             }
-            if (!SymbolicLink.Create(src, dst)) File.Copy(src, dst);
+            //if (!SymbolicLink.Create(src, dst))
+                File.Copy(src, dst);
             File.SetLastWriteTimeUtc(dst, File.GetLastWriteTimeUtc(src));
         }
 

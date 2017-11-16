@@ -14,7 +14,7 @@ class CheckGCServer : IProfile, INeedPermutation
 
     public void Configure(Configuration cfg)
     {
-        if (Permutation.GarbageCollector == GarbageCollector.Client && GCSettings.IsServerGC) throw new InvalidOperationException("GarbageCollector is set to Server but must be Client.");
-        if (Permutation.GarbageCollector == GarbageCollector.Server && !GCSettings.IsServerGC) throw new InvalidOperationException("GarbageCollector is set to Client but must be Server.");
+        //if (Permutation.GarbageCollector == GarbageCollector.Client && GCSettings.IsServerGC) throw new InvalidOperationException("GarbageCollector is set to Server but must be Client.");
+        //if (Permutation.GarbageCollector == GarbageCollector.Server && !GCSettings.IsServerGC) throw new InvalidOperationException("GarbageCollector is set to Client but must be Server.");
     }
 }

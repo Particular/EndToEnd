@@ -1,6 +1,7 @@
 namespace Host
 {
     using System;
+    using System.Configuration;
     using System.Globalization;
     using System.Linq;
     using System.Net;
@@ -28,8 +29,36 @@ namespace Host
 
         static int Main()
         {
+            Console.WriteLine("starting");
+            Console.WriteLine("BaseDir:" + AppDomain.CurrentDomain.BaseDirectory);
+            Console.WriteLine("CurrentDir:" + Environment.CurrentDirectory);
+            Console.WriteLine("rel search path:" + AppDomain.CurrentDomain.RelativeSearchPath);
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+            Console.WriteLine("executing assembly: " + Assembly.GetExecutingAssembly());
+//            Console.WriteLine(ConfigurationManager.GetSection("log4net"));
+
+            Console.WriteLine("before assembly scanner:");
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Console.WriteLine(assembly.GetName().Name + " - " + assembly.Location + " - " + assembly.HostContext);
+            }
+            Console.WriteLine("--------------------------------");
+            Assembly.Load("NServiceBus.Core");
+            Assembly.Load("NServiceBus.Core");
+            Assembly.Load("NServiceBus.Core");
+            Assembly.LoadFile("NServiceBus.Core.dll");
+            Assembly.LoadFile("NServiceBus.Core.dll");
+            Assembly.LoadFile("NServiceBus.Core.dll");
+            Console.WriteLine("before assembly scanner:");
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Console.WriteLine(assembly.GetName().Name + " - " + assembly.Location + " - " + assembly.HostContext);
+            }
+            Console.WriteLine("--------------------------------");
+
+
 
             XmlConfigurator.Configure(log4net.LogManager.GetRepository(Assembly.GetExecutingAssembly()));
 
@@ -38,11 +67,12 @@ namespace Host
 
         static async Task<int> MainAsync()
         {
+            Console.WriteLine("main async");
             GCSettings.LatencyMode = GCLatencyMode.Batch; // https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/latency
             LogManager.Use<Log4NetFactory>();
 
             Log = LogManager.GetLogger(typeof(Program));
-
+            Log.Warn("test");
             DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
 
             InitAppDomainEventLogging();
@@ -57,7 +87,9 @@ namespace Host
                 var permutation = PermutationParser.FromCommandlineArgs();
                 LogPermutation(permutation);
 
+                Console.WriteLine("before invokesetupimplementations");
                 InvokeSetupImplementations(permutation);
+                Console.WriteLine("after invokesetupimplementations");
 
                 using (Statistics.Initialize(permutation))
                 {
@@ -70,6 +102,7 @@ namespace Host
                         Console.Title = PermutationParser.ToFriendlyString(permutation);
                     }
 
+                    
                     var runnerTypes = AssemblyScanner.GetAllTypes<BaseRunner>().ToArray();
 
                     foreach (var t in runnerTypes) 

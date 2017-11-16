@@ -43,12 +43,13 @@ namespace Categories
             return PermutationGenerator.Generate(new Permutations
             {
                 Versions = new[] { NServiceBusVersion.V7 },
+                Platforms = new []{Platform.NetCore},
                 Transports = new[] { Transport.RabbitMQ },
                 MessageSizes = new[] { MessageSize.Tiny },
                 Serializers = new[] { Serialization.Json },
                 OutboxModes = new[] { Outbox.Off },
                 ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores04x },
-                TransactionMode = new[] { TransactionMode.Receive, TransactionMode.None }
+                TransactionMode = new[] { TransactionMode.Receive }
             });
         }
     }

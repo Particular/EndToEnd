@@ -9,6 +9,7 @@ namespace Categories
     using NUnit.Framework;
     using Tests.Permutations;
     using Tests.Tools;
+    using Variables;
     using VisualStudioDebugHelper;
 
     public abstract class Base
@@ -73,26 +74,25 @@ namespace Categories
             permutation.Tests = new[] { memberName };
 
             var environment = new TestEnvironment(SessionId);
-            environment.CreateTestEnvironments(permutation);
+            var testDescriptor = environment.CreateTestEnvironments(permutation);
 
-            Invoke(permutation);
+            Invoke(permutation, testDescriptor);
         }
 
-        static void Invoke(Permutation permutation)
+        static void Invoke(Permutation permutation, TestDescriptor testDescriptor)
         {
             if (!InvokeEnabled) Assert.Inconclusive("Invoke disabled, set 'InvokeEnabled' appSetting to True.");
 
-            LaunchAndWait(permutation);
-            Console.WriteLine(ScanLogs.ToIniString(new FileInfo(permutation.Exe).DirectoryName));
+            LaunchAndWait(permutation, testDescriptor);
+            Console.WriteLine(ScanLogs.ToIniString(new FileInfo(testDescriptor.ProjectAssemblyPath).DirectoryName));
         }
 
-        static void LaunchAndWait(Permutation permutation)
+        static void LaunchAndWait(Permutation permutation, TestDescriptor testDescriptor)
         {
-            var processId = DebugAttacher.GetCurrentVisualStudioProcessId();
-            var processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
+//            var processId = DebugAttacher.GetCurrentVisualStudioProcessId();
+//            var processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
+            var processIdArgument = string.Empty;
             var sessionIdArgument = $" --sessionId={SessionId}";
-
-            var exe = new FileInfo(permutation.Exe);
 
             var arguments = string.Format("{0} {1} {2}",
                 PermutationParser.ToArgs(permutation),
@@ -100,11 +100,25 @@ namespace Categories
                 sessionIdArgument
                 );
 
-            var pi = new ProcessStartInfo(exe.FullName, arguments)
+            ProcessStartInfo pi;
+            if (permutation.Platform == Platform.NetFramework)
             {
-                UseShellExecute = false,
-                WorkingDirectory = exe.DirectoryName,
-            };
+                var exe = new FileInfo(testDescriptor.ProjectAssemblyPath);
+                pi = new ProcessStartInfo(exe.FullName, arguments)
+                {
+                    UseShellExecute = false,
+                    WorkingDirectory = exe.DirectoryName,
+                };
+            }
+            else
+            {
+                // app domain base path?
+                pi = new ProcessStartInfo("dotnet", $"{testDescriptor.ProjectAssemblyPath} {arguments}")
+                {
+                    WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
+                    UseShellExecute = false,
+                };
+            }
 
             using (var p = Process.Start(pi))
             {
