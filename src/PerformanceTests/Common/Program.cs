@@ -30,6 +30,10 @@ namespace Host
 
         static int Main()
         {
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.DefaultConnectionLimit = 150;
+
             var entryAssembly = Assembly.GetEntryAssembly();
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
