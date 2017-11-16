@@ -8,16 +8,6 @@ class RabbitMQProfile : IProfile, INeedPermutation
 {
     public Permutation Permutation { private get; set; }
 
-    public RabbitMQProfile()
-    {
-#if NETCOREAPP2_0
-        System.Console.WriteLine("this is the .net core version of the rabbitmq profile! :tada:");
-#endif
-#if NET452
-        System.Console.WriteLine("this is the full framework version of the rabbitmq profile! :<");
-#endif
-    }
-
     public void Configure(EndpointConfiguration endpointConfiguration)
     {
 

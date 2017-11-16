@@ -159,8 +159,7 @@ namespace Tests.Tools
                 if (equalTimestamps) return;
                 File.Delete(dst);
             }
-            //if (!SymbolicLink.Create(src, dst))
-                File.Copy(src, dst);
+            if (!SymbolicLink.Create(src, dst)) File.Copy(src, dst);
             File.SetLastWriteTimeUtc(dst, File.GetLastWriteTimeUtc(src));
         }
 

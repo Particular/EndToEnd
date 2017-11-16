@@ -31,6 +31,8 @@ namespace Host
         static int Main()
         {
             var entryAssembly = Assembly.GetEntryAssembly();
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
             var logRepository = log4net.LogManager.GetRepository(entryAssembly);
             string configFileName = Path.GetFileName(new Uri(entryAssembly.CodeBase).LocalPath);
@@ -45,7 +47,6 @@ namespace Host
             LogManager.Use<Log4NetFactory>();
 
             Log = LogManager.GetLogger(typeof(Program));
-            Log.Warn("test");
             DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
 
             InitAppDomainEventLogging();
@@ -60,9 +61,7 @@ namespace Host
                 var permutation = PermutationParser.FromCommandlineArgs();
                 LogPermutation(permutation);
 
-                Console.WriteLine("before invokesetupimplementations");
                 InvokeSetupImplementations(permutation);
-                Console.WriteLine("after invokesetupimplementations");
 
                 using (Statistics.Initialize(permutation))
                 {
@@ -75,7 +74,6 @@ namespace Host
                         Console.Title = PermutationParser.ToFriendlyString(permutation);
                     }
 
-                    
                     var runnerTypes = AssemblyScanner.GetAllTypes<BaseRunner>().ToArray();
 
                     foreach (var t in runnerTypes) 

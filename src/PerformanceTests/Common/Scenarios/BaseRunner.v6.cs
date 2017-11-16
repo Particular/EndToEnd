@@ -18,11 +18,6 @@ partial class BaseRunner
 {
     async Task CreateOrPurgeAndDrainQueues()
     {
-        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-        {
-            Console.WriteLine(assembly.GetName().Name + " - " + assembly.Location +  " - " + assembly.HostContext);
-        }
-
         var configuration = CreateConfiguration();
         if (IsPurgingSupported) configuration.PurgeOnStartup(true);
         ShortcutBehavior.Shortcut = true; // Required, as instance already receives messages before DrainMessages() is called!
