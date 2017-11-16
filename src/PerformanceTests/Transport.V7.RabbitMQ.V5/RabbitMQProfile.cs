@@ -10,8 +10,6 @@ class RabbitMQProfile : IProfile, INeedPermutation
 
     public void Configure(EndpointConfiguration endpointConfiguration)
     {
-
-
         var cs = ConfigurationHelper.GetConnectionString("RabbitMQ");
         var builder = new DbConnectionStringBuilder { ConnectionString = cs };
 
