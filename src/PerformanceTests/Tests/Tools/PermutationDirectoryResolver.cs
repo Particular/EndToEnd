@@ -46,6 +46,8 @@ namespace Tests.Tools
             {
                 case Platform.NetFramework:
                     return "net452";
+                case Platform.NetCore:
+                    return "netcoreapp2.0";
                 default:
                     throw new NotSupportedException();
             }

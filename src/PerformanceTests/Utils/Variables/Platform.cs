@@ -2,6 +2,7 @@
 {
     public enum Platform
     {
-        NetFramework
+        NetFramework,
+        NetCore
     }
 }
