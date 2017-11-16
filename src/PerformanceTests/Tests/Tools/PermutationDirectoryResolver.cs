@@ -40,6 +40,36 @@ namespace Tests.Tools
             };
         }
 
+        string GetHostName(Permutation permutation)
+        {
+            switch (permutation.Version)
+            {
+                case NServiceBusVersion.V5:
+                    return "NServiceBus5.exe";
+                case NServiceBusVersion.V6:
+                    return "NServiceBus6.exe";
+                case NServiceBusVersion.V7:
+                    return "NServiceBus7" + (permutation.Platform == Platform.NetCore ? ".dll" : ".exe");
+                default:
+                    throw new NotSupportedException(permutation.Version.ToString("G"));
+            }
+        }
+
+        string GetHostDirectory(Permutation permutation)
+        {
+            switch (permutation.Version)
+            {
+                case NServiceBusVersion.V5:
+                    return "NServiceBus5";
+                case NServiceBusVersion.V6:
+                    return "NServiceBus6";
+                case NServiceBusVersion.V7:
+                    return Path.Combine("NServiceBus7", GetTargetFrameworkName(permutation));
+                default:
+                    throw new NotSupportedException(permutation.Version.ToString("G"));
+            }
+        }
+
         static string GetTargetFrameworkName(Permutation permutation)
         {
             switch (permutation.Platform)
@@ -52,36 +82,6 @@ namespace Tests.Tools
                     throw new NotSupportedException();
             }
         }
-
-        string GetHostName(Permutation permutation)
-        {
-            switch (permutation.Version)
-            {
-                case NServiceBusVersion.V5:
-                    return "NServiceBus5";
-                case NServiceBusVersion.V6:
-                    return "NServiceBus6";
-                case NServiceBusVersion.V7:
-                    return "NServiceBus7";
-                default:
-                    throw new NotSupportedException(permutation.Version.ToString("G"));
-            }
-        }
-
-        string GetHostDirectory(Permutation permutation)
-        {
-            switch (permutation.Version)
-            {
-                case NServiceBusVersion.V5:
-                case NServiceBusVersion.V6:
-                    return GetHostName(permutation);
-                case NServiceBusVersion.V7:
-                    return Path.Combine(GetHostName(permutation), GetTargetFrameworkName(permutation));
-                default:
-                    throw new NotSupportedException(permutation.Version.ToString("G"));
-            }
-        }
-
 
         string GetImplementation(object instance)
         {

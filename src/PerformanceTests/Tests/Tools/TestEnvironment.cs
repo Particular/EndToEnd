@@ -47,16 +47,7 @@ namespace Tests.Tools
             var sourceAssemblyFiles = Directory.GetFiles(components.HostDirectory, "*", SearchOption.AllDirectories);
             CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, components.Directories);
 
-            string projectAssemblyPath;
-            if (permutation.Platform == Platform.NetFramework)
-            {
-                projectAssemblyPath = Path.Combine(startupDir.FullName, components.HostAssemblyName + ".exe");
-            }
-            else
-            {
-                //TODO
-                projectAssemblyPath = Path.Combine(startupDir.FullName, "NServiceBus7.dll");
-            }
+            var projectAssemblyPath = Path.Combine(startupDir.FullName, components.HostAssemblyName);
 
             var descriptor = new TestDescriptor
             {
