@@ -30,27 +30,17 @@ namespace Host
 
         static int Main()
         {
-            Console.WriteLine("starting");
-            Console.WriteLine("BaseDir:" + AppDomain.CurrentDomain.BaseDirectory);
-            Console.WriteLine("CurrentDir:" + Environment.CurrentDirectory);
-            Console.WriteLine("rel search path:" + AppDomain.CurrentDomain.RelativeSearchPath);
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            var entryAssembly = Assembly.GetEntryAssembly();
 
-            Console.WriteLine("executing assembly: " + Assembly.GetExecutingAssembly());
-//            Console.WriteLine(ConfigurationManager.GetSection("log4net"));
-
-
-
-
-            XmlConfigurator.Configure(log4net.LogManager.GetRepository(Assembly.GetExecutingAssembly()));
-
+            var logRepository = log4net.LogManager.GetRepository(entryAssembly);
+            string configFileName = Path.GetFileName(new Uri(entryAssembly.CodeBase).LocalPath);
+            XmlConfigurator.Configure(logRepository, new FileInfo($"{configFileName}.config"));
+            
             return MainAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         static async Task<int> MainAsync()
         {
-            Console.WriteLine("main async");
             GCSettings.LatencyMode = GCLatencyMode.Batch; // https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/latency
             LogManager.Use<Log4NetFactory>();
 
