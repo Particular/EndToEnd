@@ -35,7 +35,7 @@ namespace Host
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
             var logRepository = log4net.LogManager.GetRepository(entryAssembly);
-            string configFileName = Path.GetFileName(new Uri(entryAssembly.CodeBase).LocalPath);
+            var configFileName = Path.GetFileName(new Uri(entryAssembly.CodeBase).LocalPath);
             XmlConfigurator.Configure(logRepository, new FileInfo($"{configFileName}.config"));
             
             return MainAsync().ConfigureAwait(false).GetAwaiter().GetResult();
