@@ -31,11 +31,13 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Transports = new[] { Transport.SQLServer, Transport.SQLServer_Azure, },
-                MessageSizes = (MessageSize[])Enum.GetValues(typeof(MessageSize)),
+                Platforms = new []{ Platform.NetCore },
+                Versions = new[] { NServiceBusVersion.V7 },
+                Transports = new[] { Transport.SQLServer, },
+                MessageSizes = new[] { MessageSize.Tiny },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
-                ConcurrencyLevels = (ConcurrencyLevel[])Enum.GetValues(typeof(ConcurrencyLevel)),
+                ConcurrencyLevels = new [] { ConcurrencyLevel.EnvCores08x },
             });
         }
     }
