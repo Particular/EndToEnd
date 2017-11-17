@@ -2,7 +2,6 @@ namespace Tests.Tools
 {
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Threading;
     using System.Xml.Linq;
     using System.Xml.XPath;
@@ -84,7 +83,7 @@ namespace Tests.Tools
         void CopyAssembliesToStarupDir(DirectoryInfo destination, IEnumerable<string> baseFiles, IEnumerable<DirectoryInfo> dirs)
         {
             var maxRetryErrors = 100;
-            foreach (var file in baseFiles.Where(f => !f.EndsWith(".deps.json")))
+            foreach (var file in baseFiles)
             {
                 var dst = Path.Combine(destination.FullName, Path.GetFileName(file));
                 do
@@ -105,7 +104,7 @@ namespace Tests.Tools
             foreach (var dir in dirs)
             {
                 var files = dir.GetFiles("*", SearchOption.AllDirectories);
-                foreach (var src in files.Where(f => !f.FullName.EndsWith(".deps.json")))
+                foreach (var src in files)
                 {
                     var relative = src.FullName.Substring(dir.FullName.Length + 1);
                     var dst = Path.Combine(destination.FullName, relative);

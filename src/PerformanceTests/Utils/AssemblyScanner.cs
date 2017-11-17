@@ -17,7 +17,7 @@ public static class AssemblyScanner
             var assemblyName = Path.GetFileNameWithoutExtension(path);
             try
             {
-                Assembly.Load(assemblyName);
+                Assembly.LoadFrom(path);
             }
             catch (Exception e)
             {
