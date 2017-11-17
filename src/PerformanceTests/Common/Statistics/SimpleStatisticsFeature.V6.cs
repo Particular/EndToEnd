@@ -22,8 +22,6 @@ namespace NServiceBus.Performance
 
         protected override void Setup(FeatureConfigurationContext context)
         {
-            Console.WriteLine("setup SimpleStatisticsFeature");
-            Console.WriteLine(this.GetType().AssemblyQualifiedName);
             var task = new StartupTask
             {
                 Collector = new Collector()
