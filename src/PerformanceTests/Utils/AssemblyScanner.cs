@@ -14,15 +14,7 @@ public static class AssemblyScanner
 
         foreach (var path in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.dll"))
         {
-            var assemblyName = Path.GetFileNameWithoutExtension(path);
-            try
-            {
-                Assembly.LoadFrom(path);
-            }
-            catch (Exception e)
-            {
-                l.Debug($"Unable to load assembly {assemblyName}", e);
-            }
+            Assembly.LoadFrom(path);
         }
 
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
