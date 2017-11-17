@@ -31,7 +31,8 @@ namespace Categories
             return PermutationGenerator.Generate(new Permutations
             {
                 Versions = new[] { NServiceBusVersion.V7, NServiceBusVersion.V6, NServiceBusVersion.V5 },
-                Transports = new[] { Transport.MSMQ },
+                Platforms = new[] { Platform.NetCore, Platform.NetFramework },
+                Transports = new[] { Transport.RabbitMQ },
                 Persisters = new[] { Persistence.Azure },
                 Serializers = new[] { Serialization.Json },
                 OutboxModes = new[] { Outbox.Off },

@@ -31,8 +31,8 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Platforms = new []{ Platform.NetCore },
                 Versions = new[] { NServiceBusVersion.V7 },
+                Platforms = new[] { Platform.NetCore, Platform.NetFramework },
                 Transports = new[] { Transport.SQLServer, },
                 MessageSizes = new[] { MessageSize.Tiny },
                 Serializers = new[] { Serialization.Json, },

@@ -43,7 +43,7 @@ namespace Categories
             return PermutationGenerator.Generate(new Permutations
             {
                 Versions = new[] { NServiceBusVersion.V7 },
-                Platforms = new []{Platform.NetCore},
+                Platforms = new []{ Platform.NetCore, Platform.NetFramework },
                 Transports = new[] { Transport.RabbitMQ },
                 MessageSizes = new[] { MessageSize.Tiny },
                 Serializers = new[] { Serialization.Json },

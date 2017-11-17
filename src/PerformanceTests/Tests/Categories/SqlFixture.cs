@@ -36,7 +36,8 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Versions = new[] { NServiceBusVersion.V7, NServiceBusVersion.V6 },
+                Versions = new[] { NServiceBusVersion.V7 },
+                Platforms = new[] { Platform.NetCore, Platform.NetFramework },
                 Transports = new[] { Transport.MSMQ },
                 Persisters = new[] { Persistence.Sql, },
                 MessageSizes = new[] { MessageSize.Tiny, },
