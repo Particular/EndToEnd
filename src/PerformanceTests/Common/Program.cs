@@ -1,7 +1,6 @@
 namespace Host
 {
     using System;
-    using System.Configuration;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -20,7 +19,6 @@ namespace Host
 
     using NServiceBus.Logging;
     using Tests.Permutations;
-    using VisualStudioDebugHelper;
 
     class Program
     {
@@ -51,7 +49,10 @@ namespace Host
             LogManager.Use<Log4NetFactory>();
 
             Log = LogManager.GetLogger(typeof(Program));
-            DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
+
+#if NET452
+            VisualStudioDebugHelper.DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
+#endif
 
             InitAppDomainEventLogging();
             CheckPowerPlan();
