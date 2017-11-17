@@ -6,7 +6,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "Platform x86/x64, gc client/server", Category = "Performance")]
+    [TestFixture(Description = "Platform net452/dotnet-core, gc client/server", Category = "Performance")]
     public class PlatformFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
@@ -19,9 +19,10 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Platforms = new [] { Platform.NetFramework },
+                Platforms = (Platform[])Enum.GetValues(typeof(Platform)),
                 GarbageCollectors = (GarbageCollector[])Enum.GetValues(typeof(GarbageCollector)),
-                Transports = new[] { Transport.MSMQ },
+                Transports = new[] { Transport.RabbitMQ },
+                TransactionMode = new[] { TransactionMode.Receive },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
             });
