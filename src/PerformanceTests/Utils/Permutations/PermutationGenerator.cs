@@ -56,7 +56,7 @@ namespace Tests.Permutations
                 };
 
             // 7+ only supports .net core
-            items = items.Where(x => x.Platform == Platform.NetCore && x.Version == NServiceBusVersion.V7 || x.Platform != Platform.NetCore);
+            items = items.Where(x => x.Platform == Platform.NetCore && x.Version >= NServiceBusVersion.V7 || x.Platform != Platform.NetCore);
 
             if (filter != null) items = items.Where(filter);
 
