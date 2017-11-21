@@ -3,6 +3,7 @@ namespace Tests.Permutations
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Variables;
 
     public class PermutationGenerator
     {
@@ -53,6 +54,9 @@ namespace Tests.Permutations
                      + (permutations.ConcurrencyLevels.Length > 1 ? ConcurrencyLevel + Separator : string.Empty)
                      + (permutations.ScaleOuts.Length > 1 ? ScaleOut + Separator : string.Empty)
                 };
+
+            // 7+ only supports .net core
+            items = items.Where(x => x.Platform == Platform.NetCore && x.Version >= NServiceBusVersion.V7 || x.Platform != Platform.NetCore);
 
             if (filter != null) items = items.Where(filter);
 
