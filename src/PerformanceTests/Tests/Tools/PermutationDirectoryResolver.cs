@@ -20,7 +20,7 @@ namespace Tests.Tools
         {
             var components = GetPermutationComponents(permutation);
 
-            var root = new DirectoryInfo(rootDirectory);
+            var root = new DirectoryInfo(Path.Combine(rootDirectory, ".."));
 
             var dirs = root.GetDirectories()
                 .Where(d => components.Any(c => d.Name.StartsWith(c)));

@@ -1,5 +1,6 @@
 namespace Tests.Tools
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
@@ -43,8 +44,18 @@ namespace Tests.Tools
 
             startupDir.Create();
 
-            var sourceAssemblyFiles = Directory.GetFiles(components.HostDirectory, "*", SearchOption.AllDirectories);
-            CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, components.Directories);
+            try
+            {
+                var componentsHostDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", components.HostDirectory);
+                var sourceAssemblyFiles = Directory.GetFiles(componentsHostDirectory, "*", SearchOption.AllDirectories);
+                CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, components.Directories);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
 
             var projectAssemblyPath = Path.Combine(startupDir.FullName, components.HostAssemblyName);
 

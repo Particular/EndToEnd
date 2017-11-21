@@ -10,13 +10,31 @@ namespace Categories
     using Tests.Permutations;
     using Tests.Tools;
     using Variables;
+#if NET452
     using VisualStudioDebugHelper;
+#endif
 
     public abstract class Base
     {
         public static string SessionId;
-        static readonly bool InvokeEnabled = bool.Parse(ConfigurationManager.AppSettings["InvokeEnabled"]);
-        static readonly TimeSpan MaxDuration = TimeSpan.Parse(ConfigurationManager.AppSettings["MaxDuration"]);
+        static readonly bool InvokeEnabled;
+        static readonly TimeSpan MaxDuration;
+
+        static Base()
+        {
+            try
+            {
+//                InvokeEnabled = bool.Parse(ConfigurationManager.AppSettings["InvokeEnabled"]);
+//                MaxDuration = TimeSpan.Parse(ConfigurationManager.AppSettings["MaxDuration"]);
+                InvokeEnabled = true;
+                MaxDuration = TimeSpan.FromMinutes(5);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
 
         public virtual void ReceiveRunner(Permutation permutation)
         {
@@ -95,12 +113,15 @@ namespace Categories
             ProcessStartInfo pi;
             if (permutation.Platform == Platform.NetFramework)
             {
+                // ReSharper disable once RedundantAssignment
+                var processIdArgument = string.Empty;
+#if NET452
                 var processId = DebugAttacher.GetCurrentVisualStudioProcessId();
-                var processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
-
+                processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
+#endif
                 pi = new ProcessStartInfo(testDescriptor.ProjectAssemblyPath, permutationArgs + sessionIdArgument + processIdArgument)
                 {
-                    UseShellExecute = false,
+                    UseShellExecute = true,
                     WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                 };
             }
@@ -108,7 +129,7 @@ namespace Categories
             {
                 pi = new ProcessStartInfo("dotnet", $"{testDescriptor.ProjectAssemblyPath} {permutationArgs}{sessionIdArgument}")
                 {
-                    UseShellExecute = false,
+                    UseShellExecute = true,
                     WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                 };
             }
