@@ -50,10 +50,7 @@ namespace Host
 
             Log = LogManager.GetLogger(typeof(Program));
 
-#if NET452
-            VisualStudioDebugHelper.DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
-#endif
-
+            AttachDebuggerIfNecessary();
             InitAppDomainEventLogging();
             CheckPowerPlan();
             CheckIfWindowsDefenderIsRunning();
@@ -126,6 +123,7 @@ namespace Host
 
         static void CheckIfWindowsDefenderIsRunning()
         {
+#if NET452
             var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Real-Time Protection");
 
             if (key != null && 0 == (int)key.GetValue("DisableRealtimeMonitoring", 1))
@@ -133,6 +131,7 @@ namespace Host
                 Log.Warn("Windows Defender is running, consider disabling real-time protection!");
                 Thread.Sleep(3000);
             }
+#endif
         }
 
         static void InvokeSetupImplementations(Permutation permutation)
@@ -209,6 +208,7 @@ namespace Host
 
         static void CheckPowerPlan()
         {
+#if NET452
             try
             {
                 var highperformance = new Guid("8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c");
@@ -226,6 +226,7 @@ namespace Host
             {
                 Log.Debug("Powerplan check failed, ignoring", ex);
             }
+#endif
         }
 
         static void InitAppDomainEventLogging()
@@ -247,6 +248,7 @@ namespace Host
 
         static void CheckProcessorScheduling()
         {
+#if NET452
             var key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\PriorityControl");
 
             if (key == null || 24 != (int)key.GetValue("Win32PrioritySeparation", 2))
@@ -254,6 +256,14 @@ namespace Host
                 Log.WarnFormat("Processor scheduling is set to 'Programs', consider setting this to 'Background services'!");
                 Thread.Sleep(3000);
             }
+#endif
+        }
+
+        static void AttachDebuggerIfNecessary()
+        {
+#if NET452
+            VisualStudioDebugHelper.DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
+#endif
         }
     }
 }
