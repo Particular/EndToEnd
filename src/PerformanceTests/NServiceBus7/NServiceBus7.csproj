@@ -12,7 +12,7 @@
     <OutputPath>..\bin\$(Configuration)\NServiceBus7\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>    
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,11 +27,11 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
+    <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj" />
     <PackageReference Include="NServiceBus.Metrics.PerformanceCounters" Version="2.0.0-alpha0024" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 

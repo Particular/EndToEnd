@@ -2,6 +2,7 @@ namespace Host
 {
     using System;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Reflection;
@@ -18,7 +19,6 @@ namespace Host
 
     using NServiceBus.Logging;
     using Tests.Permutations;
-    using VisualStudioDebugHelper;
 
     class Program
     {
@@ -28,11 +28,18 @@ namespace Host
 
         static int Main()
         {
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.DefaultConnectionLimit = 150;
+
+            var entryAssembly = Assembly.GetEntryAssembly();
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
 
-            XmlConfigurator.Configure(log4net.LogManager.GetRepository(Assembly.GetExecutingAssembly()));
-
+            var logRepository = log4net.LogManager.GetRepository(entryAssembly);
+            var configFileName = Path.GetFileName(new Uri(entryAssembly.CodeBase).LocalPath);
+            XmlConfigurator.Configure(logRepository, new FileInfo($"{configFileName}.config"));
+            
             return MainAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
@@ -43,7 +50,9 @@ namespace Host
 
             Log = LogManager.GetLogger(typeof(Program));
 
-            DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
+#if NET452
+            VisualStudioDebugHelper.DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
+#endif
 
             InitAppDomainEventLogging();
             CheckPowerPlan();

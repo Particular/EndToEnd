@@ -31,12 +31,13 @@ namespace Categories
             return PermutationGenerator.Generate(new Permutations
             {
                 Versions = new[] { NServiceBusVersion.V7 },
+                Platforms = new[] { Platform.NetCore, Platform.NetFramework },
                 Transports = new[] { Transport.AmazonSQS },
                 Persisters = new[] { Persistence.InMemory },
                 MessageSizes = new[] { MessageSize.Tiny },
                 Serializers = new[] { Serialization.Json },
                 OutboxModes = new[] { Outbox.Off },
-                TransactionMode = new[] { TransactionMode.Receive, TransactionMode.None, },
+                TransactionMode = new[] { TransactionMode.Receive },
                 ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential }
             });
         }

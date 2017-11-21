@@ -40,27 +40,16 @@ namespace Tests.Tools
             };
         }
 
-        static string GetTargetFrameworkName(Permutation permutation)
-        {
-            switch (permutation.Platform)
-            {
-                case Platform.NetFramework:
-                    return "net452";
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
         string GetHostName(Permutation permutation)
         {
             switch (permutation.Version)
             {
                 case NServiceBusVersion.V5:
-                    return "NServiceBus5";
+                    return "NServiceBus5.exe";
                 case NServiceBusVersion.V6:
-                    return "NServiceBus6";
+                    return "NServiceBus6.exe";
                 case NServiceBusVersion.V7:
-                    return "NServiceBus7";
+                    return "NServiceBus7" + (permutation.Platform == Platform.NetCore ? ".dll" : ".exe");
                 default:
                     throw new NotSupportedException(permutation.Version.ToString("G"));
             }
@@ -71,15 +60,28 @@ namespace Tests.Tools
             switch (permutation.Version)
             {
                 case NServiceBusVersion.V5:
+                    return "NServiceBus5";
                 case NServiceBusVersion.V6:
-                    return GetHostName(permutation);
+                    return "NServiceBus6";
                 case NServiceBusVersion.V7:
-                    return Path.Combine(GetHostName(permutation), GetTargetFrameworkName(permutation));
+                    return Path.Combine("NServiceBus7", GetTargetFrameworkName(permutation));
                 default:
                     throw new NotSupportedException(permutation.Version.ToString("G"));
             }
         }
 
+        static string GetTargetFrameworkName(Permutation permutation)
+        {
+            switch (permutation.Platform)
+            {
+                case Platform.NetFramework:
+                    return "net452";
+                case Platform.NetCore:
+                    return "netcoreapp2.0";
+                default:
+                    throw new NotSupportedException();
+            }
+        }
 
         string GetImplementation(object instance)
         {

@@ -8,7 +8,6 @@ namespace Tests.Permutations
         public string Category { get; set; }
         public string Description { get; set; }
         public string Id => GenerateSplunkId();
-        public string Exe { get; set; }
         public string Code { get; set; }
         public string Fixture { get; set; }
 

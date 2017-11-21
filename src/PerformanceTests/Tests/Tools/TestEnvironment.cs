@@ -46,33 +46,38 @@ namespace Tests.Tools
             var sourceAssemblyFiles = Directory.GetFiles(components.HostDirectory, "*", SearchOption.AllDirectories);
             CopyAssembliesToStarupDir(startupDir, sourceAssemblyFiles, components.Directories);
 
-            var projectAssemblyPath = Path.Combine(startupDir.FullName, components.HostAssemblyName + ".exe");
+            var projectAssemblyPath = Path.Combine(startupDir.FullName, components.HostAssemblyName);
 
             var descriptor = new TestDescriptor
             {
                 Permutation = permutation,
                 ProjectAssemblyPath = projectAssemblyPath,
+                ProjectAssemblyDirectory = startupDir.FullName,
                 Category = permutation.Category,
                 Description = permutation.Description,
             };
 
-            permutation.Exe = projectAssemblyPath;
-
-            GenerateBat(descriptor);
+            GenerateBat(permutation, descriptor);
             UpdateAppConfig(descriptor);
 
             return descriptor;
         }
 
-        void GenerateBat(TestDescriptor value)
+        void GenerateBat(Permutation permutation, TestDescriptor value)
         {
             var args = PermutationParser.ToArgs(value.Permutation);
             var sessionIdArgument = string.Format(" --sessionId={0}", sessionId);
-            var exe = new FileInfo(value.ProjectAssemblyPath);
+            var executable = new FileInfo(value.ProjectAssemblyPath);
+            var batFile = Path.Combine(executable.DirectoryName, "start.bat");
 
-            var batFile = Path.Combine(exe.DirectoryName, "start.bat");
-
-            if (!File.Exists(batFile)) File.WriteAllText(batFile, exe.Name + " " + args + " " + sessionIdArgument);
+            if (permutation.Platform == Platform.NetFramework)
+            {
+                if (!File.Exists(batFile)) File.WriteAllText(batFile, executable.Name + " " + args + " " + sessionIdArgument);
+            }
+            else if (permutation.Platform == Platform.NetCore)
+            {
+                if (!File.Exists(batFile)) File.WriteAllText(batFile, $"dotnet {executable.Name} {args} {sessionIdArgument}");
+            }
         }
 
         void CopyAssembliesToStarupDir(DirectoryInfo destination, IEnumerable<string> baseFiles, IEnumerable<DirectoryInfo> dirs)

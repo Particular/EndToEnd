@@ -14,7 +14,7 @@ public static class AssemblyScanner
 
         foreach (var path in Directory.EnumerateFiles(Environment.CurrentDirectory, "*.dll"))
         {
-            Assembly.LoadFile(path);
+            Assembly.LoadFrom(path);
         }
 
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
