@@ -16,7 +16,7 @@ namespace Tests.Tools
 
         static TestEnvironment()
         {
-            System.Environment.CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public TestEnvironment(string sessionId)
@@ -164,7 +164,7 @@ namespace Tests.Tools
                 if (equalTimestamps) return;
                 File.Delete(dst);
             }
-            if (!SymbolicLink.Create(src, dst)) File.Copy(src, dst);
+            File.Copy(src, dst);
             File.SetLastWriteTimeUtc(dst, File.GetLastWriteTimeUtc(src));
         }
 

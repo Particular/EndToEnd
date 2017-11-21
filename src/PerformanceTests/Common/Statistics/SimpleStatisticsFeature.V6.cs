@@ -82,7 +82,7 @@ namespace NServiceBus.Performance
 
                 if (_outputTitle)
                 {
-                    _titleFormat = Console.Title + " | Avg:{0:N}/s Last:{1:N}/s, Max:{2:N}/s";
+                    _titleFormat = " | Avg:{0:N}/s Last:{1:N}/s, Max:{2:N}/s";
                 }
 
                 Log.InfoFormat("Report Interval: {0:N0}ms", _updateInMilliSeconds);

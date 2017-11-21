@@ -13,6 +13,8 @@ public class Powerplan
         return ActiveScheme;
     }
 
+#pragma warning disable PC003
     [DllImport("powrprof.dll")]
     static extern UInt32 PowerGetActiveScheme(IntPtr UserRootPowerKey, ref IntPtr ActivePolicyGuid);
+#pragma warning restore PC003
 }

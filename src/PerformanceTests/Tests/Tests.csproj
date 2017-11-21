@@ -22,11 +22,15 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.*" />
+    <ProjectReference Include="..\NServiceBus7\NServiceBus7.csproj" />    
+    <ProjectReference Include="..\Transport.V7.RabbitMQ.V5\Transport.V7.RabbitMQ_v5.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
     <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj" />
     <Reference Include="System.Configuration" />
+    <ProjectReference Include="..\NServiceBus7\NServiceBus7.csproj" />    
+    <ProjectReference Include="..\Transport.V7.RabbitMQ.V5\Transport.V7.RabbitMQ_v5.csproj" />
     <!--<ProjectReference Include="..\NServiceBus--><!--5\NServiceBus5.csproj" />
     <ProjectReference Include="..\NServiceBus6\NServiceBus6.csproj" />
     <ProjectReference Include="..\Distribution.V5.MsmqDistributor.V5\Distribution.V5.MsmqDistributor.V5.csproj" />

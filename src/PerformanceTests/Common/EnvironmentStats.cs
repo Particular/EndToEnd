@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Net;
 using NServiceBus.Logging;
@@ -34,9 +33,9 @@ static class EnvironmentStats
         log.InfoFormat("UseNagleAlgorithm: {0}", ServicePointManager.UseNagleAlgorithm);
 
         log = LogManager.GetLogger("ENVVAR");
-        foreach (var item in Environment.GetEnvironmentVariables().OfType<DictionaryEntry>().OrderBy(x=>x.Key))
+        foreach (var key in Environment.GetEnvironmentVariables().Keys.OfType<string>().OrderBy(x=> x))
         {
-            log.DebugFormat("- {0}", item.Key);
+            log.InfoFormat("{0}: {1}", key, Environment.GetEnvironmentVariable(key));
         }
     }
 }
