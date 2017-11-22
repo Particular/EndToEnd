@@ -66,6 +66,7 @@ abstract class LoopRunner : BaseRunner
                     count += batchSize;
 
                     var duration = batchDuration.ElapsedMilliseconds;
+                    Log.InfoFormat("Batch with size {0,7:N0} duration {1,7:N0}ms", batchSize, duration);
                     if (duration < MinimumBatchSeedDuration)
                     {
                         batchSize *= 2;
