@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../.connectionstrings.config">
+    <None Include="..\..\..\..\.connectionstrings.config" Link=".connectionstrings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config">
@@ -45,9 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update=".connectionstrings.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="App.Debug.config">
       <IsTransformFile>True</IsTransformFile>
     </None>
