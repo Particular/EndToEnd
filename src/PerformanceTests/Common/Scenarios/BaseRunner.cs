@@ -132,7 +132,7 @@ public abstract partial class BaseRunner : IContext
                     }).ConfigureAwait(false);
                 Interlocked.Add(ref count, currentBatchSize);
                 var duration = sw.ElapsedMilliseconds;
-                Log.InfoFormat("Batch with size {0,7:N0} duration {1,7:N0}ms", batchSize, duration);
+                Log.InfoFormat("Batch completed with size {0,7:N0} duration {1,7:N0}ms", batchSize, duration);
                 if (duration < MinimumBatchSeedDuration)
                 {
                     batchSize = currentBatchSize * 2; // Last writer wins
