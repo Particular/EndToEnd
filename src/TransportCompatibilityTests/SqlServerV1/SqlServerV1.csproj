@@ -63,7 +63,6 @@
     <Compile Include="AppConfig.cs" />
     <Compile Include="AppConfigGenerator.cs" />
     <Compile Include="EndpointFacade.cs" />
-    <Compile Include="EndpointConfigurator.cs" />
     <Compile Include="Handler.cs" />
   </ItemGroup>
   <ItemGroup>

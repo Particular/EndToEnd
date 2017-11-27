@@ -1,5 +1,6 @@
 ﻿namespace AzureStorageQueuesV6
 {
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
     using NServiceBus.Config;
@@ -8,9 +9,9 @@
 
     class CustomConfiguration : IConfigurationSource
     {
-        MessageMapping[] messageMappings;
+        IEnumerable<MessageMapping> messageMappings;
 
-        public CustomConfiguration(MessageMapping[] messageMappings)
+        public CustomConfiguration(IEnumerable<MessageMapping> messageMappings)
         {
             this.messageMappings = messageMappings;
         }

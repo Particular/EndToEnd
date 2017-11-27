@@ -1,35 +1,21 @@
-﻿namespace AzureStorageQueuesV7
+﻿namespace AzureServiceBusV8
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
     using NServiceBus;
-    using NServiceBus.Logging;
-    using NServiceBus.Pipeline;
     using TransportCompatibilityTests.Common;
-    using TransportCompatibilityTests.Common.AzureStorageQueues;
+    using TransportCompatibilityTests.Common.AzureServiceBus;
     using TransportCompatibilityTests.Common.Messages;
 
     public class EndpointFacade : MarshalByRefObject, IEndpointFacade
     {
-        //private IBusSession busSession;
         IEndpointInstance endpointInstance;
-        CallbackResultStore callbackResultStore;
         MessageStore messageStore;
+        CallbackResultStore callbackResultStore;
         SubscriptionStore subscriptionStore;
 
-        public void Bootstrap(EndpointDefinition endpointDefinition)
+        async Task InitializeEndpoint(AzureServiceBusEndpointDefinition endpointDefinition)
         {
-            InitializeEndpoint(endpointDefinition.As<AzureStorageQueuesEndpointDefinition>())
-                .GetAwaiter()
-                .GetResult();
-        }
-
-        async Task InitializeEndpoint(AzureStorageQueuesEndpointDefinition endpointDefinition)
-        {
-            var defaultFactory = LogManager.Use<DefaultFactory>();
-            defaultFactory.Level(LogLevel.Error);
-
             var endpointConfiguration = new EndpointConfiguration(endpointDefinition.Name);
 
             endpointConfiguration.Conventions().DefiningMessagesAs(t => t.Namespace != null && t.Namespace.EndsWith(".Messages") && t != typeof(TestEvent));
@@ -37,23 +23,43 @@
 
             endpointConfiguration.EnableInstallers();
             endpointConfiguration.UsePersistence<InMemoryPersistence>();
-            endpointConfiguration.UseTransport<AzureStorageQueueTransport>()
-                .ConnectionString(AzureStorageQueuesConnectionStringBuilder.Build());
+            var transportConfiguration = endpointConfiguration.UseTransport<AzureServiceBusTransport>();
+            transportConfiguration
+                .UseEndpointOrientedTopology()
+                .RegisterPublisher(typeof(TestEvent), "source")
+                .ConnectionString(AzureServiceBusConnectionStringBuilder.Build)
+                .Sanitization()
+                .UseStrategy<ValidateAndHashIfNeeded>();
 
-            endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings.Concat(endpointDefinition.Publishers)));
+            var routing = transportConfiguration.Routing();
+            foreach (var mapping in endpointDefinition.Mappings)
+            {
+                routing.RouteToEndpoint(mapping.MessageType, mapping.TransportAddress);
+            }
 
-            endpointConfiguration.UseSerialization<JsonSerializer>();
+            endpointConfiguration.SendFailedMessagesTo("error");
+
+            endpointConfiguration.EnableCallbacks();
+
+            endpointConfiguration.UseSerialization<NewtonsoftSerializer>();
+
+            endpointConfiguration.MakeInstanceUniquelyAddressable(Guid.NewGuid() + "A");
 
             messageStore = new MessageStore();
-            subscriptionStore = new SubscriptionStore();
             callbackResultStore = new CallbackResultStore();
+            subscriptionStore = new SubscriptionStore();
 
             endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(messageStore));
             endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(subscriptionStore));
 
-            endpointConfiguration.Pipeline.Register<SubscriptionMonitoringBehavior.Registration>();
-
             endpointInstance = await Endpoint.Start(endpointConfiguration);
+        }
+
+        public void Bootstrap(EndpointDefinition endpointDefinition)
+        {
+            InitializeEndpoint(endpointDefinition.As<AzureServiceBusEndpointDefinition>())
+                .GetAwaiter()
+                .GetResult();
         }
 
         public void SendCommand(Guid messageId)
@@ -73,17 +79,22 @@
 
         public void SendAndCallbackForInt(int value)
         {
-            throw new NotImplementedException();
+            Task.Run(async () =>
+            {
+                var result = await endpointInstance.Request<int>(new TestIntCallback { Response = value }, new SendOptions());
+
+                callbackResultStore.Add(result);
+            });
         }
 
         public void SendAndCallbackForEnum(CallbackEnum value)
         {
-            throw new NotImplementedException();
-        }
+            Task.Run(async () =>
+            {
+                var result = await endpointInstance.Request<CallbackEnum>(new TestEnumCallback { CallbackEnum = value }, new SendOptions());
 
-        public void Dispose()
-        {
-            endpointInstance.Stop().GetAwaiter().GetResult();
+                callbackResultStore.Add(result);
+            });
         }
 
         public Guid[] ReceivedMessageIds => messageStore.GetAll();
@@ -98,29 +109,9 @@
 
         public int NumberOfSubscriptions => subscriptionStore.NumberOfSubscriptions;
 
-        class SubscriptionMonitoringBehavior : Behavior<IIncomingPhysicalMessageContext>
+        public void Dispose()
         {
-            public SubscriptionStore SubscriptionStore { get; set; }
-
-            public override async Task Invoke(IIncomingPhysicalMessageContext context, Func<Task> next)
-            {
-                await next();
-                string intent;
-
-                if (context.Message.Headers.TryGetValue(Headers.MessageIntent, out intent) && intent == "Subscribe")
-                {
-                    SubscriptionStore.Increment();
-                }
-            }
-
-            internal class Registration : RegisterStep
-            {
-                public Registration()
-                    : base("SubscriptionBehavior", typeof(SubscriptionMonitoringBehavior), "So we can get subscription events")
-                {
-                    InsertBefore("ProcessSubscriptionRequests");
-                }
-            }
+            endpointInstance.Stop().GetAwaiter().GetResult();
         }
     }
 }

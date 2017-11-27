@@ -30,7 +30,7 @@ namespace TransportCompatibilityTests.SqlServer
         [Test]
         public void Subscriber_doesnt_receive_duplicate_events()
         {
-            subscriberDefinition.Mappings = new[]
+            subscriberDefinition.Publishers = new[]
             {
                 new MessageMapping
                 {
@@ -56,7 +56,7 @@ namespace TransportCompatibilityTests.SqlServer
 
             // Let's upgrade
 
-            subscriberDefinition.Mappings = new[]
+            subscriberDefinition.Publishers = new[]
             {
                 new MessageMapping
                 {

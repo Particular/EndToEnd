@@ -109,7 +109,8 @@ namespace TransportCompatibilityTests.AzureServiceBus
             var asbTransportVersions = new[]
             {
                 6,
-                7
+                7,
+                8
             };
 
             var pairs = from l in asbTransportVersions

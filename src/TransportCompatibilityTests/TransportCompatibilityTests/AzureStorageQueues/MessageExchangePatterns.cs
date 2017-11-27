@@ -75,7 +75,7 @@
         [Test, TestCaseSource(nameof(GenerateVersionsPairs))]
         public void It_is_possible_to_publish_events(int sourceVersion, int destinationVersion)
         {
-            destinationEndpointDefinition.Mappings = new[]
+            destinationEndpointDefinition.Publishers = new[]
             {
                 new MessageMapping
                 {
@@ -105,7 +105,8 @@
             var transportVersions = new[]
             {
                 6,
-                7
+                7,
+                8
             };
 
             var pairs = from l in transportVersions

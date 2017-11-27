@@ -1,7 +1,6 @@
-﻿namespace AzureStorageQueuesV7
+﻿namespace AzureStorageQueuesV8
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
     using NServiceBus;
     using NServiceBus.Logging;
@@ -32,17 +31,31 @@
 
             var endpointConfiguration = new EndpointConfiguration(endpointDefinition.Name);
 
+            endpointConfiguration.SendFailedMessagesTo("error");
+
+            endpointConfiguration.EnableCallbacks();
+            endpointConfiguration.MakeInstanceUniquelyAddressable("A");
+
             endpointConfiguration.Conventions().DefiningMessagesAs(t => t.Namespace != null && t.Namespace.EndsWith(".Messages") && t != typeof(TestEvent));
             endpointConfiguration.Conventions().DefiningEventsAs(t => t == typeof(TestEvent));
 
             endpointConfiguration.EnableInstallers();
             endpointConfiguration.UsePersistence<InMemoryPersistence>();
-            endpointConfiguration.UseTransport<AzureStorageQueueTransport>()
-                .ConnectionString(AzureStorageQueuesConnectionStringBuilder.Build());
+            var transportConfiguration = endpointConfiguration.UseTransport<AzureStorageQueueTransport>()
+                .ConnectionString(AzureStorageQueuesConnectionStringBuilder.Build())
+                .SanitizeQueueNamesWith(q => q.Replace(".", "-"));
 
-            endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings.Concat(endpointDefinition.Publishers)));
+            var routing = transportConfiguration.Routing();
+            foreach (var mapping in endpointDefinition.Mappings)
+            {
+                routing.RouteToEndpoint(mapping.MessageType, mapping.TransportAddress);
+            }
+            foreach (var publisher in endpointDefinition.Publishers)
+            {
+                routing.RegisterPublisher(publisher.MessageType, publisher.TransportAddress);
+            }
 
-            endpointConfiguration.UseSerialization<JsonSerializer>();
+            endpointConfiguration.UseSerialization<NewtonsoftSerializer>();
 
             messageStore = new MessageStore();
             subscriptionStore = new SubscriptionStore();
@@ -53,7 +66,15 @@
 
             endpointConfiguration.Pipeline.Register<SubscriptionMonitoringBehavior.Registration>();
 
-            endpointInstance = await Endpoint.Start(endpointConfiguration);
+            try
+            {
+                endpointInstance = await Endpoint.Start(endpointConfiguration);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public void SendCommand(Guid messageId)

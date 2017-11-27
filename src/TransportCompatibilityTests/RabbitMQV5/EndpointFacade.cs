@@ -1,52 +1,65 @@
-﻿namespace AzureServiceBusV7
+﻿namespace RabbitMQV5
 {
     using System;
     using System.Threading.Tasks;
     using NServiceBus;
     using TransportCompatibilityTests.Common;
-    using TransportCompatibilityTests.Common.AzureServiceBus;
     using TransportCompatibilityTests.Common.Messages;
+    using TransportCompatibilityTests.Common.RabbitMQ;
 
     public class EndpointFacade : MarshalByRefObject, IEndpointFacade
     {
-        IEndpointInstance endpointInstance;
         MessageStore messageStore;
         CallbackResultStore callbackResultStore;
-        SubscriptionStore subscriptionStore;
-
-        async Task InitializeEndpoint(AzureServiceBusEndpointDefinition endpointDefinition)
-        {
-            var endpointConfiguration = new EndpointConfiguration(endpointDefinition.Name);
-
-            endpointConfiguration.Conventions().DefiningMessagesAs(t => t.Namespace != null && t.Namespace.EndsWith(".Messages") && t != typeof(TestEvent));
-            endpointConfiguration.Conventions().DefiningEventsAs(t => t == typeof(TestEvent));
-
-            endpointConfiguration.EnableInstallers();
-            endpointConfiguration.UsePersistence<InMemoryPersistence>();
-            endpointConfiguration.UseTransport<AzureServiceBusTransport>()
-                .UseEndpointOrientedTopology()
-                .RegisterPublisher(typeof(TestEvent), "source")
-                .ConnectionString(AzureServiceBusConnectionStringBuilder.Build)
-                .Sanitization().UseStrategy<ValidateAndHashIfNeeded>();
-
-            endpointConfiguration.CustomConfigurationSource(new CustomConfiguration(endpointDefinition.Mappings));
-            endpointConfiguration.MakeInstanceUniquelyAddressable(Guid.NewGuid() + "A");
-
-            messageStore = new MessageStore();
-            callbackResultStore = new CallbackResultStore();
-            subscriptionStore = new SubscriptionStore();
-
-            endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(messageStore));
-            endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(subscriptionStore));
-
-            endpointInstance = await Endpoint.Start(endpointConfiguration);
-        }
+        IEndpointInstance endpointInstance;
 
         public void Bootstrap(EndpointDefinition endpointDefinition)
         {
-            InitializeEndpoint(endpointDefinition.As<AzureServiceBusEndpointDefinition>())
-                .GetAwaiter()
-                .GetResult();
+            InitializeEndpoint(endpointDefinition.As<RabbitMqEndpointDefinition>())
+               .GetAwaiter()
+               .GetResult();
+        }
+
+        async Task InitializeEndpoint(RabbitMqEndpointDefinition endpointDefinition)
+        {
+            var endpointConfiguration = new EndpointConfiguration(endpointDefinition.Name);
+
+            endpointConfiguration.Conventions()
+                .DefiningMessagesAs(
+                    t => t.Namespace != null && t.Namespace.EndsWith(".Messages") && t != typeof(TestEvent));
+            endpointConfiguration.Conventions().DefiningEventsAs(t => t == typeof(TestEvent));
+            endpointConfiguration.Conventions().DefiningCommandsAs(t => t.FullName.EndsWith("Command"));
+
+            endpointConfiguration.UsePersistence<InMemoryPersistence>();
+            endpointConfiguration.EnableInstallers();
+            var transportExtensions = endpointConfiguration.UseTransport<RabbitMQTransport>()
+                .ConnectionString(RabbitConnectionStringBuilder.Build())
+                .UseConventionalRoutingTopology(); // use conventional routing topology for backwards compatibility
+
+            endpointConfiguration.SendFailedMessagesTo("error");
+            endpointConfiguration.AuditProcessedMessagesTo("audit");
+
+            endpointConfiguration.EnableCallbacks();
+
+            var routing = transportExtensions.Routing();
+            foreach (var mapping in endpointDefinition.Mappings)
+            {
+                routing.RouteToEndpoint(mapping.MessageType, mapping.TransportAddress);
+            }
+
+            endpointConfiguration.MakeInstanceUniquelyAddressable("A");
+
+            if (endpointDefinition.RoutingTopology == Topology.Direct)
+            {
+                transportExtensions.UseDirectRoutingTopology();
+            }
+
+            messageStore = new MessageStore();
+            callbackResultStore = new CallbackResultStore();
+
+            endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(messageStore));
+
+            endpointInstance = await Endpoint.Start(endpointConfiguration);
         }
 
         public void SendCommand(Guid messageId)
@@ -94,7 +107,7 @@
 
         public CallbackEnum[] ReceivedEnumCallbacks => callbackResultStore.Get<CallbackEnum>();
 
-        public int NumberOfSubscriptions => subscriptionStore.NumberOfSubscriptions;
+        public int NumberOfSubscriptions => 0;
 
         public void Dispose()
         {
