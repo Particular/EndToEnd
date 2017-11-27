@@ -32,6 +32,10 @@ class AmazonSQSProfile : IProfile, INeedPermutation
             new AmazonSQSConfig
             {
                 RegionEndpoint = region,
+#if !NET452
+                // dotnet core httpclient ignores DefaultConnectionLimit and uses int.MaxValue
+                MaxConnectionsPerServer = Settings.DefaultConnectionLimit,
+#endif
             }));
         var s3Configuration = transport.S3(cs["S3BucketForLargeMessages"].ToString(), cs["S3KeyPrefix"].ToString());
         s3Configuration.ClientFactory(() => new AmazonS3Client(
@@ -39,6 +43,10 @@ class AmazonSQSProfile : IProfile, INeedPermutation
             new AmazonS3Config
             {
                 RegionEndpoint = region,
+#if !NET452
+                // dotnet core httpclient ignores DefaultConnectionLimit and uses int.MaxValue
+                MaxConnectionsPerServer = Settings.DefaultConnectionLimit
+#endif
             }));
 
         // https://docs.particular.net/transports/sqs/transaction-support
