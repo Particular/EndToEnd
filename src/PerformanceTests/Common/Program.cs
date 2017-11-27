@@ -74,9 +74,11 @@ namespace Host
 
                     ValidateServicePointManager(permutation);
 
-                    if (Environment.UserInteractive) 
+                    if (Environment.UserInteractive && Environment.OSVersion.Platform == PlatformID.Win32NT) 
                     {
+#pragma warning disable PC001 // this code has a platform check
                         Console.Title = PermutationParser.ToFriendlyString(permutation);
+#pragma warning restore PC001
                     }
 
                     var runnerTypes = AssemblyScanner.GetAllTypes<BaseRunner>().ToArray();
