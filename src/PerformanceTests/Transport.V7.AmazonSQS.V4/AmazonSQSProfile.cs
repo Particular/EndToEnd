@@ -33,6 +33,7 @@ class AmazonSQSProfile : IProfile, INeedPermutation
             {
                 RegionEndpoint = region,
 #if !NET452
+                // dotnet core httpclient ignores DefaultConnectionLimit and uses int.MaxValue
                 MaxConnectionsPerServer = Settings.DefaultConnectionLimit,
 #endif
             }));
@@ -43,6 +44,7 @@ class AmazonSQSProfile : IProfile, INeedPermutation
             {
                 RegionEndpoint = region,
 #if !NET452
+                // dotnet core httpclient ignores DefaultConnectionLimit and uses int.MaxValue
                 MaxConnectionsPerServer = Settings.DefaultConnectionLimit
 #endif
             }));
