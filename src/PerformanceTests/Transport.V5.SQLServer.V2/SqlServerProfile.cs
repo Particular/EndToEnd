@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using NServiceBus;
 using NServiceBus.Settings;
 using Tests.Permutations;
