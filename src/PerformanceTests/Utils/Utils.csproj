@@ -6,6 +6,7 @@
     <AssemblyName>Utils</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Utils\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
