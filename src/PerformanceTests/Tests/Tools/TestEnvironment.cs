@@ -20,7 +20,7 @@ namespace Tests.Tools
 
         public TestEnvironment(string sessionId)
         {
-            resolver = new PermutationDirectoryResolver(".");
+            resolver = new PermutationDirectoryResolver("..");
             this.sessionId = sessionId;
         }
 

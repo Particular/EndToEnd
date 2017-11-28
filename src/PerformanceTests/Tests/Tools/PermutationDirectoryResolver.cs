@@ -34,7 +34,7 @@ namespace Tests.Tools
 
             return new PermutationResult
             {
-                HostDirectory = GetHostDirectory(permutation),
+                HostDirectory = Path.Combine(root.FullName, GetHostDirectory(permutation)),
                 HostAssemblyName = GetHostName(permutation),
                 Directories = dirs.ToArray()
             };
