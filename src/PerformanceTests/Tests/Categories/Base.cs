@@ -119,14 +119,18 @@ namespace Categories
             {
                 if (!p.WaitForExit((int)MaxDuration.TotalMilliseconds))
                 {
+#pragma warning disable PC001
                     p.Kill();
+#pragma warning restore PC001
                     Assert.Fail($"Killed process because execution took more then {MaxDuration}.");
                 }
+#pragma warning disable PC001
                 if (p.ExitCode == (int)ReturnCodes.NotSupported)
                 {
                     Assert.Inconclusive("Not supported");
                 }
                 Assert.AreEqual((int)ReturnCodes.OK, p.ExitCode, "Execution failed.");
+#pragma warning restore PC001
             }
         }
     }
