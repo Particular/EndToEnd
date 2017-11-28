@@ -10,7 +10,6 @@ namespace Categories
     using Tests.Permutations;
     using Tests.Tools;
     using Variables;
-    using VisualStudioDebugHelper;
 
     public abstract class Base
     {
@@ -95,9 +94,12 @@ namespace Categories
             ProcessStartInfo pi;
             if (permutation.Platform == Platform.NetFramework)
             {
-                var processId = DebugAttacher.GetCurrentVisualStudioProcessId();
-                var processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
-
+                // ReSharper disable once RedundantAssignment
+                var processIdArgument = string.Empty;
+#if NET452
+                var processId = VisualStudioDebugHelper.DebugAttacher.GetCurrentVisualStudioProcessId();
+                processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
+#endif
                 pi = new ProcessStartInfo(testDescriptor.ProjectAssemblyPath, permutationArgs + sessionIdArgument + processIdArgument)
                 {
                     UseShellExecute = false,
