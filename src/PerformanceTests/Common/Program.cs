@@ -74,9 +74,11 @@ namespace Host
 
                     ValidateServicePointManager(permutation);
 
-                    if (Environment.UserInteractive) 
+                    if (Environment.UserInteractive && Environment.OSVersion.Platform == PlatformID.Win32NT) 
                     {
+#pragma warning disable PC001 // this code has a platform check
                         Console.Title = PermutationParser.ToFriendlyString(permutation);
+#pragma warning restore PC001
                     }
 
                     var runnerTypes = AssemblyScanner.GetAllTypes<BaseRunner>().ToArray();
@@ -126,12 +128,17 @@ namespace Host
 
         static void CheckIfWindowsDefenderIsRunning()
         {
-            var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Real-Time Protection");
-
-            if (key != null && 0 == (int)key.GetValue("DisableRealtimeMonitoring", 1))
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                Log.Warn("Windows Defender is running, consider disabling real-time protection!");
-                Thread.Sleep(3000);
+#pragma warning disable PC001 // API not supported on all platforms
+                var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Real-Time Protection");
+
+                if (key != null && 0 == (int)key.GetValue("DisableRealtimeMonitoring", 1))
+                {
+                    Log.Warn("Windows Defender is running, consider disabling real-time protection!");
+                    Thread.Sleep(3000);
+                }
+#pragma warning restore PC001 // API not supported on all platforms
             }
         }
 
@@ -247,12 +254,17 @@ namespace Host
 
         static void CheckProcessorScheduling()
         {
-            var key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\PriorityControl");
-
-            if (key == null || 24 != (int)key.GetValue("Win32PrioritySeparation", 2))
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                Log.WarnFormat("Processor scheduling is set to 'Programs', consider setting this to 'Background services'!");
-                Thread.Sleep(3000);
+#pragma warning disable PC001 // API not supported on all platforms
+                var key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\PriorityControl");
+
+                if (key == null || 24 != (int)key.GetValue("Win32PrioritySeparation", 2))
+                {
+                    Log.WarnFormat("Processor scheduling is set to 'Programs', consider setting this to 'Background services'!");
+                    Thread.Sleep(3000);
+                }
+#pragma warning restore PC001 // API not supported on all platforms
             }
         }
     }

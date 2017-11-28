@@ -57,7 +57,7 @@ namespace NServiceBus.Performance
             private static readonly long TimeUnit = Stopwatch.Frequency;
 
             private readonly string _titleFormat;
-            private readonly bool _outputTitle;
+            private readonly bool _outputTitle = Environment.OSVersion.Platform == PlatformID.Win32NT;
             private readonly bool _outputLog;
             private readonly int _updateInMilliSeconds = 2000;
 
@@ -74,7 +74,6 @@ namespace NServiceBus.Performance
 
             public Collector()
             {
-                _outputTitle = true;//Environment.UserInteractive && string.Equals(ConfigurationManager.AppSettings[SettingKey + "/OutputConsoleTitle"], bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
                 _outputLog = string.Equals(ConfigurationManager.AppSettings[SettingKey + "/OutputLog"], bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
 
                 int interval;
@@ -82,7 +81,9 @@ namespace NServiceBus.Performance
 
                 if (_outputTitle)
                 {
+#pragma warning disable PC001 // outputTitle contains a platform check
                     _titleFormat = Console.Title + " | Avg:{0:N}/s Last:{1:N}/s, Max:{2:N}/s";
+#pragma warning restore PC001
                 }
 
                 Log.InfoFormat("Report Interval: {0:N0}ms", _updateInMilliSeconds);
@@ -267,7 +268,9 @@ namespace NServiceBus.Performance
 
                     if (_outputTitle)
                     {
+#pragma warning disable PC001 // outputTitle contains a platform check
                         Console.Title = string.Format(CultureInfo.InvariantCulture, _titleFormat, average.Total, currentPerSecond.Total, _maxPerSecond.Total);
+#pragma warning restore PC001
                     }
                 }
             }
