@@ -154,7 +154,7 @@ namespace Tests.Tools
                 File.Delete(dst);
             }
 
-            File.Copy(src, dst);
+            File.Copy(src, dst, true);
             File.SetLastWriteTimeUtc(dst, File.GetLastWriteTimeUtc(src));
         }
 
