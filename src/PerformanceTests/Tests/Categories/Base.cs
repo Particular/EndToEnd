@@ -14,8 +14,18 @@ namespace Categories
     public abstract class Base
     {
         public static string SessionId;
-        static readonly bool InvokeEnabled = bool.Parse(ConfigurationManager.AppSettings["InvokeEnabled"]);
-        static readonly TimeSpan MaxDuration = TimeSpan.Parse(ConfigurationManager.AppSettings["MaxDuration"]);
+        static readonly bool InvokeEnabled;
+        static readonly TimeSpan MaxDuration;
+
+        static Base()
+        {
+            // we need to get the correct config file, as .net core will try to load nunits test harness configuration file
+            // see https://github.com/dotnet/corefx/issues/22101
+            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
+            var configurationFile = ConfigurationManager.OpenExeConfiguration(assemblyLocation);
+            InvokeEnabled = bool.Parse(configurationFile.AppSettings.Settings["InvokeEnabled"].Value);
+            MaxDuration = TimeSpan.Parse(configurationFile.AppSettings.Settings["MaxDuration"].Value);
+        }
 
         public virtual void ReceiveRunner(Permutation permutation)
         {
