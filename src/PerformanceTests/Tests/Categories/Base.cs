@@ -101,6 +101,7 @@ namespace Categories
             var permutationArgs = PermutationParser.ToArgs(permutation);
             var sessionIdArgument = $" --sessionId={SessionId}";
 
+            //var useShellExecute = Environment.OSVersion.Platform != PlatformID.Win32NT;
             ProcessStartInfo pi;
             if (permutation.Platform == Platform.NetFramework)
             {
@@ -112,7 +113,7 @@ namespace Categories
 #endif
                 pi = new ProcessStartInfo(testDescriptor.ProjectAssemblyPath, permutationArgs + sessionIdArgument + processIdArgument)
                 {
-                    UseShellExecute = false,
+                    UseShellExecute = true,
                     WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                 };
             }
@@ -120,7 +121,7 @@ namespace Categories
             {
                 pi = new ProcessStartInfo("dotnet", $"{testDescriptor.ProjectAssemblyPath} {permutationArgs}{sessionIdArgument}")
                 {
-                    UseShellExecute = false,
+                    UseShellExecute = true,
                     WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                 };
             }
