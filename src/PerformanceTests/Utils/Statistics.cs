@@ -110,10 +110,12 @@ public class Statistics : IDisposable
         if (sendTimeWithTx != TimeSpan.Zero)
             LogStats("SendingInsideTX", Convert.ToDouble(NumberOfMessages / 2) / sendTimeWithTx.TotalSeconds, "msg/s", StatsFormatDouble);
 
+#pragma warning disable PC001 // false-positive, see https://github.com/dotnet/platform-compat/issues/69
         LogStats("PrivateMemorySize", process.PrivateMemorySize64 / 1024, "kB", StatsFormatInt);
         LogStats("PeakWorkingSet", process.PeakWorkingSet64 / 1024, "kB", StatsFormatInt);
         LogStats("PeakPagedMemorySize", process.PeakPagedMemorySize64 / 1024, "kB", StatsFormatInt);
         LogStats("PeakVirtualMemorySize", process.PeakVirtualMemorySize64 / 1024, "kB", StatsFormatInt);
+#pragma warning restore PC001
     }
 
     static void LogStats(string key, double value, string unit, string format)

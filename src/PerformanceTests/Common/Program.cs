@@ -55,7 +55,7 @@ namespace Host
 #endif
 
             InitAppDomainEventLogging();
-            CheckPowerPlan();
+            Powerplan.CheckPowerPlan();
             CheckIfWindowsDefenderIsRunning();
             CheckProcessorScheduling();
 
@@ -214,26 +214,7 @@ namespace Host
             }
         }
 
-        static void CheckPowerPlan()
-        {
-            try
-            {
-                var highperformance = new Guid("8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c");
-                var id = Powerplan.GetActive();
 
-                Log.InfoFormat("Powerplan: {0}", id);
-
-                if (id != highperformance)
-                {
-                    Log.WarnFormat("Power option not set to High Performance, consider setting it to high performance!");
-                    Thread.Sleep(3000);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Debug("Powerplan check failed, ignoring", ex);
-            }
-        }
 
         static void InitAppDomainEventLogging()
         {
