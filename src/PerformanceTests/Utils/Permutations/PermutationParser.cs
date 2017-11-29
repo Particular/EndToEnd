@@ -10,10 +10,10 @@ namespace Tests.Permutations
 
         public static string ToArgs(Permutation instance)
         {
-            return "--tests:" + string.Join(Separator, instance.Tests) + 
-                   " --category:" + instance.Category +
-                   " --description:\"" + instance.Description + "\"" +
-                   " --variables:" + ToString(instance);
+            return $"--tests:\"{string.Join(Separator, instance.Tests)}\"" +
+                   $" --category:\"{instance.Category}\"" +
+                   $" --description:\"{instance.Description}\"" +
+                   $" --variables:\"{ToString(instance)}\"";
         }
 
         public static Permutation FromCommandlineArgs()
