@@ -43,7 +43,7 @@ public static class AssemblyScanner
                 version = ex.Message;
             }
 
-            l.InfoFormat("Loaded: {0} ({1})", name, version);
+            l.DebugFormat("Loaded: {0} ({1})", name, version);
         }
 
         return assemblies;
