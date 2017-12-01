@@ -5,7 +5,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "NHibernate", Category = "Performance"), Explicit]
+    [TestFixture(Description = "NHibernate", Category = "Performance")]
     public class NHibernateFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]

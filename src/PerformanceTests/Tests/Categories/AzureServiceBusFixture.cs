@@ -5,7 +5,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "Transports", Category = "Performance"), Explicit]
+    [TestFixture(Description = "Transports", Category = "Performance")]
     public class AzureServiceBusFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
