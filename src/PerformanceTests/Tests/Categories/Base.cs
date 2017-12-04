@@ -76,6 +76,7 @@ namespace Categories
         {
             var fixtureType = GetType();
             var fixture = fixtureType.GetCustomAttribute<TestFixtureAttribute>();
+            TestContext.WriteLine($"Running test {fixtureType} ({TestContext.CurrentContext.Test.FullName}/{TestContext.CurrentContext.Test.MethodName}");
             permutation.Fixture = fixtureType.Name;
 
             permutation.Category = fixture.Category;
