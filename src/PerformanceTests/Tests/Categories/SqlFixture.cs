@@ -43,7 +43,7 @@ namespace Categories
                 MessageSizes = new[] { MessageSize.Tiny, },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off },
-                TransactionMode = new[] { TransactionMode.Transactional, TransactionMode.Atomic, },
+                TransactionMode = new[] { TransactionMode.Atomic }, // TransactionScope currently not supported.
                 ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores02x, ConcurrencyLevel.Sequential }
             });
         }
