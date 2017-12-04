@@ -24,7 +24,8 @@ namespace Categories
                 Transports = new[] { Transport.RabbitMQ },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off },
-                ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential }
+                ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential },
+                TransactionMode = new [] { TransactionMode.Receive }
             });
         }
     }
