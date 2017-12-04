@@ -16,7 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.0.61" />
     <PackageReference Include="NServiceBus" Version="7.0.0-*" />
     <PackageReference Include="NServiceBus.Log4Net" Version="3.0.0-*" />
     <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.0.0-*" />
@@ -28,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
+    <PackageReference Include="Microsoft.VisualStudio.SlowCheetah" Version="3.0.61" />
     <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj" />
     <PackageReference Include="NServiceBus.Metrics.PerformanceCounters" Version="2.0.0-alpha0024" />
   </ItemGroup>
