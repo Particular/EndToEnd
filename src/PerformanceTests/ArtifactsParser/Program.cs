@@ -28,7 +28,7 @@
                 // try to open the file
                 Process.Start(dst);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ignore exception
             }
