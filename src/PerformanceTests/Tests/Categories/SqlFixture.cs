@@ -38,12 +38,12 @@ namespace Categories
             {
                 Versions = new[] { NServiceBusVersion.V7 },
                 Platforms = new[] { Platform.NetCore, Platform.NetFramework },
-                Transports = new[] { Transport.MSMQ },
+                Transports = new[] { Transport.SQLServer },
                 Persisters = new[] { Persistence.Sql, },
                 MessageSizes = new[] { MessageSize.Tiny, },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off },
-                TransactionMode = new[] { TransactionMode.Transactional, TransactionMode.Atomic, },
+                TransactionMode = new[] { TransactionMode.Atomic }, // TransactionScope currently not supported.
                 ConcurrencyLevels = new[] { ConcurrencyLevel.EnvCores02x, ConcurrencyLevel.Sequential }
             });
         }

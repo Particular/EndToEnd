@@ -23,7 +23,11 @@
             File.WriteAllText(dst, csv);
             Console.WriteLine("Parsed '{0}' recursively and written to '{1}'", src, dst);
 
-            Process.Start(dst);
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                // try to open the file
+                Process.Start(dst);
+            }
         }
     }
 }

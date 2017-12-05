@@ -76,6 +76,7 @@ namespace Categories
         {
             var fixtureType = GetType();
             var fixture = fixtureType.GetCustomAttribute<TestFixtureAttribute>();
+            TestContext.WriteLine($"Running test {fixtureType} ({TestContext.CurrentContext.Test.FullName}/{TestContext.CurrentContext.Test.MethodName}");
             permutation.Fixture = fixtureType.Name;
 
             permutation.Category = fixture.Category;
@@ -101,7 +102,6 @@ namespace Categories
             var permutationArgs = PermutationParser.ToArgs(permutation);
             var sessionIdArgument = $" --sessionId={SessionId}";
 
-            //var useShellExecute = Environment.OSVersion.Platform != PlatformID.Win32NT;
             ProcessStartInfo pi;
             if (permutation.Platform == Platform.NetFramework)
             {

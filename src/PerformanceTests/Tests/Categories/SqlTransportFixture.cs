@@ -37,6 +37,7 @@ namespace Categories
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
                 ConcurrencyLevels = new [] { ConcurrencyLevel.EnvCores08x },
+                TransactionMode = new [] { TransactionMode.Atomic } // TransactionScope currently not supported.
             });
         }
     }
