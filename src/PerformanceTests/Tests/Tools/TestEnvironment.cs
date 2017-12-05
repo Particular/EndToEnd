@@ -16,7 +16,7 @@ namespace Tests.Tools
 
         static TestEnvironment()
         {
-            System.Environment.CurrentDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public TestEnvironment(string sessionId)
