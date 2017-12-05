@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace ArtifactsParser
+﻿namespace ArtifactsParser
 {
+    using System;
     using System.Diagnostics;
     using System.IO;
     using System.Net;
