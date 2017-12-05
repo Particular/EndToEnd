@@ -5,7 +5,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "RavenDB", Category = "Performance")]
+    [TestFixture(Description = "RavenDB", Category = "Performance"), Explicit]
     public class RavenDBConcurrencyForV6Fixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]

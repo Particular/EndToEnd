@@ -6,7 +6,7 @@ using Variables;
 
 namespace Categories
 { 
-    [TestFixture(Description = "Send throughput", Category = "Performance")]
+    [TestFixture(Description = "Send throughput", Category = "Performance"), Explicit]
     public class SendThroughputFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]

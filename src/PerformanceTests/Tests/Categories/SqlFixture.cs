@@ -5,7 +5,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Category = "Performance")]
+    [TestFixture(Category = "Performance"), Explicit]
     public class SqlPersistenceFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
