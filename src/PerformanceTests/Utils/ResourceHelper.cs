@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using log4net;
 
 public static class ResourceHelper
 {
