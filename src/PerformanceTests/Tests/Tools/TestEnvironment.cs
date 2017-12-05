@@ -129,7 +129,7 @@ namespace Tests.Tools
 
         void UpdateAppConfig(TestDescriptor value)
         {
-            var x = value.Permutation.GarbageCollector == GarbageCollector.Client ? "false" : "true";
+            var x = value.Permutation.GarbageCollector == GarbageCollector.Client ? bool.FalseString : bool.TrueString;
 
             var config = value.ProjectAssemblyPath + ".config";
             var doc = XDocument.Load(config);
@@ -137,7 +137,7 @@ namespace Tests.Tools
                 .XPathSelectElement("/configuration/runtime/gcServer")
                 .Attribute("enabled");
 
-            if (enabled.Value == x) return;
+            if (string.Equals(enabled.Value, x, StringComparison.OrdinalIgnoreCase)) return;
 
             enabled.Value = x;
 
