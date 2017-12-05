@@ -10,13 +10,22 @@ namespace Categories
     using Tests.Permutations;
     using Tests.Tools;
     using Variables;
-    using VisualStudioDebugHelper;
 
     public abstract class Base
     {
         public static string SessionId;
-        static readonly bool InvokeEnabled = bool.Parse(ConfigurationManager.AppSettings["InvokeEnabled"]);
-        static readonly TimeSpan MaxDuration = TimeSpan.Parse(ConfigurationManager.AppSettings["MaxDuration"]);
+        static readonly bool InvokeEnabled;
+        static readonly TimeSpan MaxDuration;
+
+        static Base()
+        {
+            // we need to get the correct config file, as .net core will try to load nunits test harness configuration file
+            // see https://github.com/dotnet/corefx/issues/22101
+            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
+            var configurationFile = ConfigurationManager.OpenExeConfiguration(assemblyLocation);
+            InvokeEnabled = bool.Parse(configurationFile.AppSettings.Settings["InvokeEnabled"].Value);
+            MaxDuration = TimeSpan.Parse(configurationFile.AppSettings.Settings["MaxDuration"].Value);
+        }
 
         public virtual void ReceiveRunner(Permutation permutation)
         {
@@ -92,15 +101,19 @@ namespace Categories
             var permutationArgs = PermutationParser.ToArgs(permutation);
             var sessionIdArgument = $" --sessionId={SessionId}";
 
+            //var useShellExecute = Environment.OSVersion.Platform != PlatformID.Win32NT;
             ProcessStartInfo pi;
             if (permutation.Platform == Platform.NetFramework)
             {
-                var processId = DebugAttacher.GetCurrentVisualStudioProcessId();
-                var processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
-
+                // ReSharper disable once RedundantAssignment
+                var processIdArgument = string.Empty;
+#if NET452
+                var processId = VisualStudioDebugHelper.DebugAttacher.GetCurrentVisualStudioProcessId();
+                processIdArgument = processId >= 0 ? $" --processId={processId}" : string.Empty;
+#endif
                 pi = new ProcessStartInfo(testDescriptor.ProjectAssemblyPath, permutationArgs + sessionIdArgument + processIdArgument)
                 {
-                    UseShellExecute = false,
+                    UseShellExecute = true,
                     WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                 };
             }
@@ -108,7 +121,7 @@ namespace Categories
             {
                 pi = new ProcessStartInfo("dotnet", $"{testDescriptor.ProjectAssemblyPath} {permutationArgs}{sessionIdArgument}")
                 {
-                    UseShellExecute = false,
+                    UseShellExecute = true,
                     WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                 };
             }
@@ -117,14 +130,18 @@ namespace Categories
             {
                 if (!p.WaitForExit((int)MaxDuration.TotalMilliseconds))
                 {
+#pragma warning disable PC001
                     p.Kill();
+#pragma warning restore PC001
                     Assert.Fail($"Killed process because execution took more then {MaxDuration}.");
                 }
+#pragma warning disable PC001
                 if (p.ExitCode == (int)ReturnCodes.NotSupported)
                 {
                     Assert.Inconclusive("Not supported");
                 }
                 Assert.AreEqual((int)ReturnCodes.OK, p.ExitCode, "Execution failed.");
+#pragma warning restore PC001
             }
         }
     }

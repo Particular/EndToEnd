@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using log4net;
 
 public static class ResourceHelper
 {
@@ -19,7 +20,7 @@ public static class ResourceHelper
 
     public static string GetManifestResourceTextThatEndsWith(string identifier)
     {
-        var assembly = Assembly.GetExecutingAssembly();
+        var assembly = Assembly.GetCallingAssembly();
         var key = assembly.GetManifestResourceNames().First(x => x.EndsWith(identifier));
         return assembly.GetManifestResourceText(key);
     }

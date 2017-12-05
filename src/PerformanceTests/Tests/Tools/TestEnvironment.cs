@@ -1,5 +1,6 @@
 namespace Tests.Tools
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
@@ -20,7 +21,7 @@ namespace Tests.Tools
 
         public TestEnvironment(string sessionId)
         {
-            resolver = new PermutationDirectoryResolver(".");
+            resolver = new PermutationDirectoryResolver("..");
             this.sessionId = sessionId;
         }
 
@@ -161,6 +162,7 @@ namespace Tests.Tools
         static DirectoryInfo GetStartupDir(Permutation permutation)
         {
             var path = Path.Combine(
+                "..", // move up one directory to ignore the target platform directories
                 "@",
                 permutation.Category,
                 permutation.Fixture,
