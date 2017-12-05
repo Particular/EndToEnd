@@ -10,7 +10,7 @@ namespace Tests.Permutations
         public NServiceBusVersion[] Versions = (NServiceBusVersion[])Enum.GetValues(typeof(NServiceBusVersion));
         public Outbox[] OutboxModes;
         public Persistence[] Persisters = { Persistence.InMemory };
-        public Platform[] Platforms = { Platform.NetFramework };
+        public Platform[] Platforms = { Platform.NetFramework, Platform.NetCore };
         public Serialization[] Serializers = { Serialization.Json, };
         public Transport[] Transports = (Transport[])Enum.GetValues(typeof(Transport));
         public GarbageCollector[] GarbageCollectors = { GarbageCollector.Server };
