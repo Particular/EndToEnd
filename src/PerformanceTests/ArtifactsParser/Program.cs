@@ -23,7 +23,15 @@
             File.WriteAllText(dst, csv);
             Console.WriteLine("Parsed '{0}' recursively and written to '{1}'", src, dst);
 
-            Process.Start(dst);
+            try
+            {
+                // try to open the file
+                Process.Start(dst);
+            }
+            catch (Exception e)
+            {
+                // ignore exception
+            }
         }
     }
 }
