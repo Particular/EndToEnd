@@ -102,7 +102,6 @@ namespace Categories
             var permutationArgs = PermutationParser.ToArgs(permutation);
             var sessionIdArgument = $" --sessionId={SessionId}";
 
-            //var useShellExecute = Environment.OSVersion.Platform != PlatformID.Win32NT;
             ProcessStartInfo pi;
             if (permutation.Platform == Platform.NetFramework)
             {
