@@ -5,7 +5,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "MSMQ", Category = "Performance")]
+    [TestFixture(Description = "MSMQ", Category = "Performance"), Explicit]
     public class MsmqFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]

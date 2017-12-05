@@ -7,7 +7,7 @@ using Variables;
 namespace Categories
 {
 
-    [TestFixture(Description = "Audit forwarding On / Off", Category = "Performance")]
+    [TestFixture(Description = "Audit forwarding On / Off", Category = "Performance"), Explicit]
     public class AuditOnVsOffFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]

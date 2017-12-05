@@ -5,7 +5,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "Persister publish performance for different transaction modes", Category = "Performance")]
+    [TestFixture(Description = "Persister publish performance for different transaction modes", Category = "Performance"), Explicit]
     public class PersistersPublishTransactionModesFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]

@@ -7,7 +7,7 @@ namespace Categories
     using Variables;
     using System.Linq;
 
-    [TestFixture(Description = "Persisters", Category = "Performance")]
+    [TestFixture(Description = "Persisters", Category = "Performance"), Explicit]
     public class PersistersFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
@@ -20,8 +20,8 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Transports = new[] { Transport.MSMQ },
-                TransactionMode = new[] { TransactionMode.None, },
+                Transports = new[] { Transport.RabbitMQ },
+                TransactionMode = new[] { TransactionMode.None },
                 Persisters = (Persistence[])Enum.GetValues(typeof(Persistence)),
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
