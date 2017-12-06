@@ -8,6 +8,25 @@ namespace Tests.Permutations
     public class PermutationGenerator
     {
         static readonly string Separator = "~";
+        // Filter transports 
+        static readonly Persistence[] DotNetCorePersisters =
+        {
+            Persistence.Azure,
+            Persistence.InMemory,
+            Persistence.Sql,
+            Persistence.Sql_Azure,
+            Persistence.Sql_RDS,
+        };
+
+        static readonly Transport[] DotNetCoreTransports =
+        {
+            Transport.RabbitMQ,
+            Transport.AmazonSQS,
+            Transport.AzureStorageQueues,
+            Transport.SQLServer,
+            Transport.SQLServer_Azure,
+            Transport.SQLServer_RDS,
+        };
 
         public static IEnumerable<Permutation> Generate(Permutations permutations, Func<Permutation, bool> filter = null)
         {
@@ -61,26 +80,8 @@ namespace Tests.Permutations
             // No MSDTC/Transacionscopes (YET) on dotnet core
             items = items.Where(x => x.Platform != Platform.NetCore || x.TransactionMode != TransactionMode.Transactional);
 
-            // Filter transports 
-            var DotNetCorePersisters = new[]
-            {
-                Persistence.Azure,
-                Persistence.InMemory,
-                Persistence.Sql,
-                Persistence.Sql_Azure,
-                Persistence.Sql_RDS,
-            };
+            // Filter out transports and persisters not supported on dotnet core
             items = items.Where(x => x.Platform != Platform.NetCore || DotNetCorePersisters.Contains(x.Persister));
-
-            var DotNetCoreTransports = new[]
-            {
-                Transport.RabbitMQ,
-                Transport.AmazonSQS,
-                Transport.AzureStorageQueues,
-                Transport.SQLServer,
-                Transport.SQLServer_Azure,
-                Transport.SQLServer_RDS,
-            };
             items = items.Where(x => x.Platform != Platform.NetCore || DotNetCoreTransports.Contains(x.Transport));
 
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
