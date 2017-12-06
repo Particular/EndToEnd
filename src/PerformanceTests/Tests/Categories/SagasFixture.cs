@@ -36,7 +36,7 @@ namespace Categories
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
                 ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential, ConcurrencyLevel.EnvCores, ConcurrencyLevel.EnvCores02x, ConcurrencyLevel.EnvCores04x },
-                TransactionMode = new[] { TransactionMode.Atomic, TransactionMode.Transactional, }
+                TransactionMode = new[] { TransactionMode.Atomic }
             },
             p => (p.Persister == Persistence.Azure && p.TransactionMode != TransactionMode.Transactional || p.Persister != Persistence.Azure)
                  && (p.Version != NServiceBusVersion.V5 || !new[] { Persistence.Sql, Persistence.Sql_Azure, Persistence.Sql_RDS }.Contains(p.Persister))
