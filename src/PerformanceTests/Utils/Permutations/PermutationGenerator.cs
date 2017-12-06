@@ -67,8 +67,8 @@ namespace Tests.Permutations
                 Persistence.Azure,
                 Persistence.InMemory,
                 Persistence.Sql,
-                //Persistence.Sql_Azure,
-                //Persistence.Sql_RDS,
+                Persistence.Sql_Azure,
+                Persistence.Sql_RDS,
             };
             items = items.Where(x => x.Platform != Platform.NetCore || DotNetCorePersisters.Contains(x.Persister));
 
@@ -78,8 +78,8 @@ namespace Tests.Permutations
                 Transport.AmazonSQS,
                 Transport.AzureStorageQueues,
                 Transport.SQLServer,
-                //Transport.SQLServer_Azure,
-                //Transport.SQLServer_RDS,
+                Transport.SQLServer_Azure,
+                Transport.SQLServer_RDS,
             };
             items = items.Where(x => x.Platform != Platform.NetCore || DotNetCoreTransports.Contains(x.Transport));
 
