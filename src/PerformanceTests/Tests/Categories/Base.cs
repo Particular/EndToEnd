@@ -138,7 +138,7 @@ namespace Categories
 #pragma warning disable PC001
                 if (p.ExitCode == (int)ReturnCodes.NotSupported)
                 {
-                    Assert.Inconclusive("Not supported");
+                    Assert.Ignore("Not supported");
                 }
                 Assert.AreEqual((int)ReturnCodes.OK, p.ExitCode, "Execution failed.");
 #pragma warning restore PC001
