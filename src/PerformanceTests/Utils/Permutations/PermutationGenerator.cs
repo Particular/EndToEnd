@@ -58,6 +58,31 @@ namespace Tests.Permutations
             // 7+ only supports .net core
             items = items.Where(x => x.Platform == Platform.NetCore && x.Version >= NServiceBusVersion.V7 || x.Platform != Platform.NetCore);
 
+            // No MSDTC/Transacionscopes (YET) on dotnet core
+            items = items.Where(x => x.Platform != Platform.NetCore || x.TransactionMode != TransactionMode.Transactional);
+
+            // Filter transports 
+            var DotNetCorePersisters = new[]
+            {
+                Persistence.Azure,
+                Persistence.InMemory,
+                Persistence.Sql,
+                //Persistence.Sql_Azure,
+                //Persistence.Sql_RDS,
+            };
+            items = items.Where(x => x.Platform != Platform.NetCore || DotNetCorePersisters.Contains(x.Persister));
+
+            var DotNetCoreTransports = new[]
+            {
+                Transport.RabbitMQ,
+                Transport.AmazonSQS,
+                Transport.AzureStorageQueues,
+                Transport.SQLServer,
+                //Transport.SQLServer_Azure,
+                //Transport.SQLServer_RDS,
+            };
+            items = items.Where(x => x.Platform != Platform.NetCore || DotNetCoreTransports.Contains(x.Transport));
+
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
             {
                 // can only run .net core compatible tests
