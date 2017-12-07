@@ -6,7 +6,7 @@ namespace Categories
     using Variables;
     using System.Linq;
 
-    [TestFixture(Description = "Sagas", Category = "Performance"), Explicit]
+    [TestFixture(Description = "Sagas", Category = "Performance")]
     public class SagasFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
