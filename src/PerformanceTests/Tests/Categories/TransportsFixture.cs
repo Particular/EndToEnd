@@ -15,7 +15,7 @@ namespace Categories
             base.GatedSendLocalRunner(permutation);
         }
 
-        [TestCaseSource(nameof(CreatePermutations)), Explicit]
+        [TestCaseSource(nameof(CreatePermutations))]
         public override void GatedPublishRunner(Permutation permutation)
         {
             base.GatedPublishRunner(permutation);
