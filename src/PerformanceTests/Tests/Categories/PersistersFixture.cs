@@ -7,7 +7,7 @@ namespace Categories
     using Variables;
     using System.Linq;
 
-    [TestFixture(Description = "Persisters", Category = "Performance"), Explicit]
+    [TestFixture(Description = "Persisters", Category = "Performance")]
     public class PersistersFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
