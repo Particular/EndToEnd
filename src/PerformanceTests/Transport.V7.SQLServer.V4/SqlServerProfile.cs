@@ -24,7 +24,17 @@ class SqlServerProfile : IProfile, ISetup, INeedPermutation
             && Permutation.TransactionMode != TransactionMode.Transactional
             ) throw new NotSupportedException("TransactionMode: " + Permutation.TransactionMode);
 
-        if (Permutation.TransactionMode != TransactionMode.Default) transport.Transactions(Permutation.GetTransactionMode());
+
+        if (Permutation.Platform == Platform.NetCore 
+            && (Permutation.TransactionMode == TransactionMode.Transactional || Permutation.TransactionMode == TransactionMode.Default))
+        {
+            // lower tx scope when running on .net core as TransactionScope doesn't work yet.
+            transport.Transactions(TransportTransactionMode.SendsAtomicWithReceive);
+        }
+        else if (Permutation.TransactionMode != TransactionMode.Default)
+        {
+            transport.Transactions(Permutation.GetTransactionMode());
+        }
     }
 
     void ISetup.Setup()

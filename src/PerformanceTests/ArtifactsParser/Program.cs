@@ -1,7 +1,6 @@
 ﻿namespace ArtifactsParser
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Net;
 
@@ -22,12 +21,6 @@
             var dst = Path.Combine(src, $"perftest-report.{Environment.UserName}@{Dns.GetHostName()}.{DateTime.Now:yyyyMMddThhmmss}.tsv");
             File.WriteAllText(dst, csv);
             Console.WriteLine("Parsed '{0}' recursively and written to '{1}'", src, dst);
-
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                // try to open the file
-                Process.Start(dst);
-            }
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Categories
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
                 TransactionMode = new[] { TransactionMode.Receive, },
-                ConcurrencyLevels = (ConcurrencyLevel[])Enum.GetValues(typeof(ConcurrencyLevel)),
+                ConcurrencyLevels = new []{ ConcurrencyLevel.Sequential, ConcurrencyLevel.EnvCores, ConcurrencyLevel.EnvCores04x, ConcurrencyLevel.EnvCores16x, ConcurrencyLevel.EnvCores64x}
             });
         }
     }

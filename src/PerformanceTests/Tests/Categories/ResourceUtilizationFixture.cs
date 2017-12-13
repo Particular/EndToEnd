@@ -6,7 +6,7 @@ namespace Categories
     using Tests.Permutations;
     using Variables;
 
-    [TestFixture(Description = "Resources utilization", Category = "Performance")]
+    [TestFixture(Description = "Resources utilization", Category = "Performance"), Explicit]
     public class ResourceUtilizationFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]

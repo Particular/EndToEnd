@@ -107,8 +107,6 @@ abstract class LoopRunner : BaseRunner
             return;
         }
 
-        Interlocked.Increment(ref count);
-
         try
         {
             countdownEvent.Signal();

@@ -15,7 +15,7 @@ namespace Categories
             base.GatedSendLocalRunner(permutation);
         }
 
-        [TestCaseSource(nameof(CreatePermutations)), Explicit]
+        [TestCaseSource(nameof(CreatePermutations))]
         public override void GatedPublishRunner(Permutation permutation)
         {
             base.GatedPublishRunner(permutation);
@@ -34,7 +34,8 @@ namespace Categories
                 Transports = (Transport[])Enum.GetValues(typeof(Transport)),
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
-                TransactionMode = new[] { TransactionMode.Default, }
+                TransactionMode = new[] { TransactionMode.Receive, },
+                ConcurrencyLevels = new []{ ConcurrencyLevel.EnvCores, ConcurrencyLevel.EnvCores04x, ConcurrencyLevel.EnvCores16x}
             });
         }
     }

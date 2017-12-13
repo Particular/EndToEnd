@@ -6,7 +6,7 @@ namespace Categories
     using Variables;
     using System.Linq;
 
-    [TestFixture(Description = "Sagas", Category = "Performance")]
+    [TestFixture(Description = "Sagas", Category = "Performance"), Explicit]
     public class SagasFixture : Base
     {
         [TestCaseSource(nameof(CreatePermutations))]
@@ -31,12 +31,12 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Transports = new[] { Transport.MSMQ },
+                Transports = new[] { Transport.RabbitMQ },
                 Persisters = new[] { Persistence.Azure, Persistence.NHibernate, Persistence.RavenDB, Persistence.RavenDB_Embedded, Persistence.Sql, Persistence.InMemory, },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
-                ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential, ConcurrencyLevel.EnvCores02x, ConcurrencyLevel.EnvCores, ConcurrencyLevel.EnvCores04x },
-                TransactionMode = new[] { TransactionMode.Atomic, TransactionMode.Transactional, }
+                ConcurrencyLevels = new[] { ConcurrencyLevel.Sequential, ConcurrencyLevel.EnvCores, ConcurrencyLevel.EnvCores04x },
+                TransactionMode = new[] { TransactionMode.Receive }
             },
             p => (p.Persister == Persistence.Azure && p.TransactionMode != TransactionMode.Transactional || p.Persister != Persistence.Azure)
                  && (p.Version != NServiceBusVersion.V5 || !new[] { Persistence.Sql, Persistence.Sql_Azure, Persistence.Sql_RDS }.Contains(p.Persister))
