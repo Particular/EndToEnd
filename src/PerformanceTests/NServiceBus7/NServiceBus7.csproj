@@ -26,10 +26,6 @@
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.*" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
-    <PackageReference Include="NServiceBus.Metrics.PerformanceCounters" Version="2.0.0-alpha0024" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
