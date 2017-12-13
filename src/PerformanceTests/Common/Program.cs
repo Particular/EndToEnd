@@ -50,10 +50,6 @@ namespace Host
 
             Log = LogManager.GetLogger(typeof(Program));
 
-#if NET452
-            VisualStudioDebugHelper.DebugAttacher.AttachDebuggerToVisualStudioProcessFromCommandLineParameter();
-#endif
-
             InitAppDomainEventLogging();
             Powerplan.CheckPowerPlan();
             CheckIfWindowsDefenderIsRunning();

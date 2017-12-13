@@ -87,10 +87,6 @@
       <Project>{572499ed-e234-4c66-bd6e-d5a845065c5f}</Project>
       <Name>Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj">
-      <Project>{4ffa67b5-3cd7-4e37-918d-26dbd9947fb3}</Project>
-      <Name>VisualStudioDebugHelper</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

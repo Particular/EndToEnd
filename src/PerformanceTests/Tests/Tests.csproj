@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
-    <ProjectReference Include="..\DebugHandler\VisualStudioDebugHelper.csproj" />
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
