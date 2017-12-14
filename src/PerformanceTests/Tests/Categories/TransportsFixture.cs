@@ -1,6 +1,5 @@
 namespace Categories
 {
-    using System;
     using System.Collections.Generic;
     using NUnit.Framework;
     using Tests.Permutations;
@@ -31,7 +30,7 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Transports = new []{Transport.AmazonSQS, Transport.AzureStorageQueues, Transport.RabbitMQ, Transport.SQLServer},
+                Transports = new []{ Transport.RabbitMQ },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
                 TransactionMode = new[] { TransactionMode.Receive, },
