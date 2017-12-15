@@ -28,9 +28,9 @@ namespace Host
 
         static int Main()
         {
-            ServicePointManager.Expect100Continue = false;
-            ServicePointManager.UseNagleAlgorithm = false;
-            ServicePointManager.DefaultConnectionLimit = Settings.DefaultConnectionLimit; // Querying of DefaultConnectionLimit on dotnet core does not return assigned value
+//            ServicePointManager.Expect100Continue = false;
+//            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.DefaultConnectionLimit = int.MaxValue; // Querying of DefaultConnectionLimit on dotnet core does not return assigned value
 
             var entryAssembly = Assembly.GetEntryAssembly();
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
