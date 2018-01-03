@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmazonSQS\AmazonSQSEndpointDefinition.cs" />
+    <Compile Include="AmazonSQS\MessageMapping.cs" />
     <Compile Include="AzureServiceBus\ConnectionStringBuilder.cs" />
     <Compile Include="AzureServiceBus\MessageMapping.cs" />
     <Compile Include="AzureServiceBus\AzureServiceBusEndpointDefinition.cs" />
