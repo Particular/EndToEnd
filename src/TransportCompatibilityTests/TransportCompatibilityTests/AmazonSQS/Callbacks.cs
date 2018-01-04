@@ -76,6 +76,7 @@
             var versions = new[]
             {
                 3,
+                4
             };
 
             var pairs = from l in versions

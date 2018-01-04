@@ -1,4 +1,4 @@
-﻿namespace AmazonSQSV3
+﻿namespace AmazonSQSV4
 {
     using System.Threading.Tasks;
     using NServiceBus;
