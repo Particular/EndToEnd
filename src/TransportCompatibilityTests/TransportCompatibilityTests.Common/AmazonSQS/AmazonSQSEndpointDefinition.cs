@@ -1,5 +1,8 @@
 ﻿namespace TransportCompatibilityTests.Common.AmazonSQS
 {
+    using System;
+
+    [Serializable]
     public class AmazonSQSEndpointDefinition : EndpointDefinition
     {
         public override string TransportName => "AmazonSQS";

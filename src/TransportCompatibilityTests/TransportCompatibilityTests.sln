@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlServer", "SqlServer", "{730F50BD-97CE-4A53-A074-01A7AEFA0FFB}"
 EndProject
@@ -47,7 +47,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureServiceBusV8", "AzureS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AmazonSQS", "AmazonSQS", "{5112C083-37E1-4046-AB33-CABDB0F8C106}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonSQSV3", "AmazonSQSV3\AmazonSQSV3.csproj", "{4C2248A8-B469-4341-A138-728D2079707A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmazonSQSV3", "AmazonSQSV3\AmazonSQSV3.csproj", "{4C2248A8-B469-4341-A138-728D2079707A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmazonSQSV4", "AmazonSQSV4\AmazonSQSV4.csproj", "{77A80968-887C-4DEF-8001-51BA426CCD4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,10 @@ Global
 		{4C2248A8-B469-4341-A138-728D2079707A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C2248A8-B469-4341-A138-728D2079707A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C2248A8-B469-4341-A138-728D2079707A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77A80968-887C-4DEF-8001-51BA426CCD4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77A80968-887C-4DEF-8001-51BA426CCD4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77A80968-887C-4DEF-8001-51BA426CCD4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77A80968-887C-4DEF-8001-51BA426CCD4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +154,7 @@ Global
 		{0EC36A5A-D932-4DE3-B9B0-97E280F5DDE5} = {2D1C1288-7385-4410-8F6E-AF57D0FAA8BC}
 		{9136FE74-F473-4265-BD0B-8A5B8ABD69CF} = {D9F4ACD7-CA95-429F-8121-01CF783747EF}
 		{4C2248A8-B469-4341-A138-728D2079707A} = {5112C083-37E1-4046-AB33-CABDB0F8C106}
+		{77A80968-887C-4DEF-8001-51BA426CCD4E} = {5112C083-37E1-4046-AB33-CABDB0F8C106}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4499F4CC-1518-41B1-BE63-5B1E4E05DA95}

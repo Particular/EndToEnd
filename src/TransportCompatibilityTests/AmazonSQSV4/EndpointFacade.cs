@@ -1,7 +1,10 @@
-﻿namespace AmazonSQSV3
+﻿namespace AmazonSQSV4
 {
     using System;
     using System.Threading.Tasks;
+    using Amazon;
+    using Amazon.S3;
+    using Amazon.SQS;
     using NServiceBus;
     using NServiceBus.Pipeline;
     using TransportCompatibilityTests.Common;
@@ -29,48 +32,62 @@
 
         async Task InitializeEndpoint(AmazonSQSEndpointDefinition endpointDefinition)
         {
-            var endpointConfiguration = new EndpointConfiguration(endpointDefinition.Name);
-
-            endpointConfiguration.Conventions()
-                .DefiningMessagesAs(
-                    t => t.Namespace != null && t.Namespace.EndsWith(".Messages") && t != typeof(TestEvent));
-            endpointConfiguration.Conventions().DefiningEventsAs(t => t == typeof(TestEvent));
-            endpointConfiguration.Conventions().DefiningCommandsAs(t => t.FullName.EndsWith("Command"));
-
-            endpointConfiguration.UsePersistence<InMemoryPersistence>();
-            endpointConfiguration.EnableInstallers();
-
-            var transportExtensions = endpointConfiguration.UseTransport<SqsTransport>();
-            transportExtensions.Region("us-east-1");
-
-            endpointConfiguration.SendFailedMessagesTo("error");
-            endpointConfiguration.AuditProcessedMessagesTo("audit");
-
-            endpointConfiguration.EnableCallbacks();
-
-            var routing = transportExtensions.Routing();
-            foreach (var mapping in endpointDefinition.Mappings)
+            try
             {
-                routing.RouteToEndpoint(mapping.MessageType, mapping.TransportAddress);
-            }
+                var endpointConfiguration = new EndpointConfiguration(endpointDefinition.Name);
 
-            foreach (var publisher in endpointDefinition.Publishers)
+                endpointConfiguration.Conventions()
+                    .DefiningMessagesAs(
+                        t => t.Namespace != null && t.Namespace.EndsWith(".Messages") && t != typeof(TestEvent));
+                endpointConfiguration.Conventions().DefiningEventsAs(t => t == typeof(TestEvent));
+                endpointConfiguration.Conventions().DefiningCommandsAs(t => t.FullName.EndsWith("Command"));
+
+                endpointConfiguration.UsePersistence<InMemoryPersistence>();
+                endpointConfiguration.EnableInstallers();
+
+                var transportExtensions = endpointConfiguration.UseTransport<SqsTransport>();
+                transportExtensions.ClientFactory(() => new AmazonSQSClient(new AmazonSQSConfig
+                {
+                    RegionEndpoint = RegionEndpoint.USEast1
+                }));
+                transportExtensions.S3("transport-compat-tests", "TCC").ClientFactory(() => new AmazonS3Client(new AmazonS3Config
+                {
+                    RegionEndpoint = RegionEndpoint.USEast1
+                }));
+
+                endpointConfiguration.SendFailedMessagesTo("error");
+                endpointConfiguration.AuditProcessedMessagesTo("audit");
+
+                endpointConfiguration.EnableCallbacks();
+
+                var routing = transportExtensions.Routing();
+                foreach (var mapping in endpointDefinition.Mappings)
+                {
+                    routing.RouteToEndpoint(mapping.MessageType, mapping.TransportAddress);
+                }
+
+                foreach (var publisher in endpointDefinition.Publishers)
+                {
+                    routing.RegisterPublisher(publisher.MessageType, publisher.TransportAddress);
+                }
+
+                endpointConfiguration.MakeInstanceUniquelyAddressable("A");
+
+                messageStore = new MessageStore();
+                callbackResultStore = new CallbackResultStore();
+                subscriptionStore = new SubscriptionStore();
+
+                endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(messageStore));
+                endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(subscriptionStore));
+
+                endpointConfiguration.Pipeline.Register<SubscriptionMonitoringBehavior.Registration>();
+
+                endpointInstance = await Endpoint.Start(endpointConfiguration);
+            }
+            catch (Exception e)
             {
-                routing.RegisterPublisher(publisher.MessageType, publisher.TransportAddress);
+                throw new Exception(e.ToString());
             }
-
-            endpointConfiguration.MakeInstanceUniquelyAddressable("A");
-
-            messageStore = new MessageStore();
-            callbackResultStore = new CallbackResultStore();
-            subscriptionStore = new SubscriptionStore();
-
-            endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(messageStore));
-            endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(subscriptionStore));
-
-            endpointConfiguration.Pipeline.Register<SubscriptionMonitoringBehavior.Registration>();
-
-            endpointInstance = await Endpoint.Start(endpointConfiguration);
         }
 
         public void SendCommand(Guid messageId)

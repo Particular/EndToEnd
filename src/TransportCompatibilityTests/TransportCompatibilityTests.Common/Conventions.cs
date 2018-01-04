@@ -20,8 +20,14 @@
                 #endif
 
                 var assemblyName = AssemblyNameResolver(definition, version);
-                var combine = Path.Combine(TestContext.CurrentContext.TestDirectory, $"..\\..\\..\\{assemblyName}\\bin\\{configuration}");
-                return combine;
+                //Hard-coding net452 since the test project itself is hard-coded to that framework
+                var newStyle = Path.Combine(TestContext.CurrentContext.TestDirectory, $"..\\..\\..\\{assemblyName}\\bin\\{configuration}\\net452");
+                if (Directory.Exists(newStyle))
+                {
+                    return newStyle;
+                }
+                var oldStyle = Path.Combine(TestContext.CurrentContext.TestDirectory, $"..\\..\\..\\{assemblyName}\\bin\\{configuration}");
+                return oldStyle;
             };
 
         public static Func<EndpointDefinition, int, string> AssemblyPathResolver =
