@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmazonSQS\Callbacks.cs" />
+    <Compile Include="AmazonSQS\Infrastructure\AmazonSqsContext.cs" />
+    <Compile Include="AmazonSQS\MessageExchangePatterns.cs" />
     <Compile Include="AssertExtensions.cs" />
     <Compile Include="AzureServiceBus\Callbacks.cs" />
     <Compile Include="AzureServiceBus\Infrastructure\AzureServiceBusContext.cs" />
