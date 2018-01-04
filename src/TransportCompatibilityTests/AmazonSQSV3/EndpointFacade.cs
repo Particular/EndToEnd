@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using NServiceBus;
+    using NServiceBus.Pipeline;
     using TransportCompatibilityTests.Common;
     using TransportCompatibilityTests.Common.AmazonSQS;
     using TransportCompatibilityTests.Common.Messages;
@@ -67,6 +68,8 @@
             endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(messageStore));
             endpointConfiguration.RegisterComponents(c => c.RegisterSingleton(subscriptionStore));
 
+            endpointConfiguration.Pipeline.Register<SubscriptionMonitoringBehavior.Registration>();
+
             endpointInstance = await Endpoint.Start(endpointConfiguration);
         }
 
@@ -111,5 +114,30 @@
         public int[] ReceivedIntCallbacks => callbackResultStore.Get<int>();
         public CallbackEnum[] ReceivedEnumCallbacks => callbackResultStore.Get<CallbackEnum>();
         public int NumberOfSubscriptions => subscriptionStore.NumberOfSubscriptions;
+
+        class SubscriptionMonitoringBehavior : Behavior<IIncomingPhysicalMessageContext>
+        {
+            public SubscriptionStore SubscriptionStore { get; set; }
+
+            public override async Task Invoke(IIncomingPhysicalMessageContext context, Func<Task> next)
+            {
+                await next();
+                string intent;
+
+                if (context.Message.Headers.TryGetValue(Headers.MessageIntent, out intent) && intent == "Subscribe")
+                {
+                    SubscriptionStore.Increment();
+                }
+            }
+
+            internal class Registration : RegisterStep
+            {
+                public Registration()
+                    : base("SubscriptionBehavior", typeof(SubscriptionMonitoringBehavior), "So we can get subscription events")
+                {
+                    InsertBefore("ProcessSubscriptionRequests");
+                }
+            }
+        }
     }
 }
