@@ -7,7 +7,7 @@
     using TransportCompatibilityTests.Common.AmazonSQS;
     using TransportCompatibilityTests.Common.Messages;
 
-    public class EndpointFacade : IEndpointFacade
+    public class EndpointFacade : MarshalByRefObject, IEndpointFacade
     {
         MessageStore messageStore;
         CallbackResultStore callbackResultStore;
@@ -40,6 +40,7 @@
             endpointConfiguration.EnableInstallers();
 
             var transportExtensions = endpointConfiguration.UseTransport<SqsTransport>();
+            transportExtensions.Region("us-east-1");
 
             endpointConfiguration.SendFailedMessagesTo("error");
             endpointConfiguration.AuditProcessedMessagesTo("audit");

@@ -73,14 +73,13 @@
 
         static object[][] GenerateVersionsPairs()
         {
-            var sqlTransportVersions = new[]
+            var versions = new[]
             {
                 3,
-                4
             };
 
-            var pairs = from l in sqlTransportVersions
-                        from r in sqlTransportVersions
+            var pairs = from l in versions
+                        from r in versions
                         where l != r
                         select new object[] { l, r };
 

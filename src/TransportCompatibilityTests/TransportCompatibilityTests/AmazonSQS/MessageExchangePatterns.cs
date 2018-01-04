@@ -99,8 +99,7 @@
         {
             var transportVersions = new[]
             {
-                3,
-                4
+                3
             };
 
             var pairs = from l in transportVersions
