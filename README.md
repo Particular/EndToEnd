@@ -14,6 +14,12 @@ More detailed information on performance tests can be found in the [documentatio
 ## Transport compatibility tests
 The [Visual Studio solution](EndToEnd/src/TransportCompatibilityTests/TransportCompatibilityTests.sln) provides a framework and tests to verify sending messages over different transport versions. Up until now it's only possible to send messages over the same transport type, so MSMQ to MSMQ.
 
+### Required configuration
+
+#### Amazon SQS
+
+The SQS tests are hard-coded to run in `us-east-1` region. In order to run them, environment variables containing security credentials need to be configured: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
 ## Persistence compatibility tests
 
 The [Persistence Compatibility Tests](https://github.com/Particular/EndToEnd/tree/master/src/PersistenceCompatibilityTests) verify that information can be saved and read by various versions of the available [NServiceBus persistences](http://docs.particular.net/nservicebus/persistence/). Those properties are verified on public API interfaces.
