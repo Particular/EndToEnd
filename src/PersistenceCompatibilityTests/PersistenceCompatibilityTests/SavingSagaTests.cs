@@ -117,7 +117,8 @@ namespace PersistenceCompatibilityTests
         static object[][] GenerateTestCases()
         {
             var nuget = new NugetHelper();
-            NHibernatePackageVersions = nuget.GetPossibleVersionsFor("NServiceBus.NHibernate", "4.5.0");
+            NHibernatePackageVersions = nuget.GetPossibleVersionsFor("NServiceBus.NHibernate", "5.0.0")
+                .Where(v => !v.Contains("-")); // exclude beta and rc versions;
 
             var cases = from va in NHibernatePackageVersions
                         from vb in NHibernatePackageVersions
