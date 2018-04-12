@@ -126,6 +126,7 @@ namespace Categories
                 };
             }
 
+            TestContext.WriteLine($"Run test using: '{pi.Arguments}'");
             using (var p = Process.Start(pi))
             {
                 if (!p.WaitForExit((int)MaxDuration.TotalMilliseconds))
