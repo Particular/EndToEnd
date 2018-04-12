@@ -31,7 +31,7 @@ namespace Categories
         {
             return PermutationGenerator.Generate(new Permutations
             {
-                Transports = (Transport[])Enum.GetValues(typeof(Transport)),
+                Transports = new[] { Transport.AzureStorageQueues },
                 Serializers = new[] { Serialization.Json, },
                 OutboxModes = new[] { Outbox.Off, },
                 TransactionMode = new[] { TransactionMode.Receive, },
