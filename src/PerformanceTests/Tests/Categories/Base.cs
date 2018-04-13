@@ -126,7 +126,7 @@ namespace Categories
                 };
             }
 
-            TestContext.WriteLine($"Run test using: '{pi.FileName} {pi.Arguments}'");
+            TestContext.WriteLine($"Run test using: '{pi.FileName} {pi.Arguments}' using working directory: {pi.WorkingDirectory}");
             using (var p = Process.Start(pi))
             {
                 if (!p.WaitForExit((int)MaxDuration.TotalMilliseconds))
