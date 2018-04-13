@@ -121,7 +121,7 @@ namespace Categories
             {
                 pi = new ProcessStartInfo("/home/perftest/dotnet/dotnet", $"{testDescriptor.ProjectAssemblyPath} {permutationArgs}{sessionIdArgument}")
                 {
-                    UseShellExecute = true,
+                    UseShellExecute = false,
                     WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                 };
             }
