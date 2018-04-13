@@ -119,14 +119,14 @@ namespace Categories
             }
             else
             {
-                pi = new ProcessStartInfo("dotnet", $"{testDescriptor.ProjectAssemblyPath} {permutationArgs}{sessionIdArgument}")
+                pi = new ProcessStartInfo("/home/perftest/dotnet/dotnet", $"{testDescriptor.ProjectAssemblyPath} {permutationArgs}{sessionIdArgument}")
                 {
                     UseShellExecute = true,
                     WorkingDirectory = testDescriptor.ProjectAssemblyDirectory,
                 };
             }
 
-            TestContext.WriteLine($"Run test using: '{pi.Arguments}'");
+            TestContext.WriteLine($"Run test using: '{pi.FileName} {pi.Arguments}'");
             using (var p = Process.Start(pi))
             {
                 if (!p.WaitForExit((int)MaxDuration.TotalMilliseconds))
