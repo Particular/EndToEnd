@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net452;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>net452;netcoreapp2.1</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>Transport.V7.AmazonSQS</RootNamespace>
     <AssemblyName>Transport.V7.AmazonSQS_v4</AssemblyName>
