@@ -7,12 +7,18 @@
     <AssemblyName>Transport.V7.AmazonSQS_v4</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.AmazonSQS_v4\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>        
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-*" />
     <PackageReference Include="NServiceBus.AmazonSQS" Version="4.0.0-*" />
+    <PackageReference Include="Particular.CodeRules" Version="0.7.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

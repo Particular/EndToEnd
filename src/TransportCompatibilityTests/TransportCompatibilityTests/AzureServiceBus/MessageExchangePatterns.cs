@@ -4,7 +4,6 @@ using NUnit.Framework;
 using TransportCompatibilityTests.Common;
 using TransportCompatibilityTests.Common.Messages;
 
-// ReSharper disable InconsistentNaming
 
 namespace TransportCompatibilityTests.AzureServiceBus
 {
@@ -44,7 +43,6 @@ namespace TransportCompatibilityTests.AzureServiceBus
 
                     source.SendCommand(messageId);
 
-                    // ReSharper disable once AccessToDisposedClosure
                     AssertEx.WaitUntilIsTrue(() => destination.ReceivedMessageIds.Any(mi => mi == messageId));
                 }
             }
@@ -71,7 +69,6 @@ namespace TransportCompatibilityTests.AzureServiceBus
 
                     source.SendRequest(requestId);
 
-                    // ReSharper disable once AccessToDisposedClosure
                     AssertEx.WaitUntilIsTrue(() => source.ReceivedResponseIds.Any(responseId => responseId == requestId));
                 }
             }
@@ -98,7 +95,6 @@ namespace TransportCompatibilityTests.AzureServiceBus
 
                     source.PublishEvent(eventId);
 
-                    // ReSharper disable once AccessToDisposedClosure
                     AssertEx.WaitUntilIsTrue(() => destination.ReceivedEventIds.Any(ei => ei == eventId));
                 }
             }

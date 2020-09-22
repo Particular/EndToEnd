@@ -105,7 +105,6 @@ namespace Categories
             ProcessStartInfo pi;
             if (permutation.Platform == Platform.NetFramework)
             {
-                // ReSharper disable once RedundantAssignment
                 var processIdArgument = string.Empty;
 #if NET452
                 var processId = VisualStudioDebugHelper.DebugAttacher.GetCurrentVisualStudioProcessId();

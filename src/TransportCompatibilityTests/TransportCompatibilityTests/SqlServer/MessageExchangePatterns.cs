@@ -4,7 +4,6 @@ using NUnit.Framework;
 using TransportCompatibilityTests.Common;
 using TransportCompatibilityTests.Common.Messages;
 
-// ReSharper disable InconsistentNaming
 
 namespace TransportCompatibilityTests.SqlServer
 {
@@ -51,7 +50,6 @@ namespace TransportCompatibilityTests.SqlServer
 
                     source.SendCommand(messageId);
 
-                    // ReSharper disable once AccessToDisposedClosure
                     AssertEx.WaitUntilIsTrue(() => destination.ReceivedMessageIds.Any(mi => mi == messageId));
                 }
             }
@@ -78,7 +76,6 @@ namespace TransportCompatibilityTests.SqlServer
 
                     source.SendRequest(requestId);
 
-                    // ReSharper disable once AccessToDisposedClosure
                     AssertEx.WaitUntilIsTrue(() => source.ReceivedResponseIds.Any(responseId => responseId == requestId));
                 }
             }
@@ -101,14 +98,12 @@ namespace TransportCompatibilityTests.SqlServer
             {
                 using (var destination = EndpointFacadeBuilder.CreateAndConfigure(destinationEndpointDefinition, destinationVersion))
                 {
-                    // ReSharper disable once AccessToDisposedClosure
                     AssertEx.WaitUntilIsTrue(() => source.NumberOfSubscriptions > 0);
 
                     var eventId = Guid.NewGuid();
 
                     source.PublishEvent(eventId);
 
-                    // ReSharper disable once AccessToDisposedClosure
                     AssertEx.WaitUntilIsTrue(() => destination.ReceivedEventIds.Any(ei => ei == eventId));
                 }
             }
@@ -165,7 +160,6 @@ namespace TransportCompatibilityTests.SqlServer
 
                     source.SendRequest(requestId);
 
-                    // ReSharper disable once AccessToDisposedClosure
                     AssertEx.WaitUntilIsTrue(() => source.ReceivedResponseIds.Any());
                 }
             }

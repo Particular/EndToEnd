@@ -1,6 +1,5 @@
 ﻿namespace Common.Saga
 {
-    // ReSharper disable RedundantUsingDirective
     using System;
     using NServiceBus;
 #if !Version6

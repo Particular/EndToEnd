@@ -42,14 +42,12 @@ namespace TransportCompatibilityTests.SqlServer
             using (var publisher = EndpointFacadeBuilder.CreateAndConfigure(publisherDefinition, 3))
             using (var subscriber = EndpointFacadeBuilder.CreateAndConfigure(subscriberDefinition, 2))
             {
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => publisher.NumberOfSubscriptions > 0);
 
                 var eventId = Guid.NewGuid();
 
                 publisher.PublishEvent(eventId);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => subscriber.ReceivedEventIds.Any(ei => ei == eventId));
                 Assert.AreEqual(1, subscriber.ReceivedEventIds.Length);
             }
@@ -68,7 +66,6 @@ namespace TransportCompatibilityTests.SqlServer
             using (var publisher = EndpointFacadeBuilder.CreateAndConfigure(publisherDefinition, 3))
             using (var subscriber = EndpointFacadeBuilder.CreateAndConfigure(subscriberDefinition, 3))
             {
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => publisher.NumberOfSubscriptions > 0);
 
                 var eventId = Guid.NewGuid();
@@ -76,11 +73,9 @@ namespace TransportCompatibilityTests.SqlServer
                 publisher.PublishEvent(eventId);
 
                 // Wait for the fiest message
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => subscriber.ReceivedEventIds.Length > 0);
 
                 // Wait 5s for another one (should not come)
-                // ReSharper disable once AccessToDisposedClosure
                 Assert.False(AssertEx.TryWaitUntilIsTrue(() => subscriber.ReceivedEventIds.Length > 1, TimeSpan.FromSeconds(5)));
 
                 Assert.IsFalse(subscriber.ReceivedEventIds.Length == 2 && subscriber.ReceivedEventIds.All(k => k == eventId), "Received duplicated message!");

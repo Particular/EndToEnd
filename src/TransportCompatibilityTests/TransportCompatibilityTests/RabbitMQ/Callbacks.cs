@@ -22,7 +22,6 @@
 
         [Category("RabbitMQ")]
         [Test, TestCaseSource(typeof(RabbitMqContext), nameof(GenerateVersionsPairs))]
-        // ReSharper disable once InconsistentNaming
         public void Int_callbacks_work(int sourceVersion, int destinationVersion, Topology topology)
         {
             destinationEndpointDefinition.RoutingTopology = sourceEndpointDefinition.RoutingTopology = topology;
@@ -42,14 +41,12 @@
 
                 source.SendAndCallbackForInt(value);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => source.ReceivedIntCallbacks.Contains(value));
             }
         }
 
         [Category("RabbitMQ")]
         [Test, TestCaseSource(typeof(RabbitMqContext), nameof(GenerateVersionsPairs))]
-        // ReSharper disable once InconsistentNaming
         public void Enum_callbacks_work(int sourceVersion, int destinationVersion, Topology topology)
         {
             destinationEndpointDefinition.RoutingTopology = sourceEndpointDefinition.RoutingTopology = topology;
@@ -69,7 +66,6 @@
 
                 source.SendAndCallbackForEnum(value);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => source.ReceivedEnumCallbacks.Contains(value));
             }
         }

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{FEAAE402-8ED0-47FB-8E54-42B1D7F654CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{FEAAE402-8ED0-47FB-8E54-42B1D7F654CC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{572499ED-E234-4C66-BD6E-D5A845065C5F}"
 EndProject
@@ -71,7 +71,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Distribution.V5.MsmqDistrib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Distribution.V6.SenderSide", "Distribution.V6.SenderSide\Distribution.V6.SenderSide.csproj", "{A1FEF639-4BC1-48D8-BB7D-35E985FD404B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtifactsParser", "ArtifactsParser\ArtifactsParser.csproj", "{1EE3C2EE-7A98-4F57-90CD-11CDE828E0F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtifactsParser", "ArtifactsParser\ArtifactsParser.csproj", "{1EE3C2EE-7A98-4F57-90CD-11CDE828E0F4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NServiceBus7", "NServiceBus7\NServiceBus7.csproj", "{FFD0D5BB-8AD1-48E5-8F73-E009F743849F}"
 EndProject
@@ -132,18 +132,24 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Scenarios\Scenarios.projitems*{02ca6a55-a771-4ad5-912a-484a2bbefbd5}*SharedItemsImports = 4
+		Scenarios\Scenarios.projitems*{0c678e5b-168d-4596-b7b9-efeb3173413c}*SharedItemsImports = 5
 		Common\Common.Data.projitems*{10d11044-c92c-42ad-830e-57012ff4f039}*SharedItemsImports = 4
 		Common\Common.Data.projitems*{19307507-7c7a-433e-9752-7a3e63876991}*SharedItemsImports = 13
 		Scenarios\Scenarios.projitems*{207e1813-ec15-4c3b-adbc-88e3733257e4}*SharedItemsImports = 4
+		Scenarios\Scenarios.projitems*{225db06a-e12e-483a-b744-a3294649ee57}*SharedItemsImports = 5
 		Scenarios\Scenarios.projitems*{2951d082-f37d-45f1-92fa-19dcff3d8622}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{426cf1b4-1aec-42a3-b695-33bee5a694f3}*SharedItemsImports = 4
+		Scenarios\Scenarios.projitems*{4b4045b2-1b52-44b7-9cc2-42c761b56c9b}*SharedItemsImports = 5
 		Scenarios\Scenarios.projitems*{a3e380ce-6e44-4ed4-bbf6-bf08fa4dae6d}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{a87b5d9c-1abe-4f11-a080-6903f7b456fa}*SharedItemsImports = 4
+		Scenarios\Scenarios.projitems*{bcf08aab-d264-43e9-b970-c2be8aadf038}*SharedItemsImports = 5
 		Common\Common.Data.projitems*{be2c7b5e-7a71-4b0c-9020-343ed2010993}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{c3e92dc8-f3c3-4cbf-bbc8-02b6dd440817}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{d8cb2da9-4ae4-417c-89c3-00555f5e1f47}*SharedItemsImports = 4
 		Scenarios\Scenarios.projitems*{e2d3ca80-f978-4bac-a873-3dd939fc65ae}*SharedItemsImports = 13
+		Scenarios\Scenarios.projitems*{f9e0cc37-8473-423d-9c1f-3571050ea5fd}*SharedItemsImports = 5
 		Scenarios\Scenarios.projitems*{fac26029-1e00-43e5-b7db-13318fc1092a}*SharedItemsImports = 4
+		Common\Common.Data.projitems*{ffd0d5bb-8ad1-48e5-8f73-e009f743849f}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

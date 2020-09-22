@@ -21,7 +21,6 @@
 
         [Category("AzureServiceBus")]
         [Test, TestCaseSource(nameof(GenerateVersionsPairs))]
-        // ReSharper disable once InconsistentNaming
         public void Int_callbacks_work(int sourceVersion, int destinationVersion)
         {
             sourceEndpointDefinition.Mappings = new[]
@@ -40,14 +39,12 @@
 
                 source.SendAndCallbackForInt(value);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => source.ReceivedIntCallbacks.Contains(value));
             }
         }
 
         [Category("AzureServiceBus")]
         [Test, TestCaseSource(nameof(GenerateVersionsPairs))]
-        // ReSharper disable once InconsistentNaming
         public void Enum_callbacks_work(int sourceVersion, int destinationVersion)
         {
             sourceEndpointDefinition.Mappings = new[]
@@ -66,7 +63,6 @@
 
                 source.SendAndCallbackForEnum(value);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => source.ReceivedEnumCallbacks.Contains(value));
             }
         }

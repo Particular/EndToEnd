@@ -1,5 +1,4 @@
-﻿// ReSharper disable UnusedAutoPropertyAccessor.Global
-namespace Common.Encryption
+﻿namespace Common.Encryption
 {
     using System;
     using System.Collections;
