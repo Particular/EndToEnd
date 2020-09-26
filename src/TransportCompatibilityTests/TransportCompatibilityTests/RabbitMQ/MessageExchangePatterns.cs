@@ -42,7 +42,6 @@
 
                 source.SendCommand(messageId);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => destination.ReceivedMessageIds.Any(mi => mi == messageId));
             }
         }
@@ -60,7 +59,6 @@
 
                 source.PublishEvent(eventId);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => destination.ReceivedEventIds.Any(ei => ei == eventId));
             }
         }
@@ -86,7 +84,6 @@
 
                 source.SendRequest(requestId);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => source.ReceivedResponseIds.Any(responseId => responseId == requestId));
             }
         }

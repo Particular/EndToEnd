@@ -6,12 +6,15 @@
     <AssemblyName>Transport.V7.RabbitMQ.V5</AssemblyName>
     <OutputPath>..\bin\$(Configuration)\Transport.V7.RabbitMQ_v5\</OutputPath>
     <Configurations>Debug;Release;Local</Configurations>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>            
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);NU1608</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-*" />
     <PackageReference Include="NServiceBus.RabbitMQ" Version="5.0.0-*" />
+    <PackageReference Include="Particular.CodeRules" Version="0.7.0" PrivateAssets="All" />
     <!-- explicitly reference rabbitmq client package as NSB.RabbitMQ uses a lower version which contains a bug throwing NRE's -->
     <PackageReference Include="RabbitMQ.Client" Version="5.*" />
   </ItemGroup>

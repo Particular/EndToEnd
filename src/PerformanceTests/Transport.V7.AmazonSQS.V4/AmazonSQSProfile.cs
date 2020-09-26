@@ -26,7 +26,6 @@ class AmazonSQSProfile : IProfile, INeedPermutation
         var region = RegionEndpoint.GetBySystemName(cs["Region"].ToString());
         transport.QueueNamePrefix(cs["QueueNamePrefix"].ToString());
         transport.MaxTimeToLive(TimeSpan.FromDays(Convert.ToDouble(cs["MaxTTLDays"].ToString())));
-        transport.NativeDeferral(Convert.ToBoolean(cs["NativeDeferral"]));
         transport.ClientFactory(() => new AmazonSQSClient(
             credentials,
             new AmazonSQSConfig

@@ -16,10 +16,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.0.0-*" />
     <PackageReference Include="NServiceBus.Log4Net" Version="3.0.0-*" />
     <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="2.0.0-*" />
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.1.2-alpha" />
+    <PackageReference Include="Particular.CodeRules" Version="0.7.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">

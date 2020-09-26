@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\packages\Particular.CodeRules.0.7.0\build\Particular.CodeRules.props" Condition="Exists('..\..\..\packages\Particular.CodeRules.0.7.0\build\Particular.CodeRules.props')" />
+  <Import Project="..\..\..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.3.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props" Condition="Exists('..\..\..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.3.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" />
+  <Import Project="..\..\..\packages\Microsoft.NetFramework.Analyzers.3.3.0\build\Microsoft.NetFramework.Analyzers.props" Condition="Exists('..\..\..\packages\Microsoft.NetFramework.Analyzers.3.3.0\build\Microsoft.NetFramework.Analyzers.props')" />
+  <Import Project="..\..\..\packages\Microsoft.NetCore.Analyzers.3.3.0\build\Microsoft.NetCore.Analyzers.props" Condition="Exists('..\..\..\packages\Microsoft.NetCore.Analyzers.3.3.0\build\Microsoft.NetCore.Analyzers.props')" />
+  <Import Project="..\..\..\packages\Microsoft.CodeQuality.Analyzers.3.3.0\build\Microsoft.CodeQuality.Analyzers.props" Condition="Exists('..\..\..\packages\Microsoft.CodeQuality.Analyzers.3.3.0\build\Microsoft.CodeQuality.Analyzers.props')" />
+  <Import Project="..\..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.3.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props" Condition="Exists('..\..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.3.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +17,8 @@
     <AssemblyName>Transport.V5.AmazonSQS.V1</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,6 +76,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\GlobalSuppressions.cs">
+      <Link>GlobalSuppressions.cs</Link>
+    </Compile>
     <Compile Include="AmazonSQSProfile.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +88,18 @@
   <ItemGroup>
     <Analyzer Include="..\..\..\packages\AWSSDK.S3.3.3.11.4\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
     <Analyzer Include="..\..\..\packages\AWSSDK.SQS.3.3.3.1\analyzers\dotnet\cs\AWSSDK.SQS.CodeAnalysis.dll" />
+    <Analyzer Include="..\..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.3.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />
+    <Analyzer Include="..\..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.3.0\analyzers\dotnet\Microsoft.CodeAnalysis.VersionCheckAnalyzer.dll" />
+    <Analyzer Include="..\..\..\packages\Microsoft.CodeQuality.Analyzers.3.3.0\analyzers\dotnet\cs\Humanizer.dll" />
+    <Analyzer Include="..\..\..\packages\Microsoft.CodeQuality.Analyzers.3.3.0\analyzers\dotnet\cs\Microsoft.CodeQuality.Analyzers.dll" />
+    <Analyzer Include="..\..\..\packages\Microsoft.CodeQuality.Analyzers.3.3.0\analyzers\dotnet\cs\Microsoft.CodeQuality.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\..\..\packages\Microsoft.NetCore.Analyzers.3.3.0\analyzers\dotnet\cs\Microsoft.NetCore.Analyzers.dll" />
+    <Analyzer Include="..\..\..\packages\Microsoft.NetCore.Analyzers.3.3.0\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\..\..\packages\Microsoft.NetFramework.Analyzers.3.3.0\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
+    <Analyzer Include="..\..\..\packages\Microsoft.NetFramework.Analyzers.3.3.0\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\..\..\packages\Particular.CodeRules.0.7.0\analyzers\dotnet\cs\Particular.CodeRules.dll" />
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NServiceBus5\NServiceBus5.csproj">
@@ -92,4 +115,15 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.3.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.3.0\build\Microsoft.CodeAnalysis.VersionCheckAnalyzer.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.CodeQuality.Analyzers.3.3.0\build\Microsoft.CodeQuality.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.CodeQuality.Analyzers.3.3.0\build\Microsoft.CodeQuality.Analyzers.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.NetCore.Analyzers.3.3.0\build\Microsoft.NetCore.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.NetCore.Analyzers.3.3.0\build\Microsoft.NetCore.Analyzers.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.NetFramework.Analyzers.3.3.0\build\Microsoft.NetFramework.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.NetFramework.Analyzers.3.3.0\build\Microsoft.NetFramework.Analyzers.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.3.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.3.3.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props'))" />
+    <Error Condition="!Exists('..\..\..\packages\Particular.CodeRules.0.7.0\build\Particular.CodeRules.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Particular.CodeRules.0.7.0\build\Particular.CodeRules.props'))" />
+  </Target>
 </Project>

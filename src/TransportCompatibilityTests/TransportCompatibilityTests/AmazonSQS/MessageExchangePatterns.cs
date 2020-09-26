@@ -37,7 +37,6 @@
 
                 source.SendCommand(messageId);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => destination.ReceivedMessageIds.Any(mi => mi == messageId));
             }
         }
@@ -62,7 +61,6 @@
 
                 source.SendRequest(requestId);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => source.ReceivedResponseIds.Any(responseId => responseId == requestId));
             }
         }
@@ -83,14 +81,12 @@
             using (var source = EndpointFacadeBuilder.CreateAndConfigure(sourceEndpointDefinition, sourceVersion))
             using (var destination = EndpointFacadeBuilder.CreateAndConfigure(destinationEndpointDefinition, destinationVersion))
             {
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => source.NumberOfSubscriptions > 0);
 
                 var eventId = Guid.NewGuid();
 
                 source.PublishEvent(eventId);
 
-                // ReSharper disable once AccessToDisposedClosure
                 AssertEx.WaitUntilIsTrue(() => destination.ReceivedEventIds.Any(ei => ei == eventId));
             }
         }

@@ -12,7 +12,6 @@
         public static Func<EndpointDefinition, int, string> AssemblyDirectoryResolver =
             (definition, version) =>
             {
-                // ReSharper disable once RedundantAssignment
                 var configuration = "Release";
 
                 #if DEBUG
